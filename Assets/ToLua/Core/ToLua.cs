@@ -504,17 +504,38 @@ namespace LuaInterface
         }
 
         static void GetToLuaInstanceID()
-        {
+        {   
+            //edit by BanMing
+            //2018-03-05
+            // if (_instanceID == -1)
+            // {
+            //     int start = LuaConst.toluaDir.IndexOf("Assets");
+            //     int end = LuaConst.toluaDir.LastIndexOf("/Lua");
+            //     string dir = LuaConst.toluaDir.Substring(start, end - start);
+            //     dir += "/Core/ToLua.cs";
+            //     _instanceID = AssetDatabase.LoadAssetAtPath(dir, typeof(MonoScript)).GetInstanceID();//"Assets/ToLua/Core/ToLua.cs"
+            // }
+
             if (_instanceID == -1)
             {
-                int start = LuaConst.toluaDir.IndexOf("Assets");
-                int end = LuaConst.toluaDir.LastIndexOf("/Lua");
-                string dir = LuaConst.toluaDir.Substring(start, end - start);
-                dir += "/Core/ToLua.cs";
-                _instanceID = AssetDatabase.LoadAssetAtPath(dir, typeof(MonoScript)).GetInstanceID();//"Assets/ToLua/Core/ToLua.cs"
+                UnityEngine.Object obj = AssetDatabase.LoadAssetAtPath("Assets/ToLua/Core/ToLua.cs", typeof(MonoScript));
+                if(obj == null)
+                {
+                    string[] guidArray = AssetDatabase.FindAssets("t:MonoScript");
+                    foreach(string guid in guidArray)
+                    {
+                        string path = AssetDatabase.GUIDToAssetPath(guid);
+                        if(path.Contains("ToLua.cs"))
+                        {
+                            obj = AssetDatabase.LoadAssetAtPath(path, typeof(MonoScript));
+                            break;
+                        }
+                    }
+                }
+
+                _instanceID = obj.GetInstanceID();
             }
         }
-
         [OnOpenAssetAttribute(0)]
         public static bool OnOpenAsset(int instanceID, int line)
         {
