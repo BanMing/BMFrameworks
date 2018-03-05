@@ -6,10 +6,11 @@ using UnityEditor;
 
 using BindType = ToLuaMenu.BindType;
 using System.Reflection;
+using UnityEngine.UI;
 
 public static class CustomSettings
 {
-    public static string saveDir = Application.dataPath + "/Source/Generate/";    
+    public static string saveDir = Application.dataPath + "/Scripts/Generate/";    
     public static string toluaBaseType = Application.dataPath + "/ToLua/BaseType/";    
 
     //导出时强制做为静态类的类型(注意customTypeList 还要添加这个类型才能导出)
@@ -54,7 +55,7 @@ public static class CustomSettings
         //_GT(typeof(TestExport)),
         //_GT(typeof(TestExport.Space)),
         //-------------------------------------------------------------------        
-                        
+        _GT(typeof(ResourcesManager)),            
         _GT(typeof(Debugger)).SetNameSpace(null),          
 
 #if USING_DOTWEENING
@@ -146,6 +147,7 @@ public static class CustomSettings
         _GT(typeof(RenderTexture)),
         _GT(typeof(Resources)),     
         _GT(typeof(LuaProfiler)),
+        _GT(typeof(Text)),
     };
 
     public static List<Type> dynamicList = new List<Type>()

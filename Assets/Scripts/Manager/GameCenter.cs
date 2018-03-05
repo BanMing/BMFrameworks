@@ -5,4 +5,11 @@ using UnityEngine;
 
 public class GameCenter : Singleton<MonoBehaviour> {
 
+    void Awake () {
+        InitLua ();
+    }
+    private void InitLua () {
+        GameObject luaGo = new GameObject ("LuaClent");
+        luaGo.AddComponent<LuaClient> ();
+    }
 }
