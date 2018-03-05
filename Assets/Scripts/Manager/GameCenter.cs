@@ -9,6 +9,7 @@ public class GameCenter : Singleton<MonoBehaviour> {
         InitLua ();
     }
     private void InitLua () {
+        Debug.Log("lua Init!");
         GameObject luaGo = new GameObject ("LuaClent");
         luaGo.AddComponent<LuaClient> ();
     }
