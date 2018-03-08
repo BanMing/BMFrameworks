@@ -6,7 +6,7 @@ using UnityEngine;
 public  class GameCenter : SingletonMonoBehaviour<GameCenter> {
     public GameObject debuger;
     void Awake () {
-        debuger.SetActive (true);
+        // debuger.SetActive (true);
         //  HTTPTool.GetText("www.baidu.com",(str)=>{Debug.Log(str);});
         Debug.Log ("GameCenter Init!");
         ResourcesManager.Instance.MoveStreaming2Cache ();

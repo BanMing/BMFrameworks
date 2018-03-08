@@ -1,53 +1,45 @@
-﻿using UnityEngine;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using LuaInterface;
-using System;
+using UnityEngine;
 
 //click Lua/Build lua bundle
-public class TestABLoader : MonoBehaviour 
-{
+public class TestABLoader : MonoBehaviour {
     int bundleCount = int.MaxValue;
     string tips = null;
-
-    IEnumerator CoLoadBundle(string name, string path)
-    {
-        using (WWW www = new WWW(path))
-        {
-            if (www == null)
-            {
-                Debugger.LogError(name + " bundle not exists");
+    public GameObject debuger;
+    IEnumerator CoLoadBundle (string name, string path) {
+        using (WWW www = new WWW (path)) {
+            if (www == null) {
+                Debugger.LogError (name + " bundle not exists");
                 yield break;
             }
 
             yield return www;
 
-            if (www.error != null)
-            {
-                Debugger.LogError(string.Format("Read {0} failed: {1}", path, www.error));
+            if (www.error != null) {
+                Debugger.LogError (string.Format ("Read {0} failed: {1}", path, www.error));
                 yield break;
             }
 
             --bundleCount;
-            LuaFileUtils.Instance.AddSearchBundle(name, www.assetBundle);
-            www.Dispose();
-        }                     
+            LuaFileUtils.Instance.AddSearchBundle (name, www.assetBundle);
+            www.Dispose ();
+        }
     }
 
-    IEnumerator LoadFinished()
-    {
-        while (bundleCount > 0)
-        {
+    IEnumerator LoadFinished () {
+        while (bundleCount > 0) {
             yield return null;
         }
 
-        OnBundleLoad();
+        OnBundleLoad ();
     }
 
-    public IEnumerator LoadBundles()
-    {
-        string streamingPath = Application.streamingAssetsPath.Replace('\\', '/');
+    public IEnumerator LoadBundles () {
+        string streamingPath = Application.streamingAssetsPath.Replace ('\\', '/');
 
 #if UNITY_5 || UNITY_2017
 #if UNITY_ANDROID && !UNITY_EDITOR
@@ -55,19 +47,20 @@ public class TestABLoader : MonoBehaviour
 #else
         string main = "file:///" + streamingPath + "/" + LuaConst.osDir + "/" + LuaConst.osDir;
 #endif
-        WWW www = new WWW(main);
+        Debug.Log ("main:" + main);
+        WWW www = new WWW (main);
         yield return www;
 
-        AssetBundleManifest manifest = (AssetBundleManifest)www.assetBundle.LoadAsset("AssetBundleManifest");
-        List<string> list = new List<string>(manifest.GetAllAssetBundles());        
+        AssetBundleManifest manifest = (AssetBundleManifest) www.assetBundle.LoadAsset ("AssetBundleManifest");
+
+        List<string> list = new List<string> (manifest.GetAllAssetBundles ());
 #else
         //此处应该配表获取
-        List<string> list = new List<string>() { "lua.unity3d", "lua_cjson.unity3d", "lua_system.unity3d", "lua_unityengine.unity3d", "lua_protobuf.unity3d", "lua_misc.unity3d", "lua_socket.unity3d", "lua_system_reflection.unity3d" };
+        List<string> list = new List<string> () { "lua.unity3d", "lua_cjson.unity3d", "lua_system.unity3d", "lua_unityengine.unity3d", "lua_protobuf.unity3d", "lua_misc.unity3d", "lua_socket.unity3d", "lua_system_reflection.unity3d" };
 #endif
         bundleCount = list.Count;
-
-        for (int i = 0; i < list.Count; i++)
-        {
+        Debug.Log ("bundleCount:" + bundleCount);
+        for (int i = 0; i < list.Count; i++) {
             string str = list[i];
 
 #if UNITY_ANDROID && !UNITY_EDITOR
@@ -75,61 +68,59 @@ public class TestABLoader : MonoBehaviour
 #else
             string path = "file:///" + streamingPath + "/" + LuaConst.osDir + "/" + str;
 #endif
-            string name = Path.GetFileNameWithoutExtension(str);
-            StartCoroutine(CoLoadBundle(name, path));            
+            string name = Path.GetFileNameWithoutExtension (str);
+            Debug.Log("name:"+name);
+            StartCoroutine (CoLoadBundle (name, path));
         }
 
-        yield return StartCoroutine(LoadFinished());
+        yield return StartCoroutine (LoadFinished ());
     }
 
-    void Awake()
-    {
+    void Awake () {
+        debuger.SetActive (true);
 #if UNITY_5 || UNITY_2017
         Application.logMessageReceived += ShowTips;
 #else
-        Application.RegisterLogCallback(ShowTips);
+        Application.RegisterLogCallback (ShowTips);
 #endif
-        LuaFileUtils file = new LuaFileUtils();
+        LuaFileUtils file = new LuaFileUtils ();
         file.beZip = true;
 #if UNITY_ANDROID && UNITY_EDITOR
-        if (IntPtr.Size == 8)
-        {
-            throw new Exception("can't run this in unity5.x process for 64 bits, switch to pc platform, or run it in android mobile");
+        if (IntPtr.Size == 8) {
+            throw new Exception ("can't run this in unity5.x process for 64 bits, switch to pc platform, or run it in android mobile");
         }
 #endif
-        StartCoroutine(LoadBundles());
+        StartCoroutine (LoadBundles ());
     }
 
-    void ShowTips(string msg, string stackTrace, LogType type)
-    {
+    void ShowTips (string msg, string stackTrace, LogType type) {
         tips += msg;
         tips += "\r\n";
     }
 
-    void OnGUI()
-    {
-        GUI.Label(new Rect(Screen.width / 2 - 200, Screen.height / 2 - 150, 400, 300), tips);
+    void OnGUI () {
+        GUI.Label (new Rect (Screen.width / 2 - 200, Screen.height / 2 - 150, 400, 300), tips);
     }
 
-    void OnApplicationQuit()
-    {
+    void OnApplicationQuit () {
 #if UNITY_5 || UNITY_2017
         Application.logMessageReceived -= ShowTips;
 #else
-        Application.RegisterLogCallback(null);
+        Application.RegisterLogCallback (null);
 #endif
     }
 
-    void OnBundleLoad()
-    {                
-        LuaState state = new LuaState();
-        state.Start();
-        state.DoString("print('hello tolua#:'..tostring(Vector3.zero))");
-        state.DoFile("Main.lua");
-        LuaFunction func = state.GetFunction("Main");
-        func.Call();
-        func.Dispose();
-        state.Dispose();
-        state = null;
-	}	
+    void OnBundleLoad () {
+        GameObject gameObject = new GameObject ("GameCenter");
+        gameObject.AddComponent<GameCenter> ();
+        // LuaState state = new LuaState();
+        // state.Start();
+        // state.DoString("print('hello tolua#:'..tostring(Vector3.zero))");
+        // state.DoFile("Main.lua");
+        // LuaFunction func = state.GetFunction("Main");
+        // func.Call();
+        // func.Dispose();
+        // state.Dispose();
+        // state = null;
+    }
 }
