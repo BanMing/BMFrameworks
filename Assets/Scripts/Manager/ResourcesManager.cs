@@ -1,10 +1,55 @@
+using System.Collections;
+using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
-public class ResourcesManager {
+public sealed class ResourcesManager : SingletonObject<ResourcesManager> {
+    private ResourcesManager () { }
     public static UnityEngine.GameObject GetInstanceGameOject (string path) {
         // var obj= Resources.Load<GameObject>(path);
         // Debug.Log(obj.name);
         // GameObject gameObject= GameObject.Instantiate<GameObject>(Resources.Load<GameObject>(path));
-        
+
         return GameObject.Instantiate<GameObject> (Resources.Load<GameObject> (path));
+    }
+
+    /// <summary>
+    /// 第一次运行把Streming中资源移动到沙盒中
+    /// </summary>
+    public void MoveStreaming2Cache () {
+        Debug.Log ("CopyFile start!");
+#if UNITY_EDITOR || UNITY_STANDALONE_WIN
+        return;
+#endif
+        string dir = MyFileUtil.CacheDir + LuaConst.osDir + "/" + MyFileUtil.LuaZipFileName;
+        if (File.Exists (dir)) {
+            return;
+        }
+        if (File.Exists (MyFileUtil.StreamingAssetsPath + "/Lua/Main.lua")) {
+            Debug.Log ("@@@@@@@@@@@@@@@@@@@@@@@");
+        }
+        if (File.Exists (LuaConst.luaDir)) {
+            Debug.Log ("22222@@@@@");
+        }
+        if (File.Exists (MyFileUtil.StreamingAssetsPath)) {
+            Debug.Log ("@@333333@@@@@@@@@@");
+        }
+        if (File.Exists (Application.streamingAssetsPath)) {
+            Debug.Log ("5555555555555@@@@@@@@@@");
+        }
+        Debug.Log ("MyFileUtil.StreamingAssetsPath" + MyFileUtil.StreamingAssetsPath);
+        Debug.Log ("LuaConst.luaDir" + LuaConst.luaDir);
+        Debug.Log ("MyFileUtil.CacheDir" + MyFileUtil.CacheDir);
+        Debug.Log ("Application.streamingAssetsPath" + Application.streamingAssetsPath);
+        // MyFileUtil.CopyFile (LuaConst.luaDir+"/Main.lua", LuaConst.luaResDir+"/Main.lua");
+        // MyFileUtil.CopyFile (MyFileUtil.StreamingAssetsPath, MyFileUtil.CacheDir);
+
+        // HTTPTool.GetText (MyFileUtil.StreamingAssetsPath + "/Lua/Main.lua", (str) => { Debug.Log ("main.lua:" + str); Debug.Log ("CopyFile Over!"); });
+        // GameCenter.Instance.StartCoroutine(GetMainLua(MyFileUtil.StreamingAssetsPath + "/Lua/Main.lua"));
+    }
+    IEnumerator GetMainLua(string path){
+        WWW www =new WWW(path);
+        yield return www;
+        Debug.Log("Main.Lua:"+www.text);
+        yield break;
     }
 }

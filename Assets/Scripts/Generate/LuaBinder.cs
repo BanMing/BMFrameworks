@@ -12,6 +12,7 @@ public static class LuaBinder
 		ResourcesManagerWrap.Register(L);
 		LuaInterface_DebuggerWrap.Register(L);
 		LuaProfilerWrap.Register(L);
+		SingletonObject_ResourcesManagerWrap.Register(L);
 		L.BeginModule("UnityEngine");
 		UnityEngine_ComponentWrap.Register(L);
 		UnityEngine_TransformWrap.Register(L);

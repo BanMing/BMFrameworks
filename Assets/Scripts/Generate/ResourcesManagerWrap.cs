@@ -6,35 +6,11 @@ public class ResourcesManagerWrap
 {
 	public static void Register(LuaState L)
 	{
-		L.BeginClass(typeof(ResourcesManager), typeof(System.Object));
+		L.BeginClass(typeof(ResourcesManager), typeof(SingletonObject<ResourcesManager>));
 		L.RegFunction("GetInstanceGameOject", GetInstanceGameOject);
-		L.RegFunction("New", _CreateResourcesManager);
+		L.RegFunction("MoveStreaming2Cache", MoveStreaming2Cache);
 		L.RegFunction("__tostring", ToLua.op_ToString);
 		L.EndClass();
-	}
-
-	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
-	static int _CreateResourcesManager(IntPtr L)
-	{
-		try
-		{
-			int count = LuaDLL.lua_gettop(L);
-
-			if (count == 0)
-			{
-				ResourcesManager obj = new ResourcesManager();
-				ToLua.PushObject(L, obj);
-				return 1;
-			}
-			else
-			{
-				return LuaDLL.luaL_throw(L, "invalid arguments to ctor method: ResourcesManager.New");
-			}
-		}
-		catch (Exception e)
-		{
-			return LuaDLL.toluaL_exception(L, e);
-		}
 	}
 
 	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
@@ -47,6 +23,22 @@ public class ResourcesManagerWrap
 			UnityEngine.GameObject o = ResourcesManager.GetInstanceGameOject(arg0);
 			ToLua.PushSealed(L, o);
 			return 1;
+		}
+		catch (Exception e)
+		{
+			return LuaDLL.toluaL_exception(L, e);
+		}
+	}
+
+	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	static int MoveStreaming2Cache(IntPtr L)
+	{
+		try
+		{
+			ToLua.CheckArgsCount(L, 1);
+			ResourcesManager obj = (ResourcesManager)ToLua.CheckObject(L, 1, typeof(ResourcesManager));
+			obj.MoveStreaming2Cache();
+			return 0;
 		}
 		catch (Exception e)
 		{

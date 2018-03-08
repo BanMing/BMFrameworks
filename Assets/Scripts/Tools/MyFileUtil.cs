@@ -43,7 +43,7 @@ public class MyFileUtil
     }
 
     private static string mStreamingAssetsPath = null;
-    private static string StreamingAssetsPath
+    public static string StreamingAssetsPath
     {
         get
         {
@@ -101,6 +101,8 @@ public class MyFileUtil
     }
 
     public static byte[] EncryptKey = new byte[] { 242, 254, 133, 145, 50, 212, 53, 46 };   //Lua代码加密解密Key
+
+    public const string LuaZipFileName = "code.bytes";
 
     public static string EncryptXMLFileSuffix = ".bytes";   //加密后的xml文件后缀
 
