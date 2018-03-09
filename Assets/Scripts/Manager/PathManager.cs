@@ -11,6 +11,8 @@ public class PathManager {
 
     static string assetsBunldePath = string.Empty;
 
+    static string forAssetBunldePath = string.Empty;
+
     public static string StreamingAssetPath2WWW {
         get {
             if (streamingAssetPath2WWW == string.Empty) {
@@ -65,6 +67,15 @@ public class PathManager {
                 MyFileUtil.CreateDir (assetsBunldePath);
             }
             return assetsBunldePath;
+        }
+    }
+
+    public static string ForAssetBunldePath {
+        get {
+            if (forAssetBunldePath == string.Empty) {
+                forAssetBunldePath = Application.dataPath + "/Resoures/ForAssetBundle/";
+            }
+            return forAssetBunldePath;
         }
     }
 }
