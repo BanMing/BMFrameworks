@@ -10,10 +10,10 @@ public class GameCenter : SingletonMonoBehaviour<GameCenter> {
     void Awake () {
         debuger.SetActive (true);
         Debug.Log ("GameCenter Init!");
-        ResourcesManager.Instance.MoveStreaming2Cache ();
+        ResourcesManager.Instance.MoveStreaming2Cache (InitLua);
         var obj = ResourcesManager.GetInstanceGameOject ("Perfabs/Text");
         obj.transform.SetParent (GameObject.Find ("Canvas").transform);
-        obj.transform.localPosition = Vector3.zero;   
+        obj.transform.localPosition = Vector3.zero;
         // InitLua ();
     }
     private void InitLua () {

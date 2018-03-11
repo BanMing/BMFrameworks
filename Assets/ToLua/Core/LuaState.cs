@@ -198,6 +198,8 @@ namespace LuaInterface
                 if (LuaFileUtils.Instance.GetType() == typeof(LuaFileUtils))
                 {
                     AddSearchPath(LuaConst.luaResDir);
+                    AddSearchPath(LuaConst.toluaResDir);
+                    Debug.Log("AddSearchPath(LuaConst.luaResDir):"+LuaConst.luaResDir);
                 }
             }
         }

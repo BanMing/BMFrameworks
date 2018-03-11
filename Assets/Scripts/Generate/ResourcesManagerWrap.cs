@@ -35,9 +35,10 @@ public class ResourcesManagerWrap
 	{
 		try
 		{
-			ToLua.CheckArgsCount(L, 1);
+			ToLua.CheckArgsCount(L, 2);
 			ResourcesManager obj = (ResourcesManager)ToLua.CheckObject(L, 1, typeof(ResourcesManager));
-			obj.MoveStreaming2Cache();
+			System.Action arg0 = (System.Action)ToLua.CheckDelegate<System.Action>(L, 2);
+			obj.MoveStreaming2Cache(arg0);
 			return 0;
 		}
 		catch (Exception e)

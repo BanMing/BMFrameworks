@@ -139,9 +139,9 @@ namespace LuaInterface
             }
 
             string fullPath = null;
-
+            // Debug.Log("searchPaths.Count:"+searchPaths.Count);
             for (int i = 0; i < searchPaths.Count; i++)
-            {
+            {   Debug.Log("searchPaths:"+searchPaths[i]);
                 fullPath = searchPaths[i].Replace("?", fileName);
 
                 if (File.Exists(fullPath))
@@ -157,7 +157,9 @@ namespace LuaInterface
         {
             if (!beZip)
             {
+                // Debug.Log("ReadFile fileName"+fileName);
                 string path = FindFile(fileName);
+                // Debug.Log("ReadFile Path："+path);
                 byte[] str = null;
 
                 if (!string.IsNullOrEmpty(path) && File.Exists(path))

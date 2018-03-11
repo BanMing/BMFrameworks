@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
+using System;
 public sealed class ResourcesManager : SingletonObject<ResourcesManager> {
     private ResourcesManager () { }
     public static UnityEngine.GameObject GetInstanceGameOject (string path) {
@@ -15,7 +16,7 @@ public sealed class ResourcesManager : SingletonObject<ResourcesManager> {
     /// <summary>
     /// 第一次运行把Streming中资源移动到沙盒中
     /// </summary>
-    public void MoveStreaming2Cache () {
+    public void MoveStreaming2Cache (Action callback) {
         Debug.Log ("CopyFile start!");
         // #if UNITY_EDITOR || UNITY_STANDALONE_WIN
         //         return;
@@ -44,15 +45,15 @@ public sealed class ResourcesManager : SingletonObject<ResourcesManager> {
         // MyFileUtil.CopyFile (MyFileUtil.StreamingAssetsPath, MyFileUtil.CacheDir);
 
         // HTTPTool.GetText (MyFileUtil.StreamingAssetsPath + "Lua/mmm.txt", (str) => { Debug.Log ("mmm.txt:" + str);  });
-        GameCenter.Instance.StartCoroutine (GetMainLua (MyFileUtil.StreamingAssetsPath + "Lua/mmm.txt"));
-        GameCenter.Instance.StartCoroutine (GetMainLua (MyFileUtil.StreamingAssetsPath + "Lua/Main.lua"));
-        Debug.Log ("CopyFile Over!");
+        // GameCenter.Instance.StartCoroutine (GetMainLua (MyFileUtil.StreamingAssetsPath + "Lua/mmm.txt"));
+        // GameCenter.Instance.StartCoroutine (GetMainLua (MyFileUtil.StreamingAssetsPath + "Lua/Main.lua"));
+        // Debug.Log ("CopyFile Over!");
         // string strPath=(MyFileUtil.StreamingAssetsPath + "Lua/Main.lua").Replace("/",@"\");
         // GameCenter.Instance.StartCoroutine(GetMainLua(strPath));
-        if (File.Exists (MyFileUtil.CacheDir + "Lua/mmm.txt")) { Debug.Log ("@@###cacheDir:" + File.ReadAllText (MyFileUtil.CacheDir + "Lua/mmm.txt")); }
+        // if (File.Exists (MyFileUtil.CacheDir + "Lua/mmm.txt")) { Debug.Log ("@@###cacheDir:" + File.ReadAllText (MyFileUtil.CacheDir + "Lua/mmm.txt")); }
 
         // GameCenter.Instance.StartCoroutine(GetMainLua(MyFileUtil.CacheDir + "Lua/mmm.txt"));
-        GameCenter.Instance.StartCoroutine (GetLuaCodeZip (Application.streamingAssetsPath + "/" + LuaConst.osDir + "/code.zip"));
+        GameCenter.Instance.StartCoroutine (GetLuaCodeZip (Application.streamingAssetsPath + "/" + LuaConst.osDir + "/code.zip",callback));
     }
     IEnumerator GetMainLua (string path) {
         Debug.Log ("GetMainLuapath:" + path);
@@ -61,13 +62,21 @@ public sealed class ResourcesManager : SingletonObject<ResourcesManager> {
         Debug.Log ("Main.Lua:" + www.text);
         yield break;
     }
-    IEnumerator GetLuaCodeZip (string path) {
+    IEnumerator GetLuaCodeZip (string path,Action callback) {
         Debug.Log ("GetLuaCodeZippath:" + path);
         WWW www = new WWW (path);
         yield return www;
-        Debug.Log ("GetLuaCodeZip.byte:" + www.bytes);
+        // Debug.Log ("GetLuaCodeZip.byte:" + www.bytes);
         ZIPTool.DecompressToDirectory (www.bytes, MyFileUtil.CacheDir);
-        if (File.Exists (MyFileUtil.CacheDir + "Lua/mmm.txt")) { Debug.Log ("555#cacheDir:" + File.ReadAllText (MyFileUtil.CacheDir + "Lua/mmm.txt")); }
+        if (File.Exists (MyFileUtil.CacheDir + "Lua/mmm.txt")) {
+            //  Debug.Log ("555#cacheDir:" + File.ReadAllText (MyFileUtil.CacheDir + "Lua/mmm.txt"));
+            Debug.Log ("MyFileUtil.CacheDir Tolua.lua path:" + MyFileUtil.CacheDir + "Lua/ToLua/tolua.lua");
+            Debug.Log ("MyFileUtil.CacheDir Tolua.lua path:" + File.ReadAllText (MyFileUtil.CacheDir + "Lua/ToLua/tolua.lua"));
+            if (callback!=null){
+                callback();
+            }
+            
+        }
         yield break;
     }
 }
