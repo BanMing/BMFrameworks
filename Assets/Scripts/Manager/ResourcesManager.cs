@@ -1,8 +1,8 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
-using System;
 public sealed class ResourcesManager : SingletonObject<ResourcesManager> {
     private ResourcesManager () { }
     public static UnityEngine.GameObject GetInstanceGameOject (string path) {
@@ -53,7 +53,7 @@ public sealed class ResourcesManager : SingletonObject<ResourcesManager> {
         // if (File.Exists (MyFileUtil.CacheDir + "Lua/mmm.txt")) { Debug.Log ("@@###cacheDir:" + File.ReadAllText (MyFileUtil.CacheDir + "Lua/mmm.txt")); }
 
         // GameCenter.Instance.StartCoroutine(GetMainLua(MyFileUtil.CacheDir + "Lua/mmm.txt"));
-        GameCenter.Instance.StartCoroutine (GetLuaCodeZip (Application.streamingAssetsPath + "/" + LuaConst.osDir + "/code.zip",callback));
+        GameCenter.Instance.StartCoroutine (GetLuaCodeZip (Application.streamingAssetsPath + "/" + LuaConst.osDir + "/code.zip", callback));
     }
     IEnumerator GetMainLua (string path) {
         Debug.Log ("GetMainLuapath:" + path);
@@ -62,7 +62,7 @@ public sealed class ResourcesManager : SingletonObject<ResourcesManager> {
         Debug.Log ("Main.Lua:" + www.text);
         yield break;
     }
-    IEnumerator GetLuaCodeZip (string path,Action callback) {
+    IEnumerator GetLuaCodeZip (string path, Action callback) {
         Debug.Log ("GetLuaCodeZippath:" + path);
         WWW www = new WWW (path);
         yield return www;
@@ -72,11 +72,19 @@ public sealed class ResourcesManager : SingletonObject<ResourcesManager> {
             //  Debug.Log ("555#cacheDir:" + File.ReadAllText (MyFileUtil.CacheDir + "Lua/mmm.txt"));
             Debug.Log ("MyFileUtil.CacheDir Tolua.lua path:" + MyFileUtil.CacheDir + "Lua/ToLua/tolua.lua");
             Debug.Log ("MyFileUtil.CacheDir Tolua.lua path:" + File.ReadAllText (MyFileUtil.CacheDir + "Lua/ToLua/tolua.lua"));
-            if (callback!=null){
-                callback();
+            if (callback != null) {
+                callback ();
             }
-            
+
         }
         yield break;
+    }
+
+    public string ReadConfig (string path) {
+        return MyFileUtil.ReadFileText (path);
+    }
+
+    public void WriteConfig (string path, string data) {
+        MyFileUtil.WriteFile (path, data);
     }
 }

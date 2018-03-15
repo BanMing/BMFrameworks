@@ -13,6 +13,8 @@ public class PathManager {
 
     static string forAssetBunldePath = string.Empty;
 
+    static string systemConfigPath=string.Empty;
+
     public static string StreamingAssetPath2WWW {
         get {
             if (streamingAssetPath2WWW == string.Empty) {
@@ -78,4 +80,11 @@ public class PathManager {
             return forAssetBunldePath;
         }
     }
+
+    public static string SystemConfigPath { get {
+        if (systemConfigPath==string.Empty)
+        {
+            systemConfigPath=Application.streamingAssetsPath+"/Config/SystemConfig.txt";
+        }
+        return systemConfigPath;}}
 }
