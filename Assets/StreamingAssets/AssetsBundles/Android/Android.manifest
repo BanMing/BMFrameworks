@@ -1,7 +1,7 @@
 ManifestFileVersion: 0
-CRC: 1091348778
+CRC: 453671652
 AssetBundleManifest:
   AssetBundleInfos:
     Info_0:
-      Name: unity3d
+      Name: lua/luacode
       Dependencies: {}

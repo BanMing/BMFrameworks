@@ -251,7 +251,8 @@ namespace LuaInterface
                 fileName += ".bytes";
 #endif
                 zipName = sb.ToString();
-                zipMap.TryGetValue(zipName, out zipFile);
+                // zipMap.TryGetValue(zipName, out zipFile);
+               zipFile= zipMap["luacode"];
             }            
 
             if (zipFile != null)

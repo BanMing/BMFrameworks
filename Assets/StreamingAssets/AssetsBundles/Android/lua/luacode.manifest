@@ -1,9 +1,9 @@
 ManifestFileVersion: 0
-CRC: 1431099533
+CRC: 2245373132
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 3d096cf3d6614b4369ec7de5b8c3c294
+    Hash: 2800eadfb8775e401ec5a6797c7a05eb
   TypeTreeHash:
     serializedVersion: 2
     Hash: 1033bf7ddfd4c6d43e7a6382c0a0a61a
@@ -19,11 +19,11 @@ Assets:
 - Assets/StreamingAssets/Lua/ToLua/UnityEngine/Plane.lua.bytes
 - Assets/StreamingAssets/Lua/ToLua/misc/functions.lua.bytes
 - Assets/StreamingAssets/Lua/ToLua/protobuf/descriptor.lua.bytes
-- Assets/StreamingAssets/Lua/ddd.txt
 - Assets/StreamingAssets/Lua/ToLua/mime.lua.bytes
 - Assets/StreamingAssets/Lua/ToLua/socket/ftp.lua.bytes
 - Assets/StreamingAssets/Lua/ToLua/System/Reflection/BindingFlags.lua.bytes
 - Assets/StreamingAssets/Lua/ToLua/socket/url.lua.bytes
+- Assets/temp.txt
 - Assets/StreamingAssets/Lua/ToLua/UnityEngine/Vector2.lua.bytes
 - Assets/StreamingAssets/Lua/ToLua/UnityEngine/Vector4.lua.bytes
 - Assets/StreamingAssets/Lua/ToLua/UnityEngine/Profiler.lua.bytes
@@ -32,7 +32,6 @@ Assets:
 - Assets/StreamingAssets/Lua/ToLua/protobuf/containers.lua.bytes
 - Assets/StreamingAssets/Lua/ToLua/slot.lua.bytes
 - Assets/StreamingAssets/Lua/ToLua/UnityEngine/Mathf.lua.bytes
-- Assets/link.xml
 - Assets/StreamingAssets/Lua/ToLua/cjson/util.lua.bytes
 - Assets/StreamingAssets/Lua/ToLua/protobuf/wire_format.lua.bytes
 - Assets/StreamingAssets/Lua/ToLua/misc/strict.lua.bytes

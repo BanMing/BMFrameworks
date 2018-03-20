@@ -10,6 +10,7 @@ public class GameCenter : SingletonMonoBehaviour<GameCenter> {
     void Awake () {
         ConfigManager.Instance.InitConfig ();
         debuger.SetActive(ConfigManager.Instance.SystemConfig.IsShowDebug);
+        LuaCodeTest();
     }
     private void InitLua () {
         Debug.Log ("lua Init!");

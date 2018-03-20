@@ -1,1 +1,1 @@
-{"IsUseLuaZip":true,"IsShowDebug":false}
+{"IsUseLuaZip":false,"IsShowDebug":true}

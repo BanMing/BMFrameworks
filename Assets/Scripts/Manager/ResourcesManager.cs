@@ -22,8 +22,7 @@ public sealed class ResourcesManager : SingletonObject<ResourcesManager> {
         return;
 #endif
         // GameCenter.Instance.StartCoroutine(GetMainLua(MyFileUtil.CacheDir + "Lua/mmm.txt"));
-        string luaZipPath=Application.streamingAssetsPath + "/" + LuaConst.osDir + "/code.zip";
-        GameCenter.Instance.StartCoroutine (GetLuaCodeZip (luaZipPath, callback));
+        GameCenter.Instance.StartCoroutine (GetLuaCodeZip (PathManager.LuaZipPath, callback));
     }
     IEnumerator GetMainLua (string path) {
         Debug.Log ("GetMainLuapath:" + path);
@@ -38,14 +37,32 @@ public sealed class ResourcesManager : SingletonObject<ResourcesManager> {
         yield return www;
         // Debug.Log ("GetLuaCodeZip.byte:" + www.bytes);
         ZIPTool.DecompressToDirectory (www.bytes, MyFileUtil.CacheDir);
-        if (File.Exists (MyFileUtil.CacheDir + "Lua/mmm.txt")) {
-            //  Debug.Log ("555#cacheDir:" + File.ReadAllText (MyFileUtil.CacheDir + "Lua/mmm.txt"));
-            Debug.Log ("MyFileUtil.CacheDir Tolua.lua path:" + MyFileUtil.CacheDir + "Lua/ToLua/tolua.lua");
-            Debug.Log ("MyFileUtil.CacheDir Tolua.lua path:" + File.ReadAllText (MyFileUtil.CacheDir + "Lua/ToLua/tolua.lua"));
-            if (callback != null) {
-                callback ();
-            }
+        WWW mm = new WWW (PathManager.AssetsBunldePath + "manifest.zip");
+        yield return mm;
+        ZIPTool.DecompressToDirectory (mm.bytes, MyFileUtil.CacheDir);
+        yield return null;
+        WWW cc = new WWW (PathManager.CacheDir + "AssetsBundles/Android/Android");
+        yield return cc;
+        AssetBundleManifest manifest = (AssetBundleManifest) cc.assetBundle.LoadAsset ("AssetBundleManifest");
+        List<string> list = new List<string> (manifest.GetAllAssetBundles ());
+        Debug.Log ("manifest AllAssetBundles count:" + list.Count);
+        foreach (var str in list)
+        {
+            Debug.Log("AssetBundles Name:"+str);
+            WWW dd=new WWW(PathManager.CacheDir + "AssetsBundles/Android/"+str);
+            yield return dd;
+            
         }
+        yield return null;
+        callback ();
+        // if (File.Exists (MyFileUtil.CacheDir + "Lua/mmm.txt")) {
+        //     //  Debug.Log ("555#cacheDir:" + File.ReadAllText (MyFileUtil.CacheDir + "Lua/mmm.txt"));
+        //     Debug.Log ("MyFileUtil.CacheDir Tolua.lua path:" + MyFileUtil.CacheDir + "Lua/ToLua/tolua.lua");
+        //     Debug.Log ("MyFileUtil.CacheDir Tolua.lua path:" + File.ReadAllText (MyFileUtil.CacheDir + "Lua/ToLua/tolua.lua"));
+        //     if (callback != null) {
+        //         callback ();
+        //     }
+        // }
         yield break;
     }
 

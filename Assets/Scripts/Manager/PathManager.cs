@@ -15,6 +15,7 @@ public class PathManager {
 
     static string systemConfigPath=string.Empty;
 
+    static string editorLuaFilePath=string.Empty;
     public static string StreamingAssetPath2WWW {
         get {
             if (streamingAssetPath2WWW == string.Empty) {
@@ -55,8 +56,7 @@ public class PathManager {
     public static string LuaZipPath {
         get {
             if (luaZipPath == string.Empty) {
-                luaZipPath = AssetsBunldePath + "Code.zip";
-                File.Create (luaZipPath);
+                luaZipPath = AssetsBunldePath + "/code.zip";
             }
             return luaZipPath;
         }
@@ -87,4 +87,10 @@ public class PathManager {
             systemConfigPath=Application.streamingAssetsPath+"/Config/SystemConfig.txt";
         }
         return systemConfigPath;}}
+
+    public static string EditorLuaFilePath { get {
+        if(editorLuaFilePath==string.Empty){
+            editorLuaFilePath=Application.streamingAssetsPath+"/Lua";
+        }
+        return editorLuaFilePath;}}
 }
