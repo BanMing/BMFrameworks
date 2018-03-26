@@ -1,5 +1,5 @@
 ﻿/*
-Copyright (c) 2015-2017 topameng(topameng@qq.com)
+Copyright (c) 2015-2016 topameng(topameng@qq.com)
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -45,12 +45,8 @@ public static class ToLuaMenu
     public static List<Type> dropType = new List<Type>
     {
         typeof(ValueType),                                  //不需要
-#if !UNITY_5 && !UNITY_2017
+#if !UNITY_5
         typeof(Motion),                                     //很多平台只是空类
-#endif
-
-#if UNITY_5_3_OR_NEWER
-        typeof(UnityEngine.CustomYieldInstruction),
 #endif
         typeof(UnityEngine.YieldInstruction),               //无需导出的类      
         typeof(UnityEngine.WaitForEndOfFrame),              //内部支持
@@ -250,12 +246,6 @@ public static class ToLuaMenu
             return;
         }
 
-        if (CustomSettings.sealedList.Contains(t))
-        {
-            CustomSettings.sealedList.Remove(t);
-            Debugger.LogError("{0} not a sealed class, it is parent of {1}", LuaMisc.GetTypeName(t), bt.name);
-        }
-
         if (t.IsInterface)
         {
             Debugger.LogWarning("{0} has a base type {1} is Interface, use SetBaseType to jump it", bt.name, t.FullName);
@@ -275,17 +265,17 @@ public static class ToLuaMenu
 #if JUMP_NODEFINED_ABSTRACT
                 if (t.IsAbstract && !t.IsSealed)
                 {
-                    Debugger.LogWarning("not defined bindtype for {0}, it is abstract class, jump it, child class is {1}", LuaMisc.GetTypeName(t), bt.name);
+                    Debugger.LogWarning("not defined bindtype for {0}, it is abstract class, jump it, child class is {1}", t.FullName, bt.name);
                     bt.baseType = t.BaseType;
                 }
                 else
                 {
-                    Debugger.LogWarning("not defined bindtype for {0}, autogen it, child class is {1}", LuaMisc.GetTypeName(t), bt.name);
+                    Debugger.LogWarning("not defined bindtype for {0}, autogen it, child class is {1}", t.FullName, bt.name);
                     bt = new BindType(t);
                     allTypes.Add(bt);
                 }
 #else
-                Debugger.LogWarning("not defined bindtype for {0}, autogen it, child class is {1}", LuaMisc.GetTypeName(t), bt.name);                        
+                Debugger.LogWarning("not defined bindtype for {0}, autogen it, child class is {1}", t.FullName, bt.name);                        
                 bt = new BindType(t);
                 allTypes.Add(bt);
 #endif
@@ -637,9 +627,13 @@ public static class ToLuaMenu
         sb.AppendLineEx("using System;");
         sb.AppendLineEx("using UnityEngine;");
         sb.AppendLineEx("using LuaInterface;");
+        sb.AppendLineEx("using System.Collections;");
         sb.AppendLineEx();
         sb.AppendLineEx("public static class LuaBinder");
         sb.AppendLineEx("{");
+
+        #region 生成bind()
+        //----生成bind()开始
         sb.AppendLineEx("\tpublic static void Bind(LuaState L)");
         sb.AppendLineEx("\t{");
         sb.AppendLineEx("\t\tfloat t = Time.realtimeSinceStartup;");
@@ -679,7 +673,7 @@ public static class ToLuaMenu
             {
                 Type t1 = CustomSettings.dynamicList[i];
                 BindType bt = backupList.Find((p) => { return p.type == t1; });
-                if (bt != null) sb.AppendFormat("\t\tL.AddPreLoad(\"{0}\", LuaOpen_{1}, typeof({0}));\r\n", bt.name, bt.wrapName);
+                sb.AppendFormat("\t\tL.AddPreLoad(\"{0}\", LuaOpen_{1}, typeof({0}));\r\n", bt.name, bt.wrapName);
             }
 
             sb.AppendLineEx("\t\tL.EndPreLoad();");
@@ -687,6 +681,87 @@ public static class ToLuaMenu
 
         sb.AppendLineEx("\t\tDebugger.Log(\"Register lua type cost time: {0}\", Time.realtimeSinceStartup - t);");
         sb.AppendLineEx("\t}");
+        //-----生成bind()结束
+        #endregion 生成bind()
+
+        //--生成bindImp()开始
+        allTypes.Clear();
+        tree = InitTree();
+        //StringBuilder sb = new StringBuilder();
+        dtList = new List<DelegateType>();
+
+        list = new List<DelegateType>();
+        list.AddRange(CustomSettings.customDelegateList);
+        set = GetCustomTypeDelegates();
+
+        backupList = new List<BindType>();
+        backupList.AddRange(allTypes);
+        root = tree.GetRoot();
+        libname = null;
+
+        foreach (Type t in set)
+        {
+            if (null == list.Find((p) => { return p.type == t; }))
+            {
+                DelegateType dt = new DelegateType(t);
+                AddSpaceNameToTree(tree, root, ToLuaExport.GetNameSpace(t, out libname));
+                list.Add(dt);
+            }
+        }
+
+        sb.AppendLineEx("\tpublic static IEnumerator BindImp(LuaState L, Action callback)");
+        sb.AppendLineEx("\t{");
+        sb.AppendLineEx("\t\tfloat t = Time.realtimeSinceStartup;");
+        sb.AppendLineEx("\t\tL.BeginModule(null);");
+
+        GenRegisterInfo(null, sb, list, dtList);
+
+        //Action<ToLuaNode<string>> begin = (node) =>
+        //{
+        //    if (node.value == null)
+        //    {
+        //        return;
+        //    }
+
+        //    sb.AppendFormat("\t\tL.BeginModule(\"{0}\");\r\n", node.value);
+        //    string space = GetSpaceNameFromTree(node);
+
+        //    GenRegisterInfo(space, sb, list, dtList);
+        //};
+
+        //Action<ToLuaNode<string>> end = (node) =>
+        //{
+        //    if (node.value != null)
+        //    {
+        //        sb.AppendLineEx("\t\tL.EndModule();");
+        //    }
+        //};
+
+        tree.DepthFirstTraversal(begin, end, tree.GetRoot());
+        sb.AppendLineEx("\t\tL.EndModule();");
+        sb.AppendLineEx("\t\tyield return null;");
+
+        if (CustomSettings.dynamicList.Count > 0)
+        {
+            sb.AppendLineEx("\t\tL.BeginPreLoad();");
+
+            for (int i = 0; i < CustomSettings.dynamicList.Count; i++)
+            {
+                Type t1 = CustomSettings.dynamicList[i];
+                BindType bt = backupList.Find((p) => { return p.type == t1; });
+                sb.AppendFormat("\t\tL.AddPreLoad(\"{0}\", LuaOpen_{1}, typeof({0}));\r\n", bt.name, bt.wrapName);
+            }
+
+            sb.AppendLineEx("\t\tL.EndPreLoad();");
+            sb.AppendLineEx("\t\tyield return null;");
+        }
+
+        sb.AppendLineEx("\t\tDebug.Log(\"Register lua type cost time:  \" +  (Time.realtimeSinceStartup - t).ToString());");
+        
+        sb.AppendLineEx("\t\tcallback();");
+        sb.AppendLineEx("\t\tyield return null;");
+        sb.AppendLineEx("\t}");
+        //-----生成bind()结束
 
         for (int i = 0; i < dtList.Count; i++)
         {
@@ -700,7 +775,7 @@ public static class ToLuaMenu
             {
                 Type t = CustomSettings.dynamicList[i];
                 BindType bt = backupList.Find((p) => { return p.type == t; });
-                if (bt != null) GenPreLoadFunction(bt, sb);
+                GenPreLoadFunction(bt, sb);
             }            
         }
 
@@ -765,7 +840,7 @@ public static class ToLuaMenu
         sb.AppendFormat("\t\t\tstate.BeginPreModule(\"{0}\");\r\n", bt.nameSpace);
         sb.AppendFormat("\t\t\t{0}Wrap.Register(state);\r\n", bt.wrapName);
         sb.AppendFormat("\t\t\tint reference = state.GetMetaReference(typeof({0}));\r\n", bt.name);
-        sb.AppendLineEx("\t\t\tstate.EndPreModule(L, reference);");                
+        sb.AppendLineEx("\t\t\tstate.EndPreModule(reference);");                
         sb.AppendLineEx("\t\t\treturn 1;");
         sb.AppendLineEx("\t\t}");
         sb.AppendLineEx("\t\tcatch(Exception e)");
@@ -798,7 +873,7 @@ public static class ToLuaMenu
         string bundleName = subDir == null ? "lua.unity3d" : "lua" + subDir.Replace('/', '_') + ".unity3d";
         bundleName = bundleName.ToLower();
 
-#if UNITY_5 || UNITY_2017
+#if UNITY_5        
         for (int i = 0; i < files.Length; i++)
         {
             AssetImporter importer = AssetImporter.GetAtPath(files[i]);            
@@ -809,7 +884,7 @@ public static class ToLuaMenu
                 importer.assetBundleVariant = null;                
             }
         }
-#else
+#else        
         List<Object> list = new List<Object>();
 
         for (int i = 0; i < files.Length; i++)
@@ -826,7 +901,7 @@ public static class ToLuaMenu
             File.Delete(output);
             BuildPipeline.BuildAssetBundle(null, list.ToArray(), output, options, EditorUserBuildSettings.activeBuildTarget);            
         }
-#endif
+#endif        
     }
 
     static void ClearAllLuaFiles()
@@ -930,12 +1005,18 @@ public static class ToLuaMenu
         StringBuilder sb = new StringBuilder();
         sb.AppendLineEx("using System;");
         sb.AppendLineEx("using LuaInterface;");
+        sb.AppendLineEx("using System.Collections;");
         sb.AppendLineEx();
         sb.AppendLineEx("public static class LuaBinder");
         sb.AppendLineEx("{");
         sb.AppendLineEx("\tpublic static void Bind(LuaState L)");
         sb.AppendLineEx("\t{");
         sb.AppendLineEx("\t\tthrow new LuaException(\"Please generate LuaBinder files first!\");");
+        sb.AppendLineEx("\t}");
+        sb.AppendLineEx("\tpublic static IEnumerator BindImp(LuaState L, Action callback)");
+        sb.AppendLineEx("\t{");
+        sb.AppendLineEx("\t\tthrow new LuaException(\"Please generate LuaBinder files first!\");");
+        sb.AppendLineEx("\t\tyield return null;");
         sb.AppendLineEx("\t}");
         sb.AppendLineEx("}");
 
@@ -1025,31 +1106,6 @@ public static class ToLuaMenu
         }        
     }
 
-    static void CopyBuildBat(string path, string tempDir)
-    {
-        if (EditorUserBuildSettings.activeBuildTarget == BuildTarget.StandaloneWindows)
-        {
-            if (IntPtr.Size == 4)
-            {
-                File.Copy(path + "/Luajit/Build.bat", tempDir + "/Build.bat", true);
-            }
-            else if (IntPtr.Size == 8)
-            {
-                File.Copy(path + "/Luajit64/Build.bat", tempDir + "/Build.bat", true);
-            }
-        }
-        else if (EditorUserBuildSettings.activeBuildTarget == BuildTarget.iOS)
-        {
-            //Debug.Log("iOS默认用64位，32位自行考虑");
-            File.Copy(path + "/Luajit64/Build.bat", tempDir + "/Build.bat", true);
-        }
-        else
-        {
-            File.Copy(path + "/Luajit/Build.bat", tempDir + "/Build.bat", true);
-        }
-
-    }
-
     [MenuItem("Lua/Build Lua files to Resources (PC)", false, 53)]
     public static void BuildLuaToResources()
     {
@@ -1059,7 +1115,7 @@ public static class ToLuaMenu
 
         string path = Application.dataPath.Replace('\\', '/');
         path = path.Substring(0, path.LastIndexOf('/'));
-        CopyBuildBat(path, tempDir);
+        File.Copy(path + "/Luajit/Build.bat", tempDir +  "/Build.bat", true);
         CopyLuaBytesFiles(LuaConst.luaDir, tempDir, false);
         Process proc = Process.Start(tempDir + "/Build.bat");
         proc.WaitForExit();
@@ -1078,8 +1134,8 @@ public static class ToLuaMenu
         string destDir = Application.persistentDataPath + "/" + GetOS() + "/Lua/";
 
         string path = Application.dataPath.Replace('\\', '/');
-        path = path.Substring(0, path.LastIndexOf('/'));        
-        CopyBuildBat(path, tempDir);
+        path = path.Substring(0, path.LastIndexOf('/'));
+        File.Copy(path + "/Luajit/Build.bat", tempDir + "/Build.bat", true);
         CopyLuaBytesFiles(LuaConst.luaDir, tempDir, false);
         Process proc = Process.Start(tempDir + "/Build.bat");
         proc.WaitForExit();        
@@ -1108,7 +1164,7 @@ public static class ToLuaMenu
         ClearAllLuaFiles();
         CreateStreamDir(GetOS());
 
-#if !UNITY_5 && !UNITY_2017
+#if !UNITY_5
         string tempDir = CreateStreamDir("Lua");
 #else
         string tempDir = Application.dataPath + "/temp/Lua";
@@ -1125,7 +1181,7 @@ public static class ToLuaMenu
         List<string> dirs = new List<string>();
         GetAllDirs(tempDir, dirs);
 
-#if UNITY_5 || UNITY_2017
+#if UNITY_5        
         for (int i = 0; i < dirs.Count; i++)
         {
             string str = dirs[i].Remove(0, tempDir.Length);
@@ -1148,7 +1204,7 @@ public static class ToLuaMenu
 
         BuildLuaBundle(null, "Assets/StreamingAssets/Lua");
         Directory.Delete(Application.streamingAssetsPath + "/Lua/", true);
-#endif
+#endif            
         AssetDatabase.Refresh();
     }
 
@@ -1158,7 +1214,7 @@ public static class ToLuaMenu
         ClearAllLuaFiles();                
         CreateStreamDir(GetOS());
 
-#if !UNITY_5 && !UNITY_2017
+#if !UNITY_5
         string tempDir = CreateStreamDir("Lua");
 #else
         string tempDir = Application.dataPath + "/temp/Lua";
@@ -1170,8 +1226,8 @@ public static class ToLuaMenu
 #endif
 
         string path = Application.dataPath.Replace('\\', '/');
-        path = path.Substring(0, path.LastIndexOf('/'));        
-        CopyBuildBat(path, tempDir);
+        path = path.Substring(0, path.LastIndexOf('/'));
+        File.Copy(path + "/Luajit/Build.bat", tempDir + "/Build.bat", true);
         CopyLuaBytesFiles(LuaConst.luaDir, tempDir, false);
         Process proc = Process.Start(tempDir + "/Build.bat");
         proc.WaitForExit();
@@ -1183,7 +1239,7 @@ public static class ToLuaMenu
         List<string> dirs = new List<string>();        
         GetAllDirs(sourceDir, dirs);
 
-#if UNITY_5 || UNITY_2017
+#if UNITY_5
         for (int i = 0; i < dirs.Count; i++)
         {
             string str = dirs[i].Remove(0, sourceDir.Length);
@@ -1209,7 +1265,7 @@ public static class ToLuaMenu
         AssetDatabase.Refresh();
     }
 
-    [MenuItem("Lua/Clear all Lua files", false, 57)]
+    //[MenuItem("Lua/Clear all Lua files", false, 57)]
     public static void ClearLuaFiles()
     {
         ClearAllLuaFiles();

@@ -3,6 +3,9 @@ using System.IO;
 using System.Security.Cryptography;
 using System.Text;
 
+/// <summary>
+/// RSAº”√‹¿‡
+/// </summary>
 public static class RSACrypto
 {
     public static Byte[] Encrypt(Byte[] ToEncrypt, String Key)

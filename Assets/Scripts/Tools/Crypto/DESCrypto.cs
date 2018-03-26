@@ -3,6 +3,9 @@ using System.IO;
 using System.Security.Cryptography;
 using System.Text;
 
+/// <summary>
+/// DESº”√‹
+/// </summary>
 public static class DESCrypto
 {
     public static void Encrypt(string filePath, byte[] Key)

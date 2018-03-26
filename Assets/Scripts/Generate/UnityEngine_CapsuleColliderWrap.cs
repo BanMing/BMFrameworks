@@ -27,7 +27,7 @@ public class UnityEngine_CapsuleColliderWrap
 			if (count == 0)
 			{
 				UnityEngine.CapsuleCollider obj = new UnityEngine.CapsuleCollider();
-				ToLua.PushSealed(L, obj);
+				ToLua.Push(L, obj);
 				return 1;
 			}
 			else
@@ -35,7 +35,7 @@ public class UnityEngine_CapsuleColliderWrap
 				return LuaDLL.luaL_throw(L, "invalid arguments to ctor method: UnityEngine.CapsuleCollider.New");
 			}
 		}
-		catch (Exception e)
+		catch(Exception e)
 		{
 			return LuaDLL.toluaL_exception(L, e);
 		}
@@ -53,7 +53,7 @@ public class UnityEngine_CapsuleColliderWrap
 			LuaDLL.lua_pushboolean(L, o);
 			return 1;
 		}
-		catch (Exception e)
+		catch(Exception e)
 		{
 			return LuaDLL.toluaL_exception(L, e);
 		}
@@ -74,7 +74,7 @@ public class UnityEngine_CapsuleColliderWrap
 		}
 		catch(Exception e)
 		{
-			return LuaDLL.toluaL_exception(L, e, o, "attempt to index center on a nil value");
+			return LuaDLL.toluaL_exception(L, e, o == null ? "attempt to index center on a nil value" : e.Message);
 		}
 	}
 
@@ -93,7 +93,7 @@ public class UnityEngine_CapsuleColliderWrap
 		}
 		catch(Exception e)
 		{
-			return LuaDLL.toluaL_exception(L, e, o, "attempt to index radius on a nil value");
+			return LuaDLL.toluaL_exception(L, e, o == null ? "attempt to index radius on a nil value" : e.Message);
 		}
 	}
 
@@ -112,7 +112,7 @@ public class UnityEngine_CapsuleColliderWrap
 		}
 		catch(Exception e)
 		{
-			return LuaDLL.toluaL_exception(L, e, o, "attempt to index height on a nil value");
+			return LuaDLL.toluaL_exception(L, e, o == null ? "attempt to index height on a nil value" : e.Message);
 		}
 	}
 
@@ -131,7 +131,7 @@ public class UnityEngine_CapsuleColliderWrap
 		}
 		catch(Exception e)
 		{
-			return LuaDLL.toluaL_exception(L, e, o, "attempt to index direction on a nil value");
+			return LuaDLL.toluaL_exception(L, e, o == null ? "attempt to index direction on a nil value" : e.Message);
 		}
 	}
 
@@ -150,7 +150,7 @@ public class UnityEngine_CapsuleColliderWrap
 		}
 		catch(Exception e)
 		{
-			return LuaDLL.toluaL_exception(L, e, o, "attempt to index center on a nil value");
+			return LuaDLL.toluaL_exception(L, e, o == null ? "attempt to index center on a nil value" : e.Message);
 		}
 	}
 
@@ -169,7 +169,7 @@ public class UnityEngine_CapsuleColliderWrap
 		}
 		catch(Exception e)
 		{
-			return LuaDLL.toluaL_exception(L, e, o, "attempt to index radius on a nil value");
+			return LuaDLL.toluaL_exception(L, e, o == null ? "attempt to index radius on a nil value" : e.Message);
 		}
 	}
 
@@ -188,7 +188,7 @@ public class UnityEngine_CapsuleColliderWrap
 		}
 		catch(Exception e)
 		{
-			return LuaDLL.toluaL_exception(L, e, o, "attempt to index height on a nil value");
+			return LuaDLL.toluaL_exception(L, e, o == null ? "attempt to index height on a nil value" : e.Message);
 		}
 	}
 
@@ -207,7 +207,7 @@ public class UnityEngine_CapsuleColliderWrap
 		}
 		catch(Exception e)
 		{
-			return LuaDLL.toluaL_exception(L, e, o, "attempt to index direction on a nil value");
+			return LuaDLL.toluaL_exception(L, e, o == null ? "attempt to index direction on a nil value" : e.Message);
 		}
 	}
 }

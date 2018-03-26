@@ -1,5 +1,5 @@
 ﻿/*
-Copyright (c) 2015-2017 topameng(topameng@qq.com)
+Copyright (c) 2015-2016 topameng(topameng@qq.com)
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -93,17 +93,6 @@ namespace LuaInterface
 #endif
         }
 
-        //fixed 枚举唯一性问题（对象唯一，没有实现__eq操作符）
-        void RemoveObject(object o, int udata)
-        {
-            int index = -1;
-            
-            if (objectsBackMap.TryGetValue(o, out index) && index == udata)
-            {
-                objectsBackMap.Remove(o);
-            }
-        }
-
         //lua gc一个对象(lua 库不再引用，但不代表c#没使用)
         public void RemoveObject(int udata)
         {            
@@ -114,7 +103,7 @@ namespace LuaInterface
             {
                 if (!TypeChecker.IsValueType(o.GetType()))
                 {
-                    RemoveObject(o, udata);
+                    objectsBackMap.Remove(o);
                 }
 
                 if (LogGC)
@@ -138,7 +127,7 @@ namespace LuaInterface
             {
                 if (!TypeChecker.IsValueType(o.GetType()))
                 {
-                    RemoveObject(o, udata);
+                    objectsBackMap.Remove(o);
                 }
 
                 if (LogGC)
@@ -165,11 +154,6 @@ namespace LuaInterface
             return objectsBackMap.TryGetValue(o, out index);
         }
 
-        public void Destroyudata(int udata)
-        {
-            objects.Destroy(udata);
-        }
-
         public void SetBack(int index, object o)
         {
             objects.Replace(index, o);            
@@ -188,14 +172,13 @@ namespace LuaInterface
             return false;
         }
         
-        //延迟删除处理
         void DestroyUnityObject(int udata, UnityEngine.Object obj)
         {
             object o = objects.TryGetValue(udata);
 
             if (object.ReferenceEquals(o, obj))
             {
-                RemoveObject(o, udata);
+                objectsBackMap.Remove(o);
                 //一定不能Remove, 因为GC还可能再来一次
                 objects.Destroy(udata);     
 

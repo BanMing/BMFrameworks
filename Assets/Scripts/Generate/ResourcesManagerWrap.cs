@@ -6,42 +6,1220 @@ public class ResourcesManagerWrap
 {
 	public static void Register(LuaState L)
 	{
-		L.BeginClass(typeof(ResourcesManager), typeof(SingletonObject<ResourcesManager>));
-		L.RegFunction("GetInstanceGameOject", GetInstanceGameOject);
-		L.RegFunction("MoveStreaming2Cache", MoveStreaming2Cache);
+		L.BeginClass(typeof(ResourcesManager), typeof(SingletonMonoBehaviour<ResourcesManager>));
+		L.RegFunction("PreLoadResources", PreLoadResources);
+		L.RegFunction("AsyncPreLoadResources", AsyncPreLoadResources);
+		L.RegFunction("GetResourcePrefab", GetResourcePrefab);
+		L.RegFunction("GetResourceInstance", GetResourceInstance);
+		L.RegFunction("GetGameObjectInstance", GetGameObjectInstance);
+		L.RegFunction("DestroyResourceInstance", DestroyResourceInstance);
+		L.RegFunction("GetPlatformDir", GetPlatformDir);
+		L.RegFunction("LoadAssetBundle", LoadAssetBundle);
+		L.RegFunction("LoadAssetBundleSync", LoadAssetBundleSync);
+		L.RegFunction("FixShader", FixShader);
+		L.RegFunction("UnloadAsset", UnloadAsset);
+		L.RegFunction("UnloadUnusedAssets", UnloadUnusedAssets);
+		L.RegFunction("UnloadAssetBundle", UnloadAssetBundle);
+		L.RegFunction("ForceUnloadAssetBundle", ForceUnloadAssetBundle);
+		L.RegFunction("PrintReferencedCountInfo", PrintReferencedCountInfo);
+		L.RegFunction("LoadLuaZipFile", LoadLuaZipFile);
+		L.RegFunction("GetLuaScriptDataFromZip", GetLuaScriptDataFromZip);
+		L.RegFunction("EncryptLuaCode", EncryptLuaCode);
+		L.RegFunction("GetLuaZipFileMD5", GetLuaZipFileMD5);
+		L.RegFunction("GetMainLuaZipFileMD5", GetMainLuaZipFileMD5);
+		L.RegFunction("GenerateFileList", GenerateFileList);
+		L.RegFunction("GetFileListXMLString", GetFileListXMLString);
+		L.RegFunction("SaveFileList", SaveFileList);
+		L.RegFunction("GetFilePathByFileName", GetFilePathByFileName);
+		L.RegFunction("Init", Init);
+		L.RegFunction("GetPrefabSync", GetPrefabSync);
+		L.RegFunction("GetPrefab", GetPrefab);
+		L.RegFunction("GetInstanceSync", GetInstanceSync);
+		L.RegFunction("GetInstance", GetInstance);
+		L.RegFunction("ReleasePrefab", ReleasePrefab);
+		L.RegFunction("ReleaseInstance", ReleaseInstance);
+		L.RegFunction("GetUIPrefabSync", GetUIPrefabSync);
+		L.RegFunction("GetUIPrefab", GetUIPrefab);
+		L.RegFunction("GetUIInstance", GetUIInstance);
+		L.RegFunction("GetUIInstanceSync", GetUIInstanceSync);
+		L.RegFunction("ReleaseUIPrefab", ReleaseUIPrefab);
+		L.RegFunction("ReleaseUIInstance", ReleaseUIInstance);
+		L.RegFunction("__eq", op_Equality);
 		L.RegFunction("__tostring", ToLua.op_ToString);
+		L.RegVar("DirNameForAssetBundlesBuildFrom", get_DirNameForAssetBundlesBuildFrom, null);
+		L.RegVar("mAssetBundleSuffix", get_mAssetBundleSuffix, null);
+		L.RegVar("IsFixShader", get_IsFixShader, set_IsFixShader);
+		L.RegVar("m_DictShader", get_m_DictShader, set_m_DictShader);
+		L.RegVar("IsReleaseAssetBundleImmediately", get_IsReleaseAssetBundleImmediately, set_IsReleaseAssetBundleImmediately);
+		L.RegVar("LuaZipFileName", get_LuaZipFileName, null);
+		L.RegVar("FileListConfigFileName", get_FileListConfigFileName, set_FileListConfigFileName);
+		L.RegVar("ResourcesRoot", get_ResourcesRoot, null);
+		L.RegVar("IsUseAssetBundle", get_IsUseAssetBundle, null);
+		L.RegVar("IsLuaUseZip", get_IsLuaUseZip, null);
+		L.RegVar("WorkDirInProject", get_WorkDirInProject, null);
+		L.RegVar("DirForAssetBundlesBuildFrom", get_DirForAssetBundlesBuildFrom, null);
+		L.RegVar("AssetBundlesResDirInStreamingAssetsPath", get_AssetBundlesResDirInStreamingAssetsPath, null);
+		L.RegVar("AssetBundlesResDirInCacheDir", get_AssetBundlesResDirInCacheDir, null);
+		L.RegVar("ManifestAssetBundlePath", get_ManifestAssetBundlePath, null);
+		L.RegVar("LuaZipFileFullPath", get_LuaZipFileFullPath, null);
+		L.RegVar("LuaDirForBuild", get_LuaDirForBuild, null);
 		L.EndClass();
 	}
 
 	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
-	static int GetInstanceGameOject(IntPtr L)
+	static int PreLoadResources(IntPtr L)
 	{
 		try
 		{
-			ToLua.CheckArgsCount(L, 1);
-			string arg0 = ToLua.CheckString(L, 1);
-			UnityEngine.GameObject o = ResourcesManager.GetInstanceGameOject(arg0);
-			ToLua.PushSealed(L, o);
-			return 1;
+			ToLua.CheckArgsCount(L, 2);
+			ResourcesManager obj = (ResourcesManager)ToLua.CheckObject(L, 1, typeof(ResourcesManager));
+			string arg0 = ToLua.CheckString(L, 2);
+			obj.PreLoadResources(arg0);
+			return 0;
 		}
-		catch (Exception e)
+		catch(Exception e)
 		{
 			return LuaDLL.toluaL_exception(L, e);
 		}
 	}
 
 	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
-	static int MoveStreaming2Cache(IntPtr L)
+	static int AsyncPreLoadResources(IntPtr L)
 	{
 		try
 		{
 			ToLua.CheckArgsCount(L, 2);
 			ResourcesManager obj = (ResourcesManager)ToLua.CheckObject(L, 1, typeof(ResourcesManager));
-			System.Action arg0 = (System.Action)ToLua.CheckDelegate<System.Action>(L, 2);
-			obj.MoveStreaming2Cache(arg0);
+			string arg0 = ToLua.CheckString(L, 2);
+			obj.AsyncPreLoadResources(arg0);
 			return 0;
 		}
-		catch (Exception e)
+		catch(Exception e)
+		{
+			return LuaDLL.toluaL_exception(L, e);
+		}
+	}
+
+	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	static int GetResourcePrefab(IntPtr L)
+	{
+		try
+		{
+			ToLua.CheckArgsCount(L, 2);
+			ResourcesManager obj = (ResourcesManager)ToLua.CheckObject(L, 1, typeof(ResourcesManager));
+			string arg0 = ToLua.CheckString(L, 2);
+			UnityEngine.Object o = obj.GetResourcePrefab(arg0);
+			ToLua.Push(L, o);
+			return 1;
+		}
+		catch(Exception e)
+		{
+			return LuaDLL.toluaL_exception(L, e);
+		}
+	}
+
+	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	static int GetResourceInstance(IntPtr L)
+	{
+		try
+		{
+			ToLua.CheckArgsCount(L, 2);
+			ResourcesManager obj = (ResourcesManager)ToLua.CheckObject(L, 1, typeof(ResourcesManager));
+			string arg0 = ToLua.CheckString(L, 2);
+			UnityEngine.Object o = obj.GetResourceInstance(arg0);
+			ToLua.Push(L, o);
+			return 1;
+		}
+		catch(Exception e)
+		{
+			return LuaDLL.toluaL_exception(L, e);
+		}
+	}
+
+	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	static int GetGameObjectInstance(IntPtr L)
+	{
+		try
+		{
+			ToLua.CheckArgsCount(L, 2);
+			ResourcesManager obj = (ResourcesManager)ToLua.CheckObject(L, 1, typeof(ResourcesManager));
+			string arg0 = ToLua.CheckString(L, 2);
+			UnityEngine.GameObject o = obj.GetGameObjectInstance(arg0);
+			ToLua.Push(L, o);
+			return 1;
+		}
+		catch(Exception e)
+		{
+			return LuaDLL.toluaL_exception(L, e);
+		}
+	}
+
+	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	static int DestroyResourceInstance(IntPtr L)
+	{
+		try
+		{
+			int count = LuaDLL.lua_gettop(L);
+
+			if (count == 2 && TypeChecker.CheckTypes(L, 1, typeof(ResourcesManager), typeof(UnityEngine.Object)))
+			{
+				ResourcesManager obj = (ResourcesManager)ToLua.ToObject(L, 1);
+				UnityEngine.Object arg0 = (UnityEngine.Object)ToLua.ToObject(L, 2);
+				obj.DestroyResourceInstance(arg0);
+				return 0;
+			}
+			else if (count == 3 && TypeChecker.CheckTypes(L, 1, typeof(ResourcesManager), typeof(string), typeof(UnityEngine.Object)))
+			{
+				ResourcesManager obj = (ResourcesManager)ToLua.ToObject(L, 1);
+				string arg0 = ToLua.ToString(L, 2);
+				UnityEngine.Object arg1 = (UnityEngine.Object)ToLua.ToObject(L, 3);
+				obj.DestroyResourceInstance(arg0, arg1);
+				return 0;
+			}
+			else if (count == 4 && TypeChecker.CheckTypes(L, 1, typeof(ResourcesManager), typeof(string), typeof(UnityEngine.Object), typeof(float)))
+			{
+				ResourcesManager obj = (ResourcesManager)ToLua.ToObject(L, 1);
+				string arg0 = ToLua.ToString(L, 2);
+				UnityEngine.Object arg1 = (UnityEngine.Object)ToLua.ToObject(L, 3);
+				float arg2 = (float)LuaDLL.lua_tonumber(L, 4);
+				obj.DestroyResourceInstance(arg0, arg1, arg2);
+				return 0;
+			}
+			else
+			{
+				return LuaDLL.luaL_throw(L, "invalid arguments to method: ResourcesManager.DestroyResourceInstance");
+			}
+		}
+		catch(Exception e)
+		{
+			return LuaDLL.toluaL_exception(L, e);
+		}
+	}
+
+	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	static int GetPlatformDir(IntPtr L)
+	{
+		try
+		{
+			ToLua.CheckArgsCount(L, 0);
+			string o = ResourcesManager.GetPlatformDir();
+			LuaDLL.lua_pushstring(L, o);
+			return 1;
+		}
+		catch(Exception e)
+		{
+			return LuaDLL.toluaL_exception(L, e);
+		}
+	}
+
+	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	static int LoadAssetBundle(IntPtr L)
+	{
+		try
+		{
+			ToLua.CheckArgsCount(L, 4);
+			ResourcesManager obj = (ResourcesManager)ToLua.CheckObject(L, 1, typeof(ResourcesManager));
+			string arg0 = ToLua.CheckString(L, 2);
+			string arg1 = ToLua.CheckString(L, 3);
+			System.Action<UnityEngine.Object> arg2 = null;
+			LuaTypes funcType4 = LuaDLL.lua_type(L, 4);
+
+			if (funcType4 != LuaTypes.LUA_TFUNCTION)
+			{
+				 arg2 = (System.Action<UnityEngine.Object>)ToLua.CheckObject(L, 4, typeof(System.Action<UnityEngine.Object>));
+			}
+			else
+			{
+				LuaFunction func = ToLua.ToLuaFunction(L, 4);
+				arg2 = DelegateFactory.CreateDelegate(typeof(System.Action<UnityEngine.Object>), func) as System.Action<UnityEngine.Object>;
+			}
+
+			obj.LoadAssetBundle(arg0, arg1, arg2);
+			return 0;
+		}
+		catch(Exception e)
+		{
+			return LuaDLL.toluaL_exception(L, e);
+		}
+	}
+
+	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	static int LoadAssetBundleSync(IntPtr L)
+	{
+		try
+		{
+			ToLua.CheckArgsCount(L, 3);
+			ResourcesManager obj = (ResourcesManager)ToLua.CheckObject(L, 1, typeof(ResourcesManager));
+			string arg0 = ToLua.CheckString(L, 2);
+			string arg1 = ToLua.CheckString(L, 3);
+			UnityEngine.Object o = obj.LoadAssetBundleSync(arg0, arg1);
+			ToLua.Push(L, o);
+			return 1;
+		}
+		catch(Exception e)
+		{
+			return LuaDLL.toluaL_exception(L, e);
+		}
+	}
+
+	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	static int FixShader(IntPtr L)
+	{
+		try
+		{
+			int count = LuaDLL.lua_gettop(L);
+
+			if (count == 1 && TypeChecker.CheckTypes(L, 1, typeof(UnityEngine.Object)))
+			{
+				UnityEngine.Object arg0 = (UnityEngine.Object)ToLua.ToObject(L, 1);
+				ResourcesManager.FixShader(arg0);
+				return 0;
+			}
+			else if (count == 1 && TypeChecker.CheckTypes(L, 1, typeof(ResourcesManager.LoadedAssetBundle)))
+			{
+				ResourcesManager.LoadedAssetBundle arg0 = (ResourcesManager.LoadedAssetBundle)ToLua.ToObject(L, 1);
+				ResourcesManager.FixShader(arg0);
+				return 0;
+			}
+			else
+			{
+				return LuaDLL.luaL_throw(L, "invalid arguments to method: ResourcesManager.FixShader");
+			}
+		}
+		catch(Exception e)
+		{
+			return LuaDLL.toluaL_exception(L, e);
+		}
+	}
+
+	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	static int UnloadAsset(IntPtr L)
+	{
+		try
+		{
+			ToLua.CheckArgsCount(L, 2);
+			ResourcesManager obj = (ResourcesManager)ToLua.CheckObject(L, 1, typeof(ResourcesManager));
+			string arg0 = ToLua.CheckString(L, 2);
+			obj.UnloadAsset(arg0);
+			return 0;
+		}
+		catch(Exception e)
+		{
+			return LuaDLL.toluaL_exception(L, e);
+		}
+	}
+
+	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	static int UnloadUnusedAssets(IntPtr L)
+	{
+		try
+		{
+			ToLua.CheckArgsCount(L, 1);
+			ResourcesManager obj = (ResourcesManager)ToLua.CheckObject(L, 1, typeof(ResourcesManager));
+			obj.UnloadUnusedAssets();
+			return 0;
+		}
+		catch(Exception e)
+		{
+			return LuaDLL.toluaL_exception(L, e);
+		}
+	}
+
+	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	static int UnloadAssetBundle(IntPtr L)
+	{
+		try
+		{
+			ToLua.CheckArgsCount(L, 3);
+			ResourcesManager obj = (ResourcesManager)ToLua.CheckObject(L, 1, typeof(ResourcesManager));
+			string arg0 = ToLua.CheckString(L, 2);
+			bool arg1 = LuaDLL.luaL_checkboolean(L, 3);
+			obj.UnloadAssetBundle(arg0, arg1);
+			return 0;
+		}
+		catch(Exception e)
+		{
+			return LuaDLL.toluaL_exception(L, e);
+		}
+	}
+
+	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	static int ForceUnloadAssetBundle(IntPtr L)
+	{
+		try
+		{
+			ToLua.CheckArgsCount(L, 1);
+			ResourcesManager obj = (ResourcesManager)ToLua.CheckObject(L, 1, typeof(ResourcesManager));
+			obj.ForceUnloadAssetBundle();
+			return 0;
+		}
+		catch(Exception e)
+		{
+			return LuaDLL.toluaL_exception(L, e);
+		}
+	}
+
+	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	static int PrintReferencedCountInfo(IntPtr L)
+	{
+		try
+		{
+			ToLua.CheckArgsCount(L, 1);
+			ResourcesManager obj = (ResourcesManager)ToLua.CheckObject(L, 1, typeof(ResourcesManager));
+			obj.PrintReferencedCountInfo();
+			return 0;
+		}
+		catch(Exception e)
+		{
+			return LuaDLL.toluaL_exception(L, e);
+		}
+	}
+
+	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	static int LoadLuaZipFile(IntPtr L)
+	{
+		try
+		{
+			ToLua.CheckArgsCount(L, 3);
+			ResourcesManager obj = (ResourcesManager)ToLua.CheckObject(L, 1, typeof(ResourcesManager));
+			string arg0 = ToLua.CheckString(L, 2);
+			System.Action<bool> arg1 = null;
+			LuaTypes funcType3 = LuaDLL.lua_type(L, 3);
+
+			if (funcType3 != LuaTypes.LUA_TFUNCTION)
+			{
+				 arg1 = (System.Action<bool>)ToLua.CheckObject(L, 3, typeof(System.Action<bool>));
+			}
+			else
+			{
+				LuaFunction func = ToLua.ToLuaFunction(L, 3);
+				arg1 = DelegateFactory.CreateDelegate(typeof(System.Action<bool>), func) as System.Action<bool>;
+			}
+
+			obj.LoadLuaZipFile(arg0, arg1);
+			return 0;
+		}
+		catch(Exception e)
+		{
+			return LuaDLL.toluaL_exception(L, e);
+		}
+	}
+
+	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	static int GetLuaScriptDataFromZip(IntPtr L)
+	{
+		try
+		{
+			ToLua.CheckArgsCount(L, 2);
+			ResourcesManager obj = (ResourcesManager)ToLua.CheckObject(L, 1, typeof(ResourcesManager));
+			string arg0 = ToLua.CheckString(L, 2);
+			byte[] o = obj.GetLuaScriptDataFromZip(arg0);
+			ToLua.Push(L, o);
+			return 1;
+		}
+		catch(Exception e)
+		{
+			return LuaDLL.toluaL_exception(L, e);
+		}
+	}
+
+	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	static int EncryptLuaCode(IntPtr L)
+	{
+		try
+		{
+			int count = LuaDLL.lua_gettop(L);
+
+			if (count == 1 && TypeChecker.CheckTypes(L, 1, typeof(string)))
+			{
+				string arg0 = ToLua.ToString(L, 1);
+				ResourcesManager.EncryptLuaCode(arg0);
+				return 0;
+			}
+			else if (count == 1 && TypeChecker.CheckTypes(L, 1, typeof(byte[])))
+			{
+				byte[] arg0 = ToLua.CheckByteBuffer(L, 1);
+				byte[] o = ResourcesManager.EncryptLuaCode(arg0);
+				ToLua.Push(L, o);
+				return 1;
+			}
+			else
+			{
+				return LuaDLL.luaL_throw(L, "invalid arguments to method: ResourcesManager.EncryptLuaCode");
+			}
+		}
+		catch(Exception e)
+		{
+			return LuaDLL.toluaL_exception(L, e);
+		}
+	}
+
+	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	static int GetLuaZipFileMD5(IntPtr L)
+	{
+		try
+		{
+			ToLua.CheckArgsCount(L, 3);
+			ResourcesManager obj = (ResourcesManager)ToLua.CheckObject(L, 1, typeof(ResourcesManager));
+			string arg0 = ToLua.CheckString(L, 2);
+			System.Action<string> arg1 = null;
+			LuaTypes funcType3 = LuaDLL.lua_type(L, 3);
+
+			if (funcType3 != LuaTypes.LUA_TFUNCTION)
+			{
+				 arg1 = (System.Action<string>)ToLua.CheckObject(L, 3, typeof(System.Action<string>));
+			}
+			else
+			{
+				LuaFunction func = ToLua.ToLuaFunction(L, 3);
+				arg1 = DelegateFactory.CreateDelegate(typeof(System.Action<string>), func) as System.Action<string>;
+			}
+
+			obj.GetLuaZipFileMD5(arg0, arg1);
+			return 0;
+		}
+		catch(Exception e)
+		{
+			return LuaDLL.toluaL_exception(L, e);
+		}
+	}
+
+	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	static int GetMainLuaZipFileMD5(IntPtr L)
+	{
+		try
+		{
+			ToLua.CheckArgsCount(L, 2);
+			ResourcesManager obj = (ResourcesManager)ToLua.CheckObject(L, 1, typeof(ResourcesManager));
+			System.Action<string> arg0 = null;
+			LuaTypes funcType2 = LuaDLL.lua_type(L, 2);
+
+			if (funcType2 != LuaTypes.LUA_TFUNCTION)
+			{
+				 arg0 = (System.Action<string>)ToLua.CheckObject(L, 2, typeof(System.Action<string>));
+			}
+			else
+			{
+				LuaFunction func = ToLua.ToLuaFunction(L, 2);
+				arg0 = DelegateFactory.CreateDelegate(typeof(System.Action<string>), func) as System.Action<string>;
+			}
+
+			obj.GetMainLuaZipFileMD5(arg0);
+			return 0;
+		}
+		catch(Exception e)
+		{
+			return LuaDLL.toluaL_exception(L, e);
+		}
+	}
+
+	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	static int GenerateFileList(IntPtr L)
+	{
+		try
+		{
+			ToLua.CheckArgsCount(L, 1);
+			string arg0 = ToLua.CheckString(L, 1);
+			System.Collections.Generic.List<string> o = ResourcesManager.GenerateFileList(arg0);
+			ToLua.PushObject(L, o);
+			return 1;
+		}
+		catch(Exception e)
+		{
+			return LuaDLL.toluaL_exception(L, e);
+		}
+	}
+
+	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	static int GetFileListXMLString(IntPtr L)
+	{
+		try
+		{
+			ToLua.CheckArgsCount(L, 2);
+			System.Collections.Generic.List<string> arg0 = (System.Collections.Generic.List<string>)ToLua.CheckObject(L, 1, typeof(System.Collections.Generic.List<string>));
+			string arg1 = ToLua.CheckString(L, 2);
+			string o = ResourcesManager.GetFileListXMLString(arg0, arg1);
+			LuaDLL.lua_pushstring(L, o);
+			return 1;
+		}
+		catch(Exception e)
+		{
+			return LuaDLL.toluaL_exception(L, e);
+		}
+	}
+
+	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	static int SaveFileList(IntPtr L)
+	{
+		try
+		{
+			ToLua.CheckArgsCount(L, 0);
+			ResourcesManager.SaveFileList();
+			return 0;
+		}
+		catch(Exception e)
+		{
+			return LuaDLL.toluaL_exception(L, e);
+		}
+	}
+
+	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	static int GetFilePathByFileName(IntPtr L)
+	{
+		try
+		{
+			ToLua.CheckArgsCount(L, 1);
+			string arg0 = ToLua.CheckString(L, 1);
+			string o = ResourcesManager.GetFilePathByFileName(arg0);
+			LuaDLL.lua_pushstring(L, o);
+			return 1;
+		}
+		catch(Exception e)
+		{
+			return LuaDLL.toluaL_exception(L, e);
+		}
+	}
+
+	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	static int Init(IntPtr L)
+	{
+		try
+		{
+			int count = LuaDLL.lua_gettop(L);
+
+			if (count == 1 && TypeChecker.CheckTypes(L, 1, typeof(ResourcesManager)))
+			{
+				ResourcesManager obj = (ResourcesManager)ToLua.ToObject(L, 1);
+				obj.Init();
+				return 0;
+			}
+			else if (count == 2 && TypeChecker.CheckTypes(L, 1, typeof(ResourcesManager), typeof(System.Action<bool>)))
+			{
+				ResourcesManager obj = (ResourcesManager)ToLua.ToObject(L, 1);
+				System.Action<bool> arg0 = null;
+				LuaTypes funcType2 = LuaDLL.lua_type(L, 2);
+
+				if (funcType2 != LuaTypes.LUA_TFUNCTION)
+				{
+					 arg0 = (System.Action<bool>)ToLua.ToObject(L, 2);
+				}
+				else
+				{
+					LuaFunction func = ToLua.ToLuaFunction(L, 2);
+					arg0 = DelegateFactory.CreateDelegate(typeof(System.Action<bool>), func) as System.Action<bool>;
+				}
+
+				obj.Init(arg0);
+				return 0;
+			}
+			else
+			{
+				return LuaDLL.luaL_throw(L, "invalid arguments to method: ResourcesManager.Init");
+			}
+		}
+		catch(Exception e)
+		{
+			return LuaDLL.toluaL_exception(L, e);
+		}
+	}
+
+	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	static int GetPrefabSync(IntPtr L)
+	{
+		try
+		{
+			ToLua.CheckArgsCount(L, 3);
+			ResourcesManager obj = (ResourcesManager)ToLua.CheckObject(L, 1, typeof(ResourcesManager));
+			string arg0 = ToLua.CheckString(L, 2);
+			string arg1 = ToLua.CheckString(L, 3);
+			UnityEngine.Object o = obj.GetPrefabSync(arg0, arg1);
+			ToLua.Push(L, o);
+			return 1;
+		}
+		catch(Exception e)
+		{
+			return LuaDLL.toluaL_exception(L, e);
+		}
+	}
+
+	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	static int GetPrefab(IntPtr L)
+	{
+		try
+		{
+			ToLua.CheckArgsCount(L, 4);
+			ResourcesManager obj = (ResourcesManager)ToLua.CheckObject(L, 1, typeof(ResourcesManager));
+			string arg0 = ToLua.CheckString(L, 2);
+			string arg1 = ToLua.CheckString(L, 3);
+			System.Action<UnityEngine.Object> arg2 = null;
+			LuaTypes funcType4 = LuaDLL.lua_type(L, 4);
+
+			if (funcType4 != LuaTypes.LUA_TFUNCTION)
+			{
+				 arg2 = (System.Action<UnityEngine.Object>)ToLua.CheckObject(L, 4, typeof(System.Action<UnityEngine.Object>));
+			}
+			else
+			{
+				LuaFunction func = ToLua.ToLuaFunction(L, 4);
+				arg2 = DelegateFactory.CreateDelegate(typeof(System.Action<UnityEngine.Object>), func) as System.Action<UnityEngine.Object>;
+			}
+
+			obj.GetPrefab(arg0, arg1, arg2);
+			return 0;
+		}
+		catch(Exception e)
+		{
+			return LuaDLL.toluaL_exception(L, e);
+		}
+	}
+
+	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	static int GetInstanceSync(IntPtr L)
+	{
+		try
+		{
+			ToLua.CheckArgsCount(L, 4);
+			ResourcesManager obj = (ResourcesManager)ToLua.CheckObject(L, 1, typeof(ResourcesManager));
+			string arg0 = ToLua.CheckString(L, 2);
+			string arg1 = ToLua.CheckString(L, 3);
+			System.Action<UnityEngine.Object> arg2 = null;
+			LuaTypes funcType4 = LuaDLL.lua_type(L, 4);
+
+			if (funcType4 != LuaTypes.LUA_TFUNCTION)
+			{
+				 arg2 = (System.Action<UnityEngine.Object>)ToLua.CheckObject(L, 4, typeof(System.Action<UnityEngine.Object>));
+			}
+			else
+			{
+				LuaFunction func = ToLua.ToLuaFunction(L, 4);
+				arg2 = DelegateFactory.CreateDelegate(typeof(System.Action<UnityEngine.Object>), func) as System.Action<UnityEngine.Object>;
+			}
+
+			UnityEngine.Object o = obj.GetInstanceSync(arg0, arg1, arg2);
+			ToLua.Push(L, o);
+			return 1;
+		}
+		catch(Exception e)
+		{
+			return LuaDLL.toluaL_exception(L, e);
+		}
+	}
+
+	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	static int GetInstance(IntPtr L)
+	{
+		try
+		{
+			ToLua.CheckArgsCount(L, 4);
+			ResourcesManager obj = (ResourcesManager)ToLua.CheckObject(L, 1, typeof(ResourcesManager));
+			string arg0 = ToLua.CheckString(L, 2);
+			string arg1 = ToLua.CheckString(L, 3);
+			System.Action<UnityEngine.Object> arg2 = null;
+			LuaTypes funcType4 = LuaDLL.lua_type(L, 4);
+
+			if (funcType4 != LuaTypes.LUA_TFUNCTION)
+			{
+				 arg2 = (System.Action<UnityEngine.Object>)ToLua.CheckObject(L, 4, typeof(System.Action<UnityEngine.Object>));
+			}
+			else
+			{
+				LuaFunction func = ToLua.ToLuaFunction(L, 4);
+				arg2 = DelegateFactory.CreateDelegate(typeof(System.Action<UnityEngine.Object>), func) as System.Action<UnityEngine.Object>;
+			}
+
+			obj.GetInstance(arg0, arg1, arg2);
+			return 0;
+		}
+		catch(Exception e)
+		{
+			return LuaDLL.toluaL_exception(L, e);
+		}
+	}
+
+	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	static int ReleasePrefab(IntPtr L)
+	{
+		try
+		{
+			ToLua.CheckArgsCount(L, 2);
+			ResourcesManager obj = (ResourcesManager)ToLua.CheckObject(L, 1, typeof(ResourcesManager));
+			string arg0 = ToLua.CheckString(L, 2);
+			obj.ReleasePrefab(arg0);
+			return 0;
+		}
+		catch(Exception e)
+		{
+			return LuaDLL.toluaL_exception(L, e);
+		}
+	}
+
+	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	static int ReleaseInstance(IntPtr L)
+	{
+		try
+		{
+			ToLua.CheckArgsCount(L, 2);
+			ResourcesManager obj = (ResourcesManager)ToLua.CheckObject(L, 1, typeof(ResourcesManager));
+			UnityEngine.Object arg0 = (UnityEngine.Object)ToLua.CheckUnityObject(L, 2, typeof(UnityEngine.Object));
+			obj.ReleaseInstance(arg0);
+			return 0;
+		}
+		catch(Exception e)
+		{
+			return LuaDLL.toluaL_exception(L, e);
+		}
+	}
+
+	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	static int GetUIPrefabSync(IntPtr L)
+	{
+		try
+		{
+			ToLua.CheckArgsCount(L, 3);
+			ResourcesManager obj = (ResourcesManager)ToLua.CheckObject(L, 1, typeof(ResourcesManager));
+			string arg0 = ToLua.CheckString(L, 2);
+			string arg1 = ToLua.CheckString(L, 3);
+			UnityEngine.Object o = obj.GetUIPrefabSync(arg0, arg1);
+			ToLua.Push(L, o);
+			return 1;
+		}
+		catch(Exception e)
+		{
+			return LuaDLL.toluaL_exception(L, e);
+		}
+	}
+
+	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	static int GetUIPrefab(IntPtr L)
+	{
+		try
+		{
+			ToLua.CheckArgsCount(L, 4);
+			ResourcesManager obj = (ResourcesManager)ToLua.CheckObject(L, 1, typeof(ResourcesManager));
+			string arg0 = ToLua.CheckString(L, 2);
+			string arg1 = ToLua.CheckString(L, 3);
+			System.Action<UnityEngine.Object> arg2 = null;
+			LuaTypes funcType4 = LuaDLL.lua_type(L, 4);
+
+			if (funcType4 != LuaTypes.LUA_TFUNCTION)
+			{
+				 arg2 = (System.Action<UnityEngine.Object>)ToLua.CheckObject(L, 4, typeof(System.Action<UnityEngine.Object>));
+			}
+			else
+			{
+				LuaFunction func = ToLua.ToLuaFunction(L, 4);
+				arg2 = DelegateFactory.CreateDelegate(typeof(System.Action<UnityEngine.Object>), func) as System.Action<UnityEngine.Object>;
+			}
+
+			obj.GetUIPrefab(arg0, arg1, arg2);
+			return 0;
+		}
+		catch(Exception e)
+		{
+			return LuaDLL.toluaL_exception(L, e);
+		}
+	}
+
+	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	static int GetUIInstance(IntPtr L)
+	{
+		try
+		{
+			ToLua.CheckArgsCount(L, 4);
+			ResourcesManager obj = (ResourcesManager)ToLua.CheckObject(L, 1, typeof(ResourcesManager));
+			string arg0 = ToLua.CheckString(L, 2);
+			string arg1 = ToLua.CheckString(L, 3);
+			System.Action<UnityEngine.Object> arg2 = null;
+			LuaTypes funcType4 = LuaDLL.lua_type(L, 4);
+
+			if (funcType4 != LuaTypes.LUA_TFUNCTION)
+			{
+				 arg2 = (System.Action<UnityEngine.Object>)ToLua.CheckObject(L, 4, typeof(System.Action<UnityEngine.Object>));
+			}
+			else
+			{
+				LuaFunction func = ToLua.ToLuaFunction(L, 4);
+				arg2 = DelegateFactory.CreateDelegate(typeof(System.Action<UnityEngine.Object>), func) as System.Action<UnityEngine.Object>;
+			}
+
+			obj.GetUIInstance(arg0, arg1, arg2);
+			return 0;
+		}
+		catch(Exception e)
+		{
+			return LuaDLL.toluaL_exception(L, e);
+		}
+	}
+
+	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	static int GetUIInstanceSync(IntPtr L)
+	{
+		try
+		{
+			ToLua.CheckArgsCount(L, 3);
+			ResourcesManager obj = (ResourcesManager)ToLua.CheckObject(L, 1, typeof(ResourcesManager));
+			string arg0 = ToLua.CheckString(L, 2);
+			string arg1 = ToLua.CheckString(L, 3);
+			UnityEngine.Object o = obj.GetUIInstanceSync(arg0, arg1);
+			ToLua.Push(L, o);
+			return 1;
+		}
+		catch(Exception e)
+		{
+			return LuaDLL.toluaL_exception(L, e);
+		}
+	}
+
+	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	static int ReleaseUIPrefab(IntPtr L)
+	{
+		try
+		{
+			ToLua.CheckArgsCount(L, 2);
+			ResourcesManager obj = (ResourcesManager)ToLua.CheckObject(L, 1, typeof(ResourcesManager));
+			string arg0 = ToLua.CheckString(L, 2);
+			obj.ReleaseUIPrefab(arg0);
+			return 0;
+		}
+		catch(Exception e)
+		{
+			return LuaDLL.toluaL_exception(L, e);
+		}
+	}
+
+	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	static int ReleaseUIInstance(IntPtr L)
+	{
+		try
+		{
+			ToLua.CheckArgsCount(L, 2);
+			ResourcesManager obj = (ResourcesManager)ToLua.CheckObject(L, 1, typeof(ResourcesManager));
+			UnityEngine.Object arg0 = (UnityEngine.Object)ToLua.CheckUnityObject(L, 2, typeof(UnityEngine.Object));
+			obj.ReleaseUIInstance(arg0);
+			return 0;
+		}
+		catch(Exception e)
+		{
+			return LuaDLL.toluaL_exception(L, e);
+		}
+	}
+
+	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	static int op_Equality(IntPtr L)
+	{
+		try
+		{
+			ToLua.CheckArgsCount(L, 2);
+			UnityEngine.Object arg0 = (UnityEngine.Object)ToLua.ToObject(L, 1);
+			UnityEngine.Object arg1 = (UnityEngine.Object)ToLua.ToObject(L, 2);
+			bool o = arg0 == arg1;
+			LuaDLL.lua_pushboolean(L, o);
+			return 1;
+		}
+		catch(Exception e)
+		{
+			return LuaDLL.toluaL_exception(L, e);
+		}
+	}
+
+	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	static int get_DirNameForAssetBundlesBuildFrom(IntPtr L)
+	{
+		try
+		{
+			LuaDLL.lua_pushstring(L, ResourcesManager.DirNameForAssetBundlesBuildFrom);
+			return 1;
+		}
+		catch(Exception e)
+		{
+			return LuaDLL.toluaL_exception(L, e);
+		}
+	}
+
+	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	static int get_mAssetBundleSuffix(IntPtr L)
+	{
+		try
+		{
+			LuaDLL.lua_pushstring(L, ResourcesManager.mAssetBundleSuffix);
+			return 1;
+		}
+		catch(Exception e)
+		{
+			return LuaDLL.toluaL_exception(L, e);
+		}
+	}
+
+	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	static int get_IsFixShader(IntPtr L)
+	{
+		try
+		{
+			LuaDLL.lua_pushboolean(L, ResourcesManager.IsFixShader);
+			return 1;
+		}
+		catch(Exception e)
+		{
+			return LuaDLL.toluaL_exception(L, e);
+		}
+	}
+
+	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	static int get_m_DictShader(IntPtr L)
+	{
+		try
+		{
+			ToLua.PushObject(L, ResourcesManager.m_DictShader);
+			return 1;
+		}
+		catch(Exception e)
+		{
+			return LuaDLL.toluaL_exception(L, e);
+		}
+	}
+
+	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	static int get_IsReleaseAssetBundleImmediately(IntPtr L)
+	{
+		try
+		{
+			LuaDLL.lua_pushboolean(L, ResourcesManager.IsReleaseAssetBundleImmediately);
+			return 1;
+		}
+		catch(Exception e)
+		{
+			return LuaDLL.toluaL_exception(L, e);
+		}
+	}
+
+	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	static int get_LuaZipFileName(IntPtr L)
+	{
+		try
+		{
+			LuaDLL.lua_pushstring(L, ResourcesManager.LuaZipFileName);
+			return 1;
+		}
+		catch(Exception e)
+		{
+			return LuaDLL.toluaL_exception(L, e);
+		}
+	}
+
+	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	static int get_FileListConfigFileName(IntPtr L)
+	{
+		try
+		{
+			LuaDLL.lua_pushstring(L, ResourcesManager.FileListConfigFileName);
+			return 1;
+		}
+		catch(Exception e)
+		{
+			return LuaDLL.toluaL_exception(L, e);
+		}
+	}
+
+	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	static int get_ResourcesRoot(IntPtr L)
+	{
+		object o = null;
+
+		try
+		{
+			o = ToLua.ToObject(L, 1);
+			ResourcesManager obj = (ResourcesManager)o;
+			UnityEngine.Transform ret = obj.ResourcesRoot;
+			ToLua.Push(L, ret);
+			return 1;
+		}
+		catch(Exception e)
+		{
+			return LuaDLL.toluaL_exception(L, e, o == null ? "attempt to index ResourcesRoot on a nil value" : e.Message);
+		}
+	}
+
+	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	static int get_IsUseAssetBundle(IntPtr L)
+	{
+		try
+		{
+			LuaDLL.lua_pushboolean(L, ResourcesManager.IsUseAssetBundle);
+			return 1;
+		}
+		catch(Exception e)
+		{
+			return LuaDLL.toluaL_exception(L, e);
+		}
+	}
+
+	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	static int get_IsLuaUseZip(IntPtr L)
+	{
+		try
+		{
+			LuaDLL.lua_pushboolean(L, ResourcesManager.IsLuaUseZip);
+			return 1;
+		}
+		catch(Exception e)
+		{
+			return LuaDLL.toluaL_exception(L, e);
+		}
+	}
+
+	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	static int get_WorkDirInProject(IntPtr L)
+	{
+		try
+		{
+			LuaDLL.lua_pushstring(L, ResourcesManager.WorkDirInProject);
+			return 1;
+		}
+		catch(Exception e)
+		{
+			return LuaDLL.toluaL_exception(L, e);
+		}
+	}
+
+	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	static int get_DirForAssetBundlesBuildFrom(IntPtr L)
+	{
+		try
+		{
+			LuaDLL.lua_pushstring(L, ResourcesManager.DirForAssetBundlesBuildFrom);
+			return 1;
+		}
+		catch(Exception e)
+		{
+			return LuaDLL.toluaL_exception(L, e);
+		}
+	}
+
+	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	static int get_AssetBundlesResDirInStreamingAssetsPath(IntPtr L)
+	{
+		try
+		{
+			LuaDLL.lua_pushstring(L, ResourcesManager.AssetBundlesResDirInStreamingAssetsPath);
+			return 1;
+		}
+		catch(Exception e)
+		{
+			return LuaDLL.toluaL_exception(L, e);
+		}
+	}
+
+	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	static int get_AssetBundlesResDirInCacheDir(IntPtr L)
+	{
+		try
+		{
+			LuaDLL.lua_pushstring(L, ResourcesManager.AssetBundlesResDirInCacheDir);
+			return 1;
+		}
+		catch(Exception e)
+		{
+			return LuaDLL.toluaL_exception(L, e);
+		}
+	}
+
+	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	static int get_ManifestAssetBundlePath(IntPtr L)
+	{
+		try
+		{
+			LuaDLL.lua_pushstring(L, ResourcesManager.ManifestAssetBundlePath);
+			return 1;
+		}
+		catch(Exception e)
+		{
+			return LuaDLL.toluaL_exception(L, e);
+		}
+	}
+
+	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	static int get_LuaZipFileFullPath(IntPtr L)
+	{
+		try
+		{
+			LuaDLL.lua_pushstring(L, ResourcesManager.LuaZipFileFullPath);
+			return 1;
+		}
+		catch(Exception e)
+		{
+			return LuaDLL.toluaL_exception(L, e);
+		}
+	}
+
+	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	static int get_LuaDirForBuild(IntPtr L)
+	{
+		try
+		{
+			LuaDLL.lua_pushstring(L, ResourcesManager.LuaDirForBuild);
+			return 1;
+		}
+		catch(Exception e)
+		{
+			return LuaDLL.toluaL_exception(L, e);
+		}
+	}
+
+	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	static int set_IsFixShader(IntPtr L)
+	{
+		try
+		{
+			bool arg0 = LuaDLL.luaL_checkboolean(L, 2);
+			ResourcesManager.IsFixShader = arg0;
+			return 0;
+		}
+		catch(Exception e)
+		{
+			return LuaDLL.toluaL_exception(L, e);
+		}
+	}
+
+	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	static int set_m_DictShader(IntPtr L)
+	{
+		try
+		{
+			System.Collections.Generic.Dictionary<string,UnityEngine.Shader> arg0 = (System.Collections.Generic.Dictionary<string,UnityEngine.Shader>)ToLua.CheckObject(L, 2, typeof(System.Collections.Generic.Dictionary<string,UnityEngine.Shader>));
+			ResourcesManager.m_DictShader = arg0;
+			return 0;
+		}
+		catch(Exception e)
+		{
+			return LuaDLL.toluaL_exception(L, e);
+		}
+	}
+
+	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	static int set_IsReleaseAssetBundleImmediately(IntPtr L)
+	{
+		try
+		{
+			bool arg0 = LuaDLL.luaL_checkboolean(L, 2);
+			ResourcesManager.IsReleaseAssetBundleImmediately = arg0;
+			return 0;
+		}
+		catch(Exception e)
+		{
+			return LuaDLL.toluaL_exception(L, e);
+		}
+	}
+
+	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	static int set_FileListConfigFileName(IntPtr L)
+	{
+		try
+		{
+			string arg0 = ToLua.CheckString(L, 2);
+			ResourcesManager.FileListConfigFileName = arg0;
+			return 0;
+		}
+		catch(Exception e)
 		{
 			return LuaDLL.toluaL_exception(L, e);
 		}

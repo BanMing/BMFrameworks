@@ -5,6 +5,8 @@ using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
 using ICSharpCode.SharpZipLib.Zip;
+using zlib;
+using LuaInterface;
 using System.Text;
 
 public static class ZIPTool
@@ -255,6 +257,67 @@ public static class ZIPTool
         return result.ToArray();
     }
     
+    public static void ZLib_CopyStream(Stream input, Stream output)
+    {
+        byte[] buffer = new byte[2000];
+        int len;
+        while ((len = input.Read(buffer, 0, 2000)) > 0)
+        {
+            output.Write(buffer, 0, len);
+        }
+        output.Flush();
+    }
+
+    public static byte[] ZLib_Decompress(byte[] inBuffer)
+    {
+        var inStream = new MemoryStream(inBuffer);
+        var outStream = new MemoryStream();
+        ZOutputStream zOutStream = new ZOutputStream(outStream);
+       
+        try
+        {
+            ZLib_CopyStream(inStream, zOutStream);
+
+            return outStream.ToArray();
+        }
+        catch (Exception e)
+        {
+            Debug.LogError(e);
+        }
+        finally
+        {
+            inStream.Close();
+            zOutStream.Close();
+            outStream.Close();
+        }
+        return null;
+    }
+
+    public static byte[] ZLib_Compress(byte[] inBuffer)
+    {
+        var inStream = new MemoryStream(inBuffer);
+        var outStream = new MemoryStream();
+        ZOutputStream zOutStream = new ZOutputStream(outStream, zlibConst.Z_DEFAULT_COMPRESSION);
+
+        try
+        {
+            ZLib_CopyStream(inStream, zOutStream);
+
+            return outStream.ToArray();
+        }
+        catch (Exception e)
+        {
+            Debug.LogError(e);
+        }
+        finally
+        {
+            inStream.Close();
+            zOutStream.Close();
+            outStream.Close();
+        }
+        return null;
+    }
+
     /// <summary>
     /// Unpacks the files.
     /// </summary>

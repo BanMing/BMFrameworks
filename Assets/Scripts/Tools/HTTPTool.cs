@@ -1,3 +1,15 @@
+﻿/******************************************************************
+** 文件名:	
+** 版  权:  (C)  
+** 创建人:  Liange
+** 日  期:  2016/09/13
+** 描  述: 	
+
+**************************** 修改记录 ******************************
+** 修改人: 
+** 日  期: 
+** 描  述: 
+*******************************************************************/
 
 using UnityEngine;
 using UnityEngine.UI;
@@ -8,12 +20,12 @@ public class HTTPTool
 {
     static public void GetTexture(string url, System.Action<UnityEngine.Texture> onLoad)
     {
-        GameCenter.Instance.StartCoroutine(GetTextureImp(url, onLoad));
+        ScriptThread.Instance.StartCoroutine(GetTextureImp(url, onLoad));
     }
 
     static public void GetSprite(string url, System.Action<Sprite> onLoad)
     {
-		GameCenter.Instance.StartCoroutine(GetSpriteImp(url, onLoad));
+		ScriptThread.Instance.StartCoroutine(GetSpriteImp(url, onLoad));
     }
 
     static private IEnumerator GetTextureImp(string url, System.Action<UnityEngine.Texture> onLoad)
@@ -73,7 +85,7 @@ public class HTTPTool
 
     static public void GetText(string url, System.Action<string> onLoad)
     {
-        GameCenter.Instance.StartCoroutine(GetTextImp(url, onLoad));
+        ScriptThread.Instance.StartCoroutine(GetTextImp(url, onLoad));
     }
 
     static private IEnumerator GetTextImp(string url, System.Action<string> onLoad)
@@ -104,7 +116,7 @@ public class HTTPTool
 
     static public void GetBytes(string url, System.Action<byte[]> onLoad)
     {
-        GameCenter.Instance.StartCoroutine(GetBytesImp(url, onLoad));
+        ScriptThread.Instance.StartCoroutine(GetBytesImp(url, onLoad));
     }
 
     static private IEnumerator GetBytesImp(string url, System.Action<byte[]> onLoad)
