@@ -215,7 +215,7 @@ public class HTTPToolWrap
 			ToLua.CheckArgsCount(L, 1);
 			string arg0 = ToLua.CheckString(L, 1);
 			UnityEngine.WWW o = HTTPTool.GetWWW(arg0);
-			ToLua.PushObject(L, o);
+			ToLua.Push(L, o);
 			return 1;
 		}
 		catch(Exception e)

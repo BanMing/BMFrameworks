@@ -290,11 +290,11 @@ namespace LuaInterface
 
             if (zipFile != null)
             {
-#if UNITY_5
+// #if UNITY_5
                 TextAsset luaCode = zipFile.LoadAsset<TextAsset>(fileName);
-#else
-                TextAsset luaCode = zipFile.Load(fileName, typeof(TextAsset)) as TextAsset;
-#endif
+// #else
+                // TextAsset luaCode = zipFile.Load(fileName, typeof(TextAsset)) as TextAsset;
+// #endif
 
                 if (luaCode != null)
                 {

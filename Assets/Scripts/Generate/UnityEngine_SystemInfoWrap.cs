@@ -8,6 +8,7 @@ public class UnityEngine_SystemInfoWrap
 	{
 		L.BeginClass(typeof(UnityEngine.SystemInfo), typeof(System.Object));
 		L.RegFunction("SupportsRenderTextureFormat", SupportsRenderTextureFormat);
+		L.RegFunction("SupportsBlendingOnRenderTextureFormat", SupportsBlendingOnRenderTextureFormat);
 		L.RegFunction("SupportsTextureFormat", SupportsTextureFormat);
 		L.RegFunction("New", _CreateUnityEngine_SystemInfo);
 		L.RegFunction("__tostring", ToLua.op_ToString);
@@ -44,6 +45,8 @@ public class UnityEngine_SystemInfoWrap
 		L.RegVar("supportsInstancing", get_supportsInstancing, null);
 		L.RegVar("supportsSparseTextures", get_supportsSparseTextures, null);
 		L.RegVar("supportedRenderTargetCount", get_supportedRenderTargetCount, null);
+		L.RegVar("supportsMultisampledTextures", get_supportsMultisampledTextures, null);
+		L.RegVar("supportsTextureWrapMirrorOnce", get_supportsTextureWrapMirrorOnce, null);
 		L.RegVar("usesReversedZBuffer", get_usesReversedZBuffer, null);
 		L.RegVar("npotSupport", get_npotSupport, null);
 		L.RegVar("deviceUniqueIdentifier", get_deviceUniqueIdentifier, null);
@@ -57,6 +60,8 @@ public class UnityEngine_SystemInfoWrap
 		L.RegVar("deviceType", get_deviceType, null);
 		L.RegVar("maxTextureSize", get_maxTextureSize, null);
 		L.RegVar("maxCubemapSize", get_maxCubemapSize, null);
+		L.RegVar("supportsAsyncCompute", get_supportsAsyncCompute, null);
+		L.RegVar("supportsGPUFence", get_supportsGPUFence, null);
 		L.EndClass();
 	}
 
@@ -92,6 +97,23 @@ public class UnityEngine_SystemInfoWrap
 			ToLua.CheckArgsCount(L, 1);
 			UnityEngine.RenderTextureFormat arg0 = (UnityEngine.RenderTextureFormat)ToLua.CheckObject(L, 1, typeof(UnityEngine.RenderTextureFormat));
 			bool o = UnityEngine.SystemInfo.SupportsRenderTextureFormat(arg0);
+			LuaDLL.lua_pushboolean(L, o);
+			return 1;
+		}
+		catch(Exception e)
+		{
+			return LuaDLL.toluaL_exception(L, e);
+		}
+	}
+
+	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	static int SupportsBlendingOnRenderTextureFormat(IntPtr L)
+	{
+		try
+		{
+			ToLua.CheckArgsCount(L, 1);
+			UnityEngine.RenderTextureFormat arg0 = (UnityEngine.RenderTextureFormat)ToLua.CheckObject(L, 1, typeof(UnityEngine.RenderTextureFormat));
+			bool o = UnityEngine.SystemInfo.SupportsBlendingOnRenderTextureFormat(arg0);
 			LuaDLL.lua_pushboolean(L, o);
 			return 1;
 		}
@@ -581,6 +603,34 @@ public class UnityEngine_SystemInfoWrap
 	}
 
 	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	static int get_supportsMultisampledTextures(IntPtr L)
+	{
+		try
+		{
+			LuaDLL.lua_pushinteger(L, UnityEngine.SystemInfo.supportsMultisampledTextures);
+			return 1;
+		}
+		catch(Exception e)
+		{
+			return LuaDLL.toluaL_exception(L, e);
+		}
+	}
+
+	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	static int get_supportsTextureWrapMirrorOnce(IntPtr L)
+	{
+		try
+		{
+			LuaDLL.lua_pushinteger(L, UnityEngine.SystemInfo.supportsTextureWrapMirrorOnce);
+			return 1;
+		}
+		catch(Exception e)
+		{
+			return LuaDLL.toluaL_exception(L, e);
+		}
+	}
+
+	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
 	static int get_usesReversedZBuffer(IntPtr L)
 	{
 		try
@@ -754,6 +804,34 @@ public class UnityEngine_SystemInfoWrap
 		try
 		{
 			LuaDLL.lua_pushinteger(L, UnityEngine.SystemInfo.maxCubemapSize);
+			return 1;
+		}
+		catch(Exception e)
+		{
+			return LuaDLL.toluaL_exception(L, e);
+		}
+	}
+
+	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	static int get_supportsAsyncCompute(IntPtr L)
+	{
+		try
+		{
+			LuaDLL.lua_pushboolean(L, UnityEngine.SystemInfo.supportsAsyncCompute);
+			return 1;
+		}
+		catch(Exception e)
+		{
+			return LuaDLL.toluaL_exception(L, e);
+		}
+	}
+
+	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	static int get_supportsGPUFence(IntPtr L)
+	{
+		try
+		{
+			LuaDLL.lua_pushboolean(L, UnityEngine.SystemInfo.supportsGPUFence);
 			return 1;
 		}
 		catch(Exception e)

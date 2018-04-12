@@ -853,14 +853,14 @@ public class MyUnityEditorTool : MonoBehaviour
                 return "Android";
             case UnityEditor.BuildTarget.iOS:
                 return "IOS";
-            case UnityEditor.BuildTarget.WebPlayer:
+            case UnityEditor.BuildTarget.WebGL:
                 return "WebPlayer";
             case UnityEditor.BuildTarget.StandaloneWindows:
             case UnityEditor.BuildTarget.StandaloneWindows64:
                 return "Windows";
             case UnityEditor.BuildTarget.StandaloneOSXIntel:
             case UnityEditor.BuildTarget.StandaloneOSXIntel64:
-            case UnityEditor.BuildTarget.StandaloneOSXUniversal:
+            case UnityEditor.BuildTarget.StandaloneOSX:
                 return "OSX";
             // Add more build targets for your own.
             // If you add more targets, don't forget to add the same platforms to GetPlatformFolderForAssetBundles(RuntimePlatform) function.

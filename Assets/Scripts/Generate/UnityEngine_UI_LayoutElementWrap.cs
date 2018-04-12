@@ -18,7 +18,7 @@ public class UnityEngine_UI_LayoutElementWrap
 		L.RegVar("preferredHeight", get_preferredHeight, set_preferredHeight);
 		L.RegVar("flexibleWidth", get_flexibleWidth, set_flexibleWidth);
 		L.RegVar("flexibleHeight", get_flexibleHeight, set_flexibleHeight);
-		L.RegVar("layoutPriority", get_layoutPriority, null);
+		L.RegVar("layoutPriority", get_layoutPriority, set_layoutPriority);
 		L.EndClass();
 	}
 
@@ -354,6 +354,25 @@ public class UnityEngine_UI_LayoutElementWrap
 		catch(Exception e)
 		{
 			return LuaDLL.toluaL_exception(L, e, o == null ? "attempt to index flexibleHeight on a nil value" : e.Message);
+		}
+	}
+
+	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	static int set_layoutPriority(IntPtr L)
+	{
+		object o = null;
+
+		try
+		{
+			o = ToLua.ToObject(L, 1);
+			UnityEngine.UI.LayoutElement obj = (UnityEngine.UI.LayoutElement)o;
+			int arg0 = (int)LuaDLL.luaL_checknumber(L, 2);
+			obj.layoutPriority = arg0;
+			return 0;
+		}
+		catch(Exception e)
+		{
+			return LuaDLL.toluaL_exception(L, e, o == null ? "attempt to index layoutPriority on a nil value" : e.Message);
 		}
 	}
 }

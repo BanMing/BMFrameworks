@@ -72,6 +72,7 @@ public static class DelegateFactory
 		dict.Add(typeof(UnityEngine.Application.LogCallback), UnityEngine_Application_LogCallback);
 		dict.Add(typeof(UnityEngine.AudioClip.PCMReaderCallback), UnityEngine_AudioClip_PCMReaderCallback);
 		dict.Add(typeof(UnityEngine.AudioClip.PCMSetPositionCallback), UnityEngine_AudioClip_PCMSetPositionCallback);
+		dict.Add(typeof(System.Action<UnityEngine.AsyncOperation>), System_Action_UnityEngine_AsyncOperation);
 		dict.Add(typeof(UnityEngine.Events.UnityAction<bool>), UnityEngine_Events_UnityAction_bool);
 		dict.Add(typeof(System.Action<UnityEngine.Transform,int>), System_Action_UnityEngine_Transform_int);
 		dict.Add(typeof(UnityEngine.Events.UnityAction<float>), UnityEngine_Events_UnityAction_float);
@@ -2576,6 +2577,49 @@ public static class DelegateFactory
 		else
 		{
 			UnityEngine.AudioClip.PCMSetPositionCallback d = (new UnityEngine_AudioClip_PCMSetPositionCallback_Event(func, self)).CallWithSelf;
+			return d;
+		}
+	}
+
+	class System_Action_UnityEngine_AsyncOperation_Event : LuaDelegate
+	{
+		public System_Action_UnityEngine_AsyncOperation_Event(LuaFunction func) : base(func) { }
+		public System_Action_UnityEngine_AsyncOperation_Event(LuaFunction func, LuaTable self) : base(func, self) { }
+
+		public void Call(UnityEngine.AsyncOperation param0)
+		{
+			func.BeginPCall();
+			func.PushObject(param0);
+			func.PCall();
+			func.EndPCall();
+		}
+
+		public void CallWithSelf(UnityEngine.AsyncOperation param0)
+		{
+			func.BeginPCall();
+			func.Push(self);
+			func.PushObject(param0);
+			func.PCall();
+			func.EndPCall();
+		}
+	}
+
+	public static Delegate System_Action_UnityEngine_AsyncOperation(LuaFunction func, LuaTable self, bool flag)
+	{
+		if (func == null)
+		{
+			System.Action<UnityEngine.AsyncOperation> fn = delegate(UnityEngine.AsyncOperation param0) { };
+			return fn;
+		}
+
+		if(!flag)
+		{
+			System.Action<UnityEngine.AsyncOperation> d = (new System_Action_UnityEngine_AsyncOperation_Event(func)).Call;
+			return d;
+		}
+		else
+		{
+			System.Action<UnityEngine.AsyncOperation> d = (new System_Action_UnityEngine_AsyncOperation_Event(func, self)).CallWithSelf;
 			return d;
 		}
 	}

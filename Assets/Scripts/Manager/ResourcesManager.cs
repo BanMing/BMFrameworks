@@ -394,14 +394,14 @@ public class ResourcesManager : SingletonMonoBehaviour<ResourcesManager>
                 return "Android";
             case UnityEditor.BuildTarget.iOS:
                 return "IOS";
-            case UnityEditor.BuildTarget.WebPlayer:
-                return "WebPlayer";
+            // case UnityEditor.BuildTarget.WebPlayer:
+            //     return "WebPlayer";
             case UnityEditor.BuildTarget.StandaloneWindows:
             case UnityEditor.BuildTarget.StandaloneWindows64:
                 return "Windows";
             case UnityEditor.BuildTarget.StandaloneOSXIntel:
             case UnityEditor.BuildTarget.StandaloneOSXIntel64:
-            case UnityEditor.BuildTarget.StandaloneOSXUniversal:
+            case UnityEditor.BuildTarget.StandaloneOSX:
                 return "OSX";
             // Add more build targets for your own.
             // If you add more targets, don't forget to add the same platforms to GetPlatformFolderForAssetBundles(RuntimePlatform) function.
@@ -420,9 +420,9 @@ public class ResourcesManager : SingletonMonoBehaviour<ResourcesManager>
                 return "Android";
             case RuntimePlatform.IPhonePlayer:
                 return "IOS";
-            case RuntimePlatform.WindowsWebPlayer:
-            case RuntimePlatform.OSXWebPlayer:
-                return "WebPlayer";
+            // case RuntimePlatform.WindowsWebPlayer:
+            // case RuntimePlatform.OSXWebPlayer:
+            //     return "WebPlayer";
             case RuntimePlatform.WindowsPlayer:
             case RuntimePlatform.WindowsEditor:
                 return "Windows";

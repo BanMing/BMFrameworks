@@ -24,6 +24,8 @@ public class UnityEngine_AudioSourceWrap
 		L.RegFunction("GetSpectrumData", GetSpectrumData);
 		L.RegFunction("SetSpatializerFloat", SetSpatializerFloat);
 		L.RegFunction("GetSpatializerFloat", GetSpatializerFloat);
+		L.RegFunction("SetAmbisonicDecoderFloat", SetAmbisonicDecoderFloat);
+		L.RegFunction("GetAmbisonicDecoderFloat", GetAmbisonicDecoderFloat);
 		L.RegFunction("DOPitch", DOPitch);
 		L.RegFunction("DOFade", DOFade);
 		L.RegFunction("New", _CreateUnityEngine_AudioSource);
@@ -399,6 +401,45 @@ public class UnityEngine_AudioSourceWrap
 			int arg0 = (int)LuaDLL.luaL_checknumber(L, 2);
 			float arg1;
 			bool o = obj.GetSpatializerFloat(arg0, out arg1);
+			LuaDLL.lua_pushboolean(L, o);
+			LuaDLL.lua_pushnumber(L, arg1);
+			return 2;
+		}
+		catch(Exception e)
+		{
+			return LuaDLL.toluaL_exception(L, e);
+		}
+	}
+
+	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	static int SetAmbisonicDecoderFloat(IntPtr L)
+	{
+		try
+		{
+			ToLua.CheckArgsCount(L, 3);
+			UnityEngine.AudioSource obj = (UnityEngine.AudioSource)ToLua.CheckObject(L, 1, typeof(UnityEngine.AudioSource));
+			int arg0 = (int)LuaDLL.luaL_checknumber(L, 2);
+			float arg1 = (float)LuaDLL.luaL_checknumber(L, 3);
+			bool o = obj.SetAmbisonicDecoderFloat(arg0, arg1);
+			LuaDLL.lua_pushboolean(L, o);
+			return 1;
+		}
+		catch(Exception e)
+		{
+			return LuaDLL.toluaL_exception(L, e);
+		}
+	}
+
+	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	static int GetAmbisonicDecoderFloat(IntPtr L)
+	{
+		try
+		{
+			ToLua.CheckArgsCount(L, 3);
+			UnityEngine.AudioSource obj = (UnityEngine.AudioSource)ToLua.CheckObject(L, 1, typeof(UnityEngine.AudioSource));
+			int arg0 = (int)LuaDLL.luaL_checknumber(L, 2);
+			float arg1;
+			bool o = obj.GetAmbisonicDecoderFloat(arg0, out arg1);
 			LuaDLL.lua_pushboolean(L, o);
 			LuaDLL.lua_pushnumber(L, arg1);
 			return 2;

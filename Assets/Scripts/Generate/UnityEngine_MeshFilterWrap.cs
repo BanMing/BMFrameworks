@@ -10,8 +10,8 @@ public class UnityEngine_MeshFilterWrap
 		L.RegFunction("New", _CreateUnityEngine_MeshFilter);
 		L.RegFunction("__eq", op_Equality);
 		L.RegFunction("__tostring", ToLua.op_ToString);
-		L.RegVar("mesh", get_mesh, set_mesh);
 		L.RegVar("sharedMesh", get_sharedMesh, set_sharedMesh);
+		L.RegVar("mesh", get_mesh, set_mesh);
 		L.EndClass();
 	}
 
@@ -58,25 +58,6 @@ public class UnityEngine_MeshFilterWrap
 	}
 
 	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
-	static int get_mesh(IntPtr L)
-	{
-		object o = null;
-
-		try
-		{
-			o = ToLua.ToObject(L, 1);
-			UnityEngine.MeshFilter obj = (UnityEngine.MeshFilter)o;
-			UnityEngine.Mesh ret = obj.mesh;
-			ToLua.Push(L, ret);
-			return 1;
-		}
-		catch(Exception e)
-		{
-			return LuaDLL.toluaL_exception(L, e, o == null ? "attempt to index mesh on a nil value" : e.Message);
-		}
-	}
-
-	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
 	static int get_sharedMesh(IntPtr L)
 	{
 		object o = null;
@@ -96,7 +77,7 @@ public class UnityEngine_MeshFilterWrap
 	}
 
 	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
-	static int set_mesh(IntPtr L)
+	static int get_mesh(IntPtr L)
 	{
 		object o = null;
 
@@ -104,9 +85,9 @@ public class UnityEngine_MeshFilterWrap
 		{
 			o = ToLua.ToObject(L, 1);
 			UnityEngine.MeshFilter obj = (UnityEngine.MeshFilter)o;
-			UnityEngine.Mesh arg0 = (UnityEngine.Mesh)ToLua.CheckUnityObject(L, 2, typeof(UnityEngine.Mesh));
-			obj.mesh = arg0;
-			return 0;
+			UnityEngine.Mesh ret = obj.mesh;
+			ToLua.Push(L, ret);
+			return 1;
 		}
 		catch(Exception e)
 		{
@@ -130,6 +111,25 @@ public class UnityEngine_MeshFilterWrap
 		catch(Exception e)
 		{
 			return LuaDLL.toluaL_exception(L, e, o == null ? "attempt to index sharedMesh on a nil value" : e.Message);
+		}
+	}
+
+	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	static int set_mesh(IntPtr L)
+	{
+		object o = null;
+
+		try
+		{
+			o = ToLua.ToObject(L, 1);
+			UnityEngine.MeshFilter obj = (UnityEngine.MeshFilter)o;
+			UnityEngine.Mesh arg0 = (UnityEngine.Mesh)ToLua.CheckUnityObject(L, 2, typeof(UnityEngine.Mesh));
+			obj.mesh = arg0;
+			return 0;
+		}
+		catch(Exception e)
+		{
+			return LuaDLL.toluaL_exception(L, e, o == null ? "attempt to index mesh on a nil value" : e.Message);
 		}
 	}
 }

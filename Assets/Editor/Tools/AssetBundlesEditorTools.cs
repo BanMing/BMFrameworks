@@ -338,7 +338,7 @@ public class AssetBundlesEditorTools : MonoBehaviour
                 break;
             case BuildTarget.StandaloneOSXIntel:
             case BuildTarget.StandaloneOSXIntel64:
-            case BuildTarget.StandaloneOSXUniversal:
+            case BuildTarget.StandaloneOSX:
                 {
                     isWin = false;
                     luaexe = "./luac";

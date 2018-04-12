@@ -7,27 +7,15 @@ public class UnityEngine_MeshWrap
 	public static void Register(LuaState L)
 	{
 		L.BeginClass(typeof(UnityEngine.Mesh), typeof(UnityEngine.Object));
-		L.RegFunction("Clear", Clear);
-		L.RegFunction("SetTriangles", SetTriangles);
-		L.RegFunction("SetIndices", SetIndices);
+		L.RegFunction("GetNativeVertexBufferPtr", GetNativeVertexBufferPtr);
+		L.RegFunction("GetNativeIndexBufferPtr", GetNativeIndexBufferPtr);
 		L.RegFunction("ClearBlendShapes", ClearBlendShapes);
 		L.RegFunction("GetBlendShapeName", GetBlendShapeName);
+		L.RegFunction("GetBlendShapeIndex", GetBlendShapeIndex);
 		L.RegFunction("GetBlendShapeFrameCount", GetBlendShapeFrameCount);
 		L.RegFunction("GetBlendShapeFrameWeight", GetBlendShapeFrameWeight);
 		L.RegFunction("GetBlendShapeFrameVertices", GetBlendShapeFrameVertices);
 		L.RegFunction("AddBlendShapeFrame", AddBlendShapeFrame);
-		L.RegFunction("GetNativeVertexBufferPtr", GetNativeVertexBufferPtr);
-		L.RegFunction("GetNativeIndexBufferPtr", GetNativeIndexBufferPtr);
-		L.RegFunction("RecalculateBounds", RecalculateBounds);
-		L.RegFunction("RecalculateNormals", RecalculateNormals);
-		L.RegFunction("RecalculateTangents", RecalculateTangents);
-		L.RegFunction("GetTopology", GetTopology);
-		L.RegFunction("GetIndexStart", GetIndexStart);
-		L.RegFunction("GetIndexCount", GetIndexCount);
-		L.RegFunction("CombineMeshes", CombineMeshes);
-		L.RegFunction("MarkDynamic", MarkDynamic);
-		L.RegFunction("UploadMeshData", UploadMeshData);
-		L.RegFunction("GetBlendShapeIndex", GetBlendShapeIndex);
 		L.RegFunction("GetVertices", GetVertices);
 		L.RegFunction("SetVertices", SetVertices);
 		L.RegFunction("GetNormals", GetNormals);
@@ -40,19 +28,33 @@ public class UnityEngine_MeshWrap
 		L.RegFunction("GetUVs", GetUVs);
 		L.RegFunction("GetTriangles", GetTriangles);
 		L.RegFunction("GetIndices", GetIndices);
+		L.RegFunction("GetIndexStart", GetIndexStart);
+		L.RegFunction("GetIndexCount", GetIndexCount);
+		L.RegFunction("GetBaseVertex", GetBaseVertex);
+		L.RegFunction("SetTriangles", SetTriangles);
+		L.RegFunction("SetIndices", SetIndices);
 		L.RegFunction("GetBindposes", GetBindposes);
 		L.RegFunction("GetBoneWeights", GetBoneWeights);
+		L.RegFunction("Clear", Clear);
+		L.RegFunction("RecalculateBounds", RecalculateBounds);
+		L.RegFunction("RecalculateNormals", RecalculateNormals);
+		L.RegFunction("RecalculateTangents", RecalculateTangents);
+		L.RegFunction("MarkDynamic", MarkDynamic);
+		L.RegFunction("UploadMeshData", UploadMeshData);
+		L.RegFunction("GetTopology", GetTopology);
+		L.RegFunction("CombineMeshes", CombineMeshes);
 		L.RegFunction("New", _CreateUnityEngine_Mesh);
 		L.RegFunction("__eq", op_Equality);
 		L.RegFunction("__tostring", ToLua.op_ToString);
-		L.RegVar("isReadable", get_isReadable, null);
-		L.RegVar("blendShapeCount", get_blendShapeCount, null);
+		L.RegVar("indexFormat", get_indexFormat, set_indexFormat);
 		L.RegVar("vertexBufferCount", get_vertexBufferCount, null);
-		L.RegVar("bounds", get_bounds, set_bounds);
-		L.RegVar("vertexCount", get_vertexCount, null);
-		L.RegVar("subMeshCount", get_subMeshCount, set_subMeshCount);
+		L.RegVar("blendShapeCount", get_blendShapeCount, null);
 		L.RegVar("boneWeights", get_boneWeights, set_boneWeights);
 		L.RegVar("bindposes", get_bindposes, set_bindposes);
+		L.RegVar("isReadable", get_isReadable, null);
+		L.RegVar("vertexCount", get_vertexCount, null);
+		L.RegVar("subMeshCount", get_subMeshCount, set_subMeshCount);
+		L.RegVar("bounds", get_bounds, set_bounds);
 		L.RegVar("vertices", get_vertices, set_vertices);
 		L.RegVar("normals", get_normals, set_normals);
 		L.RegVar("tangents", get_tangents, set_tangents);
@@ -91,29 +93,16 @@ public class UnityEngine_MeshWrap
 	}
 
 	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
-	static int Clear(IntPtr L)
+	static int GetNativeVertexBufferPtr(IntPtr L)
 	{
 		try
 		{
-			int count = LuaDLL.lua_gettop(L);
-
-			if (count == 1 && TypeChecker.CheckTypes(L, 1, typeof(UnityEngine.Mesh)))
-			{
-				UnityEngine.Mesh obj = (UnityEngine.Mesh)ToLua.ToObject(L, 1);
-				obj.Clear();
-				return 0;
-			}
-			else if (count == 2 && TypeChecker.CheckTypes(L, 1, typeof(UnityEngine.Mesh), typeof(bool)))
-			{
-				UnityEngine.Mesh obj = (UnityEngine.Mesh)ToLua.ToObject(L, 1);
-				bool arg0 = LuaDLL.lua_toboolean(L, 2);
-				obj.Clear(arg0);
-				return 0;
-			}
-			else
-			{
-				return LuaDLL.luaL_throw(L, "invalid arguments to method: UnityEngine.Mesh.Clear");
-			}
+			ToLua.CheckArgsCount(L, 2);
+			UnityEngine.Mesh obj = (UnityEngine.Mesh)ToLua.CheckObject(L, 1, typeof(UnityEngine.Mesh));
+			int arg0 = (int)LuaDLL.luaL_checknumber(L, 2);
+			System.IntPtr o = obj.GetNativeVertexBufferPtr(arg0);
+			LuaDLL.lua_pushlightuserdata(L, o);
+			return 1;
 		}
 		catch(Exception e)
 		{
@@ -122,87 +111,15 @@ public class UnityEngine_MeshWrap
 	}
 
 	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
-	static int SetTriangles(IntPtr L)
+	static int GetNativeIndexBufferPtr(IntPtr L)
 	{
 		try
 		{
-			int count = LuaDLL.lua_gettop(L);
-
-			if (count == 3 && TypeChecker.CheckTypes(L, 1, typeof(UnityEngine.Mesh), typeof(System.Collections.Generic.List<int>), typeof(int)))
-			{
-				UnityEngine.Mesh obj = (UnityEngine.Mesh)ToLua.ToObject(L, 1);
-				System.Collections.Generic.List<int> arg0 = (System.Collections.Generic.List<int>)ToLua.ToObject(L, 2);
-				int arg1 = (int)LuaDLL.lua_tonumber(L, 3);
-				obj.SetTriangles(arg0, arg1);
-				return 0;
-			}
-			else if (count == 3 && TypeChecker.CheckTypes(L, 1, typeof(UnityEngine.Mesh), typeof(int[]), typeof(int)))
-			{
-				UnityEngine.Mesh obj = (UnityEngine.Mesh)ToLua.ToObject(L, 1);
-				int[] arg0 = ToLua.CheckNumberArray<int>(L, 2);
-				int arg1 = (int)LuaDLL.lua_tonumber(L, 3);
-				obj.SetTriangles(arg0, arg1);
-				return 0;
-			}
-			else if (count == 4 && TypeChecker.CheckTypes(L, 1, typeof(UnityEngine.Mesh), typeof(System.Collections.Generic.List<int>), typeof(int), typeof(bool)))
-			{
-				UnityEngine.Mesh obj = (UnityEngine.Mesh)ToLua.ToObject(L, 1);
-				System.Collections.Generic.List<int> arg0 = (System.Collections.Generic.List<int>)ToLua.ToObject(L, 2);
-				int arg1 = (int)LuaDLL.lua_tonumber(L, 3);
-				bool arg2 = LuaDLL.lua_toboolean(L, 4);
-				obj.SetTriangles(arg0, arg1, arg2);
-				return 0;
-			}
-			else if (count == 4 && TypeChecker.CheckTypes(L, 1, typeof(UnityEngine.Mesh), typeof(int[]), typeof(int), typeof(bool)))
-			{
-				UnityEngine.Mesh obj = (UnityEngine.Mesh)ToLua.ToObject(L, 1);
-				int[] arg0 = ToLua.CheckNumberArray<int>(L, 2);
-				int arg1 = (int)LuaDLL.lua_tonumber(L, 3);
-				bool arg2 = LuaDLL.lua_toboolean(L, 4);
-				obj.SetTriangles(arg0, arg1, arg2);
-				return 0;
-			}
-			else
-			{
-				return LuaDLL.luaL_throw(L, "invalid arguments to method: UnityEngine.Mesh.SetTriangles");
-			}
-		}
-		catch(Exception e)
-		{
-			return LuaDLL.toluaL_exception(L, e);
-		}
-	}
-
-	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
-	static int SetIndices(IntPtr L)
-	{
-		try
-		{
-			int count = LuaDLL.lua_gettop(L);
-
-			if (count == 4 && TypeChecker.CheckTypes(L, 1, typeof(UnityEngine.Mesh), typeof(int[]), typeof(UnityEngine.MeshTopology), typeof(int)))
-			{
-				UnityEngine.Mesh obj = (UnityEngine.Mesh)ToLua.ToObject(L, 1);
-				int[] arg0 = ToLua.CheckNumberArray<int>(L, 2);
-				UnityEngine.MeshTopology arg1 = (UnityEngine.MeshTopology)ToLua.ToObject(L, 3);
-				int arg2 = (int)LuaDLL.lua_tonumber(L, 4);
-				obj.SetIndices(arg0, arg1, arg2);
-				return 0;
-			}
-			else if (count == 5 && TypeChecker.CheckTypes(L, 1, typeof(UnityEngine.Mesh), typeof(int[]), typeof(UnityEngine.MeshTopology), typeof(int), typeof(bool)))
-			{
-				UnityEngine.Mesh obj = (UnityEngine.Mesh)ToLua.ToObject(L, 1);
-				int[] arg0 = ToLua.CheckNumberArray<int>(L, 2);
-				UnityEngine.MeshTopology arg1 = (UnityEngine.MeshTopology)ToLua.ToObject(L, 3);
-				int arg2 = (int)LuaDLL.lua_tonumber(L, 4);
-				bool arg3 = LuaDLL.lua_toboolean(L, 5);
-				obj.SetIndices(arg0, arg1, arg2, arg3);
-				return 0;
-			}
-			else
-			{
-				return LuaDLL.luaL_throw(L, "invalid arguments to method: UnityEngine.Mesh.SetIndices");
-			}
+			ToLua.CheckArgsCount(L, 1);
+			UnityEngine.Mesh obj = (UnityEngine.Mesh)ToLua.CheckObject(L, 1, typeof(UnityEngine.Mesh));
+			System.IntPtr o = obj.GetNativeIndexBufferPtr();
+			LuaDLL.lua_pushlightuserdata(L, o);
+			return 1;
 		}
 		catch(Exception e)
 		{
@@ -236,6 +153,24 @@ public class UnityEngine_MeshWrap
 			int arg0 = (int)LuaDLL.luaL_checknumber(L, 2);
 			string o = obj.GetBlendShapeName(arg0);
 			LuaDLL.lua_pushstring(L, o);
+			return 1;
+		}
+		catch(Exception e)
+		{
+			return LuaDLL.toluaL_exception(L, e);
+		}
+	}
+
+	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	static int GetBlendShapeIndex(IntPtr L)
+	{
+		try
+		{
+			ToLua.CheckArgsCount(L, 2);
+			UnityEngine.Mesh obj = (UnityEngine.Mesh)ToLua.CheckObject(L, 1, typeof(UnityEngine.Mesh));
+			string arg0 = ToLua.CheckString(L, 2);
+			int o = obj.GetBlendShapeIndex(arg0);
+			LuaDLL.lua_pushinteger(L, o);
 			return 1;
 		}
 		catch(Exception e)
@@ -316,246 +251,6 @@ public class UnityEngine_MeshWrap
 			UnityEngine.Vector3[] arg4 = ToLua.CheckObjectArray<UnityEngine.Vector3>(L, 6);
 			obj.AddBlendShapeFrame(arg0, arg1, arg2, arg3, arg4);
 			return 0;
-		}
-		catch(Exception e)
-		{
-			return LuaDLL.toluaL_exception(L, e);
-		}
-	}
-
-	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
-	static int GetNativeVertexBufferPtr(IntPtr L)
-	{
-		try
-		{
-			ToLua.CheckArgsCount(L, 2);
-			UnityEngine.Mesh obj = (UnityEngine.Mesh)ToLua.CheckObject(L, 1, typeof(UnityEngine.Mesh));
-			int arg0 = (int)LuaDLL.luaL_checknumber(L, 2);
-			System.IntPtr o = obj.GetNativeVertexBufferPtr(arg0);
-			LuaDLL.lua_pushlightuserdata(L, o);
-			return 1;
-		}
-		catch(Exception e)
-		{
-			return LuaDLL.toluaL_exception(L, e);
-		}
-	}
-
-	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
-	static int GetNativeIndexBufferPtr(IntPtr L)
-	{
-		try
-		{
-			ToLua.CheckArgsCount(L, 1);
-			UnityEngine.Mesh obj = (UnityEngine.Mesh)ToLua.CheckObject(L, 1, typeof(UnityEngine.Mesh));
-			System.IntPtr o = obj.GetNativeIndexBufferPtr();
-			LuaDLL.lua_pushlightuserdata(L, o);
-			return 1;
-		}
-		catch(Exception e)
-		{
-			return LuaDLL.toluaL_exception(L, e);
-		}
-	}
-
-	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
-	static int RecalculateBounds(IntPtr L)
-	{
-		try
-		{
-			ToLua.CheckArgsCount(L, 1);
-			UnityEngine.Mesh obj = (UnityEngine.Mesh)ToLua.CheckObject(L, 1, typeof(UnityEngine.Mesh));
-			obj.RecalculateBounds();
-			return 0;
-		}
-		catch(Exception e)
-		{
-			return LuaDLL.toluaL_exception(L, e);
-		}
-	}
-
-	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
-	static int RecalculateNormals(IntPtr L)
-	{
-		try
-		{
-			ToLua.CheckArgsCount(L, 1);
-			UnityEngine.Mesh obj = (UnityEngine.Mesh)ToLua.CheckObject(L, 1, typeof(UnityEngine.Mesh));
-			obj.RecalculateNormals();
-			return 0;
-		}
-		catch(Exception e)
-		{
-			return LuaDLL.toluaL_exception(L, e);
-		}
-	}
-
-	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
-	static int RecalculateTangents(IntPtr L)
-	{
-		try
-		{
-			ToLua.CheckArgsCount(L, 1);
-			UnityEngine.Mesh obj = (UnityEngine.Mesh)ToLua.CheckObject(L, 1, typeof(UnityEngine.Mesh));
-			obj.RecalculateTangents();
-			return 0;
-		}
-		catch(Exception e)
-		{
-			return LuaDLL.toluaL_exception(L, e);
-		}
-	}
-
-	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
-	static int GetTopology(IntPtr L)
-	{
-		try
-		{
-			ToLua.CheckArgsCount(L, 2);
-			UnityEngine.Mesh obj = (UnityEngine.Mesh)ToLua.CheckObject(L, 1, typeof(UnityEngine.Mesh));
-			int arg0 = (int)LuaDLL.luaL_checknumber(L, 2);
-			UnityEngine.MeshTopology o = obj.GetTopology(arg0);
-			ToLua.Push(L, o);
-			return 1;
-		}
-		catch(Exception e)
-		{
-			return LuaDLL.toluaL_exception(L, e);
-		}
-	}
-
-	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
-	static int GetIndexStart(IntPtr L)
-	{
-		try
-		{
-			ToLua.CheckArgsCount(L, 2);
-			UnityEngine.Mesh obj = (UnityEngine.Mesh)ToLua.CheckObject(L, 1, typeof(UnityEngine.Mesh));
-			int arg0 = (int)LuaDLL.luaL_checknumber(L, 2);
-			uint o = obj.GetIndexStart(arg0);
-			LuaDLL.lua_pushnumber(L, o);
-			return 1;
-		}
-		catch(Exception e)
-		{
-			return LuaDLL.toluaL_exception(L, e);
-		}
-	}
-
-	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
-	static int GetIndexCount(IntPtr L)
-	{
-		try
-		{
-			ToLua.CheckArgsCount(L, 2);
-			UnityEngine.Mesh obj = (UnityEngine.Mesh)ToLua.CheckObject(L, 1, typeof(UnityEngine.Mesh));
-			int arg0 = (int)LuaDLL.luaL_checknumber(L, 2);
-			uint o = obj.GetIndexCount(arg0);
-			LuaDLL.lua_pushnumber(L, o);
-			return 1;
-		}
-		catch(Exception e)
-		{
-			return LuaDLL.toluaL_exception(L, e);
-		}
-	}
-
-	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
-	static int CombineMeshes(IntPtr L)
-	{
-		try
-		{
-			int count = LuaDLL.lua_gettop(L);
-
-			if (count == 2 && TypeChecker.CheckTypes(L, 1, typeof(UnityEngine.Mesh), typeof(UnityEngine.CombineInstance[])))
-			{
-				UnityEngine.Mesh obj = (UnityEngine.Mesh)ToLua.ToObject(L, 1);
-				UnityEngine.CombineInstance[] arg0 = ToLua.CheckObjectArray<UnityEngine.CombineInstance>(L, 2);
-				obj.CombineMeshes(arg0);
-				return 0;
-			}
-			else if (count == 3 && TypeChecker.CheckTypes(L, 1, typeof(UnityEngine.Mesh), typeof(UnityEngine.CombineInstance[]), typeof(bool)))
-			{
-				UnityEngine.Mesh obj = (UnityEngine.Mesh)ToLua.ToObject(L, 1);
-				UnityEngine.CombineInstance[] arg0 = ToLua.CheckObjectArray<UnityEngine.CombineInstance>(L, 2);
-				bool arg1 = LuaDLL.lua_toboolean(L, 3);
-				obj.CombineMeshes(arg0, arg1);
-				return 0;
-			}
-			else if (count == 4 && TypeChecker.CheckTypes(L, 1, typeof(UnityEngine.Mesh), typeof(UnityEngine.CombineInstance[]), typeof(bool), typeof(bool)))
-			{
-				UnityEngine.Mesh obj = (UnityEngine.Mesh)ToLua.ToObject(L, 1);
-				UnityEngine.CombineInstance[] arg0 = ToLua.CheckObjectArray<UnityEngine.CombineInstance>(L, 2);
-				bool arg1 = LuaDLL.lua_toboolean(L, 3);
-				bool arg2 = LuaDLL.lua_toboolean(L, 4);
-				obj.CombineMeshes(arg0, arg1, arg2);
-				return 0;
-			}
-			else if (count == 5 && TypeChecker.CheckTypes(L, 1, typeof(UnityEngine.Mesh), typeof(UnityEngine.CombineInstance[]), typeof(bool), typeof(bool), typeof(bool)))
-			{
-				UnityEngine.Mesh obj = (UnityEngine.Mesh)ToLua.ToObject(L, 1);
-				UnityEngine.CombineInstance[] arg0 = ToLua.CheckObjectArray<UnityEngine.CombineInstance>(L, 2);
-				bool arg1 = LuaDLL.lua_toboolean(L, 3);
-				bool arg2 = LuaDLL.lua_toboolean(L, 4);
-				bool arg3 = LuaDLL.lua_toboolean(L, 5);
-				obj.CombineMeshes(arg0, arg1, arg2, arg3);
-				return 0;
-			}
-			else
-			{
-				return LuaDLL.luaL_throw(L, "invalid arguments to method: UnityEngine.Mesh.CombineMeshes");
-			}
-		}
-		catch(Exception e)
-		{
-			return LuaDLL.toluaL_exception(L, e);
-		}
-	}
-
-	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
-	static int MarkDynamic(IntPtr L)
-	{
-		try
-		{
-			ToLua.CheckArgsCount(L, 1);
-			UnityEngine.Mesh obj = (UnityEngine.Mesh)ToLua.CheckObject(L, 1, typeof(UnityEngine.Mesh));
-			obj.MarkDynamic();
-			return 0;
-		}
-		catch(Exception e)
-		{
-			return LuaDLL.toluaL_exception(L, e);
-		}
-	}
-
-	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
-	static int UploadMeshData(IntPtr L)
-	{
-		try
-		{
-			ToLua.CheckArgsCount(L, 2);
-			UnityEngine.Mesh obj = (UnityEngine.Mesh)ToLua.CheckObject(L, 1, typeof(UnityEngine.Mesh));
-			bool arg0 = LuaDLL.luaL_checkboolean(L, 2);
-			obj.UploadMeshData(arg0);
-			return 0;
-		}
-		catch(Exception e)
-		{
-			return LuaDLL.toluaL_exception(L, e);
-		}
-	}
-
-	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
-	static int GetBlendShapeIndex(IntPtr L)
-	{
-		try
-		{
-			ToLua.CheckArgsCount(L, 2);
-			UnityEngine.Mesh obj = (UnityEngine.Mesh)ToLua.CheckObject(L, 1, typeof(UnityEngine.Mesh));
-			string arg0 = ToLua.CheckString(L, 2);
-			int o = obj.GetBlendShapeIndex(arg0);
-			LuaDLL.lua_pushinteger(L, o);
-			return 1;
 		}
 		catch(Exception e)
 		{
@@ -836,6 +531,24 @@ public class UnityEngine_MeshWrap
 				obj.GetTriangles(arg0, arg1);
 				return 0;
 			}
+			else if (count == 3 && TypeChecker.CheckTypes(L, 1, typeof(UnityEngine.Mesh), typeof(int), typeof(bool)))
+			{
+				UnityEngine.Mesh obj = (UnityEngine.Mesh)ToLua.ToObject(L, 1);
+				int arg0 = (int)LuaDLL.lua_tonumber(L, 2);
+				bool arg1 = LuaDLL.lua_toboolean(L, 3);
+				int[] o = obj.GetTriangles(arg0, arg1);
+				ToLua.Push(L, o);
+				return 1;
+			}
+			else if (count == 4 && TypeChecker.CheckTypes(L, 1, typeof(UnityEngine.Mesh), typeof(System.Collections.Generic.List<int>), typeof(int), typeof(bool)))
+			{
+				UnityEngine.Mesh obj = (UnityEngine.Mesh)ToLua.ToObject(L, 1);
+				System.Collections.Generic.List<int> arg0 = (System.Collections.Generic.List<int>)ToLua.ToObject(L, 2);
+				int arg1 = (int)LuaDLL.lua_tonumber(L, 3);
+				bool arg2 = LuaDLL.lua_toboolean(L, 4);
+				obj.GetTriangles(arg0, arg1, arg2);
+				return 0;
+			}
 			else
 			{
 				return LuaDLL.luaL_throw(L, "invalid arguments to method: UnityEngine.Mesh.GetTriangles");
@@ -870,9 +583,201 @@ public class UnityEngine_MeshWrap
 				obj.GetIndices(arg0, arg1);
 				return 0;
 			}
+			else if (count == 3 && TypeChecker.CheckTypes(L, 1, typeof(UnityEngine.Mesh), typeof(int), typeof(bool)))
+			{
+				UnityEngine.Mesh obj = (UnityEngine.Mesh)ToLua.ToObject(L, 1);
+				int arg0 = (int)LuaDLL.lua_tonumber(L, 2);
+				bool arg1 = LuaDLL.lua_toboolean(L, 3);
+				int[] o = obj.GetIndices(arg0, arg1);
+				ToLua.Push(L, o);
+				return 1;
+			}
+			else if (count == 4 && TypeChecker.CheckTypes(L, 1, typeof(UnityEngine.Mesh), typeof(System.Collections.Generic.List<int>), typeof(int), typeof(bool)))
+			{
+				UnityEngine.Mesh obj = (UnityEngine.Mesh)ToLua.ToObject(L, 1);
+				System.Collections.Generic.List<int> arg0 = (System.Collections.Generic.List<int>)ToLua.ToObject(L, 2);
+				int arg1 = (int)LuaDLL.lua_tonumber(L, 3);
+				bool arg2 = LuaDLL.lua_toboolean(L, 4);
+				obj.GetIndices(arg0, arg1, arg2);
+				return 0;
+			}
 			else
 			{
 				return LuaDLL.luaL_throw(L, "invalid arguments to method: UnityEngine.Mesh.GetIndices");
+			}
+		}
+		catch(Exception e)
+		{
+			return LuaDLL.toluaL_exception(L, e);
+		}
+	}
+
+	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	static int GetIndexStart(IntPtr L)
+	{
+		try
+		{
+			ToLua.CheckArgsCount(L, 2);
+			UnityEngine.Mesh obj = (UnityEngine.Mesh)ToLua.CheckObject(L, 1, typeof(UnityEngine.Mesh));
+			int arg0 = (int)LuaDLL.luaL_checknumber(L, 2);
+			uint o = obj.GetIndexStart(arg0);
+			LuaDLL.lua_pushnumber(L, o);
+			return 1;
+		}
+		catch(Exception e)
+		{
+			return LuaDLL.toluaL_exception(L, e);
+		}
+	}
+
+	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	static int GetIndexCount(IntPtr L)
+	{
+		try
+		{
+			ToLua.CheckArgsCount(L, 2);
+			UnityEngine.Mesh obj = (UnityEngine.Mesh)ToLua.CheckObject(L, 1, typeof(UnityEngine.Mesh));
+			int arg0 = (int)LuaDLL.luaL_checknumber(L, 2);
+			uint o = obj.GetIndexCount(arg0);
+			LuaDLL.lua_pushnumber(L, o);
+			return 1;
+		}
+		catch(Exception e)
+		{
+			return LuaDLL.toluaL_exception(L, e);
+		}
+	}
+
+	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	static int GetBaseVertex(IntPtr L)
+	{
+		try
+		{
+			ToLua.CheckArgsCount(L, 2);
+			UnityEngine.Mesh obj = (UnityEngine.Mesh)ToLua.CheckObject(L, 1, typeof(UnityEngine.Mesh));
+			int arg0 = (int)LuaDLL.luaL_checknumber(L, 2);
+			uint o = obj.GetBaseVertex(arg0);
+			LuaDLL.lua_pushnumber(L, o);
+			return 1;
+		}
+		catch(Exception e)
+		{
+			return LuaDLL.toluaL_exception(L, e);
+		}
+	}
+
+	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	static int SetTriangles(IntPtr L)
+	{
+		try
+		{
+			int count = LuaDLL.lua_gettop(L);
+
+			if (count == 3 && TypeChecker.CheckTypes(L, 1, typeof(UnityEngine.Mesh), typeof(System.Collections.Generic.List<int>), typeof(int)))
+			{
+				UnityEngine.Mesh obj = (UnityEngine.Mesh)ToLua.ToObject(L, 1);
+				System.Collections.Generic.List<int> arg0 = (System.Collections.Generic.List<int>)ToLua.ToObject(L, 2);
+				int arg1 = (int)LuaDLL.lua_tonumber(L, 3);
+				obj.SetTriangles(arg0, arg1);
+				return 0;
+			}
+			else if (count == 3 && TypeChecker.CheckTypes(L, 1, typeof(UnityEngine.Mesh), typeof(int[]), typeof(int)))
+			{
+				UnityEngine.Mesh obj = (UnityEngine.Mesh)ToLua.ToObject(L, 1);
+				int[] arg0 = ToLua.CheckNumberArray<int>(L, 2);
+				int arg1 = (int)LuaDLL.lua_tonumber(L, 3);
+				obj.SetTriangles(arg0, arg1);
+				return 0;
+			}
+			else if (count == 4 && TypeChecker.CheckTypes(L, 1, typeof(UnityEngine.Mesh), typeof(System.Collections.Generic.List<int>), typeof(int), typeof(bool)))
+			{
+				UnityEngine.Mesh obj = (UnityEngine.Mesh)ToLua.ToObject(L, 1);
+				System.Collections.Generic.List<int> arg0 = (System.Collections.Generic.List<int>)ToLua.ToObject(L, 2);
+				int arg1 = (int)LuaDLL.lua_tonumber(L, 3);
+				bool arg2 = LuaDLL.lua_toboolean(L, 4);
+				obj.SetTriangles(arg0, arg1, arg2);
+				return 0;
+			}
+			else if (count == 4 && TypeChecker.CheckTypes(L, 1, typeof(UnityEngine.Mesh), typeof(int[]), typeof(int), typeof(bool)))
+			{
+				UnityEngine.Mesh obj = (UnityEngine.Mesh)ToLua.ToObject(L, 1);
+				int[] arg0 = ToLua.CheckNumberArray<int>(L, 2);
+				int arg1 = (int)LuaDLL.lua_tonumber(L, 3);
+				bool arg2 = LuaDLL.lua_toboolean(L, 4);
+				obj.SetTriangles(arg0, arg1, arg2);
+				return 0;
+			}
+			else if (count == 5 && TypeChecker.CheckTypes(L, 1, typeof(UnityEngine.Mesh), typeof(System.Collections.Generic.List<int>), typeof(int), typeof(bool), typeof(int)))
+			{
+				UnityEngine.Mesh obj = (UnityEngine.Mesh)ToLua.ToObject(L, 1);
+				System.Collections.Generic.List<int> arg0 = (System.Collections.Generic.List<int>)ToLua.ToObject(L, 2);
+				int arg1 = (int)LuaDLL.lua_tonumber(L, 3);
+				bool arg2 = LuaDLL.lua_toboolean(L, 4);
+				int arg3 = (int)LuaDLL.lua_tonumber(L, 5);
+				obj.SetTriangles(arg0, arg1, arg2, arg3);
+				return 0;
+			}
+			else if (count == 5 && TypeChecker.CheckTypes(L, 1, typeof(UnityEngine.Mesh), typeof(int[]), typeof(int), typeof(bool), typeof(int)))
+			{
+				UnityEngine.Mesh obj = (UnityEngine.Mesh)ToLua.ToObject(L, 1);
+				int[] arg0 = ToLua.CheckNumberArray<int>(L, 2);
+				int arg1 = (int)LuaDLL.lua_tonumber(L, 3);
+				bool arg2 = LuaDLL.lua_toboolean(L, 4);
+				int arg3 = (int)LuaDLL.lua_tonumber(L, 5);
+				obj.SetTriangles(arg0, arg1, arg2, arg3);
+				return 0;
+			}
+			else
+			{
+				return LuaDLL.luaL_throw(L, "invalid arguments to method: UnityEngine.Mesh.SetTriangles");
+			}
+		}
+		catch(Exception e)
+		{
+			return LuaDLL.toluaL_exception(L, e);
+		}
+	}
+
+	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	static int SetIndices(IntPtr L)
+	{
+		try
+		{
+			int count = LuaDLL.lua_gettop(L);
+
+			if (count == 4 && TypeChecker.CheckTypes(L, 1, typeof(UnityEngine.Mesh), typeof(int[]), typeof(UnityEngine.MeshTopology), typeof(int)))
+			{
+				UnityEngine.Mesh obj = (UnityEngine.Mesh)ToLua.ToObject(L, 1);
+				int[] arg0 = ToLua.CheckNumberArray<int>(L, 2);
+				UnityEngine.MeshTopology arg1 = (UnityEngine.MeshTopology)ToLua.ToObject(L, 3);
+				int arg2 = (int)LuaDLL.lua_tonumber(L, 4);
+				obj.SetIndices(arg0, arg1, arg2);
+				return 0;
+			}
+			else if (count == 5 && TypeChecker.CheckTypes(L, 1, typeof(UnityEngine.Mesh), typeof(int[]), typeof(UnityEngine.MeshTopology), typeof(int), typeof(bool)))
+			{
+				UnityEngine.Mesh obj = (UnityEngine.Mesh)ToLua.ToObject(L, 1);
+				int[] arg0 = ToLua.CheckNumberArray<int>(L, 2);
+				UnityEngine.MeshTopology arg1 = (UnityEngine.MeshTopology)ToLua.ToObject(L, 3);
+				int arg2 = (int)LuaDLL.lua_tonumber(L, 4);
+				bool arg3 = LuaDLL.lua_toboolean(L, 5);
+				obj.SetIndices(arg0, arg1, arg2, arg3);
+				return 0;
+			}
+			else if (count == 6 && TypeChecker.CheckTypes(L, 1, typeof(UnityEngine.Mesh), typeof(int[]), typeof(UnityEngine.MeshTopology), typeof(int), typeof(bool), typeof(int)))
+			{
+				UnityEngine.Mesh obj = (UnityEngine.Mesh)ToLua.ToObject(L, 1);
+				int[] arg0 = ToLua.CheckNumberArray<int>(L, 2);
+				UnityEngine.MeshTopology arg1 = (UnityEngine.MeshTopology)ToLua.ToObject(L, 3);
+				int arg2 = (int)LuaDLL.lua_tonumber(L, 4);
+				bool arg3 = LuaDLL.lua_toboolean(L, 5);
+				int arg4 = (int)LuaDLL.lua_tonumber(L, 6);
+				obj.SetIndices(arg0, arg1, arg2, arg3, arg4);
+				return 0;
+			}
+			else
+			{
+				return LuaDLL.luaL_throw(L, "invalid arguments to method: UnityEngine.Mesh.SetIndices");
 			}
 		}
 		catch(Exception e)
@@ -916,6 +821,188 @@ public class UnityEngine_MeshWrap
 	}
 
 	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	static int Clear(IntPtr L)
+	{
+		try
+		{
+			int count = LuaDLL.lua_gettop(L);
+
+			if (count == 1 && TypeChecker.CheckTypes(L, 1, typeof(UnityEngine.Mesh)))
+			{
+				UnityEngine.Mesh obj = (UnityEngine.Mesh)ToLua.ToObject(L, 1);
+				obj.Clear();
+				return 0;
+			}
+			else if (count == 2 && TypeChecker.CheckTypes(L, 1, typeof(UnityEngine.Mesh), typeof(bool)))
+			{
+				UnityEngine.Mesh obj = (UnityEngine.Mesh)ToLua.ToObject(L, 1);
+				bool arg0 = LuaDLL.lua_toboolean(L, 2);
+				obj.Clear(arg0);
+				return 0;
+			}
+			else
+			{
+				return LuaDLL.luaL_throw(L, "invalid arguments to method: UnityEngine.Mesh.Clear");
+			}
+		}
+		catch(Exception e)
+		{
+			return LuaDLL.toluaL_exception(L, e);
+		}
+	}
+
+	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	static int RecalculateBounds(IntPtr L)
+	{
+		try
+		{
+			ToLua.CheckArgsCount(L, 1);
+			UnityEngine.Mesh obj = (UnityEngine.Mesh)ToLua.CheckObject(L, 1, typeof(UnityEngine.Mesh));
+			obj.RecalculateBounds();
+			return 0;
+		}
+		catch(Exception e)
+		{
+			return LuaDLL.toluaL_exception(L, e);
+		}
+	}
+
+	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	static int RecalculateNormals(IntPtr L)
+	{
+		try
+		{
+			ToLua.CheckArgsCount(L, 1);
+			UnityEngine.Mesh obj = (UnityEngine.Mesh)ToLua.CheckObject(L, 1, typeof(UnityEngine.Mesh));
+			obj.RecalculateNormals();
+			return 0;
+		}
+		catch(Exception e)
+		{
+			return LuaDLL.toluaL_exception(L, e);
+		}
+	}
+
+	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	static int RecalculateTangents(IntPtr L)
+	{
+		try
+		{
+			ToLua.CheckArgsCount(L, 1);
+			UnityEngine.Mesh obj = (UnityEngine.Mesh)ToLua.CheckObject(L, 1, typeof(UnityEngine.Mesh));
+			obj.RecalculateTangents();
+			return 0;
+		}
+		catch(Exception e)
+		{
+			return LuaDLL.toluaL_exception(L, e);
+		}
+	}
+
+	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	static int MarkDynamic(IntPtr L)
+	{
+		try
+		{
+			ToLua.CheckArgsCount(L, 1);
+			UnityEngine.Mesh obj = (UnityEngine.Mesh)ToLua.CheckObject(L, 1, typeof(UnityEngine.Mesh));
+			obj.MarkDynamic();
+			return 0;
+		}
+		catch(Exception e)
+		{
+			return LuaDLL.toluaL_exception(L, e);
+		}
+	}
+
+	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	static int UploadMeshData(IntPtr L)
+	{
+		try
+		{
+			ToLua.CheckArgsCount(L, 2);
+			UnityEngine.Mesh obj = (UnityEngine.Mesh)ToLua.CheckObject(L, 1, typeof(UnityEngine.Mesh));
+			bool arg0 = LuaDLL.luaL_checkboolean(L, 2);
+			obj.UploadMeshData(arg0);
+			return 0;
+		}
+		catch(Exception e)
+		{
+			return LuaDLL.toluaL_exception(L, e);
+		}
+	}
+
+	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	static int GetTopology(IntPtr L)
+	{
+		try
+		{
+			ToLua.CheckArgsCount(L, 2);
+			UnityEngine.Mesh obj = (UnityEngine.Mesh)ToLua.CheckObject(L, 1, typeof(UnityEngine.Mesh));
+			int arg0 = (int)LuaDLL.luaL_checknumber(L, 2);
+			UnityEngine.MeshTopology o = obj.GetTopology(arg0);
+			ToLua.Push(L, o);
+			return 1;
+		}
+		catch(Exception e)
+		{
+			return LuaDLL.toluaL_exception(L, e);
+		}
+	}
+
+	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	static int CombineMeshes(IntPtr L)
+	{
+		try
+		{
+			int count = LuaDLL.lua_gettop(L);
+
+			if (count == 2 && TypeChecker.CheckTypes(L, 1, typeof(UnityEngine.Mesh), typeof(UnityEngine.CombineInstance[])))
+			{
+				UnityEngine.Mesh obj = (UnityEngine.Mesh)ToLua.ToObject(L, 1);
+				UnityEngine.CombineInstance[] arg0 = ToLua.CheckObjectArray<UnityEngine.CombineInstance>(L, 2);
+				obj.CombineMeshes(arg0);
+				return 0;
+			}
+			else if (count == 3 && TypeChecker.CheckTypes(L, 1, typeof(UnityEngine.Mesh), typeof(UnityEngine.CombineInstance[]), typeof(bool)))
+			{
+				UnityEngine.Mesh obj = (UnityEngine.Mesh)ToLua.ToObject(L, 1);
+				UnityEngine.CombineInstance[] arg0 = ToLua.CheckObjectArray<UnityEngine.CombineInstance>(L, 2);
+				bool arg1 = LuaDLL.lua_toboolean(L, 3);
+				obj.CombineMeshes(arg0, arg1);
+				return 0;
+			}
+			else if (count == 4 && TypeChecker.CheckTypes(L, 1, typeof(UnityEngine.Mesh), typeof(UnityEngine.CombineInstance[]), typeof(bool), typeof(bool)))
+			{
+				UnityEngine.Mesh obj = (UnityEngine.Mesh)ToLua.ToObject(L, 1);
+				UnityEngine.CombineInstance[] arg0 = ToLua.CheckObjectArray<UnityEngine.CombineInstance>(L, 2);
+				bool arg1 = LuaDLL.lua_toboolean(L, 3);
+				bool arg2 = LuaDLL.lua_toboolean(L, 4);
+				obj.CombineMeshes(arg0, arg1, arg2);
+				return 0;
+			}
+			else if (count == 5 && TypeChecker.CheckTypes(L, 1, typeof(UnityEngine.Mesh), typeof(UnityEngine.CombineInstance[]), typeof(bool), typeof(bool), typeof(bool)))
+			{
+				UnityEngine.Mesh obj = (UnityEngine.Mesh)ToLua.ToObject(L, 1);
+				UnityEngine.CombineInstance[] arg0 = ToLua.CheckObjectArray<UnityEngine.CombineInstance>(L, 2);
+				bool arg1 = LuaDLL.lua_toboolean(L, 3);
+				bool arg2 = LuaDLL.lua_toboolean(L, 4);
+				bool arg3 = LuaDLL.lua_toboolean(L, 5);
+				obj.CombineMeshes(arg0, arg1, arg2, arg3);
+				return 0;
+			}
+			else
+			{
+				return LuaDLL.luaL_throw(L, "invalid arguments to method: UnityEngine.Mesh.CombineMeshes");
+			}
+		}
+		catch(Exception e)
+		{
+			return LuaDLL.toluaL_exception(L, e);
+		}
+	}
+
+	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
 	static int op_Equality(IntPtr L)
 	{
 		try
@@ -934,7 +1021,7 @@ public class UnityEngine_MeshWrap
 	}
 
 	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
-	static int get_isReadable(IntPtr L)
+	static int get_indexFormat(IntPtr L)
 	{
 		object o = null;
 
@@ -942,32 +1029,13 @@ public class UnityEngine_MeshWrap
 		{
 			o = ToLua.ToObject(L, 1);
 			UnityEngine.Mesh obj = (UnityEngine.Mesh)o;
-			bool ret = obj.isReadable;
-			LuaDLL.lua_pushboolean(L, ret);
+			UnityEngine.Rendering.IndexFormat ret = obj.indexFormat;
+			ToLua.Push(L, ret);
 			return 1;
 		}
 		catch(Exception e)
 		{
-			return LuaDLL.toluaL_exception(L, e, o == null ? "attempt to index isReadable on a nil value" : e.Message);
-		}
-	}
-
-	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
-	static int get_blendShapeCount(IntPtr L)
-	{
-		object o = null;
-
-		try
-		{
-			o = ToLua.ToObject(L, 1);
-			UnityEngine.Mesh obj = (UnityEngine.Mesh)o;
-			int ret = obj.blendShapeCount;
-			LuaDLL.lua_pushinteger(L, ret);
-			return 1;
-		}
-		catch(Exception e)
-		{
-			return LuaDLL.toluaL_exception(L, e, o == null ? "attempt to index blendShapeCount on a nil value" : e.Message);
+			return LuaDLL.toluaL_exception(L, e, o == null ? "attempt to index indexFormat on a nil value" : e.Message);
 		}
 	}
 
@@ -991,7 +1059,7 @@ public class UnityEngine_MeshWrap
 	}
 
 	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
-	static int get_bounds(IntPtr L)
+	static int get_blendShapeCount(IntPtr L)
 	{
 		object o = null;
 
@@ -999,13 +1067,70 @@ public class UnityEngine_MeshWrap
 		{
 			o = ToLua.ToObject(L, 1);
 			UnityEngine.Mesh obj = (UnityEngine.Mesh)o;
-			UnityEngine.Bounds ret = obj.bounds;
+			int ret = obj.blendShapeCount;
+			LuaDLL.lua_pushinteger(L, ret);
+			return 1;
+		}
+		catch(Exception e)
+		{
+			return LuaDLL.toluaL_exception(L, e, o == null ? "attempt to index blendShapeCount on a nil value" : e.Message);
+		}
+	}
+
+	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	static int get_boneWeights(IntPtr L)
+	{
+		object o = null;
+
+		try
+		{
+			o = ToLua.ToObject(L, 1);
+			UnityEngine.Mesh obj = (UnityEngine.Mesh)o;
+			UnityEngine.BoneWeight[] ret = obj.boneWeights;
 			ToLua.Push(L, ret);
 			return 1;
 		}
 		catch(Exception e)
 		{
-			return LuaDLL.toluaL_exception(L, e, o == null ? "attempt to index bounds on a nil value" : e.Message);
+			return LuaDLL.toluaL_exception(L, e, o == null ? "attempt to index boneWeights on a nil value" : e.Message);
+		}
+	}
+
+	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	static int get_bindposes(IntPtr L)
+	{
+		object o = null;
+
+		try
+		{
+			o = ToLua.ToObject(L, 1);
+			UnityEngine.Mesh obj = (UnityEngine.Mesh)o;
+			UnityEngine.Matrix4x4[] ret = obj.bindposes;
+			ToLua.Push(L, ret);
+			return 1;
+		}
+		catch(Exception e)
+		{
+			return LuaDLL.toluaL_exception(L, e, o == null ? "attempt to index bindposes on a nil value" : e.Message);
+		}
+	}
+
+	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	static int get_isReadable(IntPtr L)
+	{
+		object o = null;
+
+		try
+		{
+			o = ToLua.ToObject(L, 1);
+			UnityEngine.Mesh obj = (UnityEngine.Mesh)o;
+			bool ret = obj.isReadable;
+			LuaDLL.lua_pushboolean(L, ret);
+			return 1;
+		}
+		catch(Exception e)
+		{
+			return LuaDLL.toluaL_exception(L, e, o == null ? "attempt to index isReadable on a nil value" : e.Message);
 		}
 	}
 
@@ -1048,7 +1173,7 @@ public class UnityEngine_MeshWrap
 	}
 
 	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
-	static int get_boneWeights(IntPtr L)
+	static int get_bounds(IntPtr L)
 	{
 		object o = null;
 
@@ -1056,32 +1181,13 @@ public class UnityEngine_MeshWrap
 		{
 			o = ToLua.ToObject(L, 1);
 			UnityEngine.Mesh obj = (UnityEngine.Mesh)o;
-			UnityEngine.BoneWeight[] ret = obj.boneWeights;
+			UnityEngine.Bounds ret = obj.bounds;
 			ToLua.Push(L, ret);
 			return 1;
 		}
 		catch(Exception e)
 		{
-			return LuaDLL.toluaL_exception(L, e, o == null ? "attempt to index boneWeights on a nil value" : e.Message);
-		}
-	}
-
-	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
-	static int get_bindposes(IntPtr L)
-	{
-		object o = null;
-
-		try
-		{
-			o = ToLua.ToObject(L, 1);
-			UnityEngine.Mesh obj = (UnityEngine.Mesh)o;
-			UnityEngine.Matrix4x4[] ret = obj.bindposes;
-			ToLua.Push(L, ret);
-			return 1;
-		}
-		catch(Exception e)
-		{
-			return LuaDLL.toluaL_exception(L, e, o == null ? "attempt to index bindposes on a nil value" : e.Message);
+			return LuaDLL.toluaL_exception(L, e, o == null ? "attempt to index bounds on a nil value" : e.Message);
 		}
 	}
 
@@ -1276,7 +1382,7 @@ public class UnityEngine_MeshWrap
 	}
 
 	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
-	static int set_bounds(IntPtr L)
+	static int set_indexFormat(IntPtr L)
 	{
 		object o = null;
 
@@ -1284,32 +1390,13 @@ public class UnityEngine_MeshWrap
 		{
 			o = ToLua.ToObject(L, 1);
 			UnityEngine.Mesh obj = (UnityEngine.Mesh)o;
-			UnityEngine.Bounds arg0 = ToLua.ToBounds(L, 2);
-			obj.bounds = arg0;
+			UnityEngine.Rendering.IndexFormat arg0 = (UnityEngine.Rendering.IndexFormat)ToLua.CheckObject(L, 2, typeof(UnityEngine.Rendering.IndexFormat));
+			obj.indexFormat = arg0;
 			return 0;
 		}
 		catch(Exception e)
 		{
-			return LuaDLL.toluaL_exception(L, e, o == null ? "attempt to index bounds on a nil value" : e.Message);
-		}
-	}
-
-	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
-	static int set_subMeshCount(IntPtr L)
-	{
-		object o = null;
-
-		try
-		{
-			o = ToLua.ToObject(L, 1);
-			UnityEngine.Mesh obj = (UnityEngine.Mesh)o;
-			int arg0 = (int)LuaDLL.luaL_checknumber(L, 2);
-			obj.subMeshCount = arg0;
-			return 0;
-		}
-		catch(Exception e)
-		{
-			return LuaDLL.toluaL_exception(L, e, o == null ? "attempt to index subMeshCount on a nil value" : e.Message);
+			return LuaDLL.toluaL_exception(L, e, o == null ? "attempt to index indexFormat on a nil value" : e.Message);
 		}
 	}
 
@@ -1348,6 +1435,44 @@ public class UnityEngine_MeshWrap
 		catch(Exception e)
 		{
 			return LuaDLL.toluaL_exception(L, e, o == null ? "attempt to index bindposes on a nil value" : e.Message);
+		}
+	}
+
+	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	static int set_subMeshCount(IntPtr L)
+	{
+		object o = null;
+
+		try
+		{
+			o = ToLua.ToObject(L, 1);
+			UnityEngine.Mesh obj = (UnityEngine.Mesh)o;
+			int arg0 = (int)LuaDLL.luaL_checknumber(L, 2);
+			obj.subMeshCount = arg0;
+			return 0;
+		}
+		catch(Exception e)
+		{
+			return LuaDLL.toluaL_exception(L, e, o == null ? "attempt to index subMeshCount on a nil value" : e.Message);
+		}
+	}
+
+	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	static int set_bounds(IntPtr L)
+	{
+		object o = null;
+
+		try
+		{
+			o = ToLua.ToObject(L, 1);
+			UnityEngine.Mesh obj = (UnityEngine.Mesh)o;
+			UnityEngine.Bounds arg0 = ToLua.ToBounds(L, 2);
+			obj.bounds = arg0;
+			return 0;
+		}
+		catch(Exception e)
+		{
+			return LuaDLL.toluaL_exception(L, e, o == null ? "attempt to index bounds on a nil value" : e.Message);
 		}
 	}
 

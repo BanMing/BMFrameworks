@@ -170,6 +170,7 @@ public static class LuaBinder
 		UnityEngine_RenderModeWrap.Register(L);
 		UnityEngine_NetworkReachabilityWrap.Register(L);
 		UnityEngine_CanvasRendererWrap.Register(L);
+		UnityEngine_CustomYieldInstructionWrap.Register(L);
 		L.BeginModule("SceneManagement");
 		UnityEngine_SceneManagement_SceneManagerWrap.Register(L);
 		L.EndModule();
@@ -282,6 +283,7 @@ public static class LuaBinder
 		L.RegFunction("Action_string_int", System_Action_string_int);
 		L.RegFunction("Action_bytes", System_Action_bytes);
 		L.RegFunction("Func_bool", System_Func_bool);
+		L.RegFunction("Action_UnityEngine_AsyncOperation", System_Action_UnityEngine_AsyncOperation);
 		L.RegFunction("Action_UnityEngine_Transform_int", System_Action_UnityEngine_Transform_int);
 		L.RegFunction("Action_UnityEngine_SceneManagement_Scene_UnityEngine_SceneManagement_LoadSceneMode", System_Action_UnityEngine_SceneManagement_Scene_UnityEngine_SceneManagement_LoadSceneMode);
 		L.RegFunction("Action_UnityEngine_SceneManagement_Scene", System_Action_UnityEngine_SceneManagement_Scene);
@@ -508,6 +510,7 @@ public static class LuaBinder
 		UnityEngine_RenderModeWrap.Register(L);
 		UnityEngine_NetworkReachabilityWrap.Register(L);
 		UnityEngine_CanvasRendererWrap.Register(L);
+		UnityEngine_CustomYieldInstructionWrap.Register(L);
 		L.BeginModule("SceneManagement");
 		UnityEngine_SceneManagement_SceneManagerWrap.Register(L);
 		L.EndModule();
@@ -620,6 +623,7 @@ public static class LuaBinder
 		L.RegFunction("Action_string_int", System_Action_string_int);
 		L.RegFunction("Action_bytes", System_Action_bytes);
 		L.RegFunction("Func_bool", System_Func_bool);
+		L.RegFunction("Action_UnityEngine_AsyncOperation", System_Action_UnityEngine_AsyncOperation);
 		L.RegFunction("Action_UnityEngine_Transform_int", System_Action_UnityEngine_Transform_int);
 		L.RegFunction("Action_UnityEngine_SceneManagement_Scene_UnityEngine_SceneManagement_LoadSceneMode", System_Action_UnityEngine_SceneManagement_Scene_UnityEngine_SceneManagement_LoadSceneMode);
 		L.RegFunction("Action_UnityEngine_SceneManagement_Scene", System_Action_UnityEngine_SceneManagement_Scene);
@@ -2324,6 +2328,33 @@ public static class LuaBinder
 			{
 				LuaTable self = ToLua.CheckLuaTable(L, 2);
 				Delegate arg1 = DelegateFactory.CreateDelegate(typeof(System.Func<bool>), func, self);
+				ToLua.Push(L, arg1);
+			}
+			return 1;
+		}
+		catch(Exception e)
+		{
+			return LuaDLL.toluaL_exception(L, e);
+		}
+	}
+
+	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	static int System_Action_UnityEngine_AsyncOperation(IntPtr L)
+	{
+		try
+		{
+			int count = LuaDLL.lua_gettop(L);
+			LuaFunction func = ToLua.CheckLuaFunction(L, 1);
+
+			if (count == 1)
+			{
+				Delegate arg1 = DelegateFactory.CreateDelegate(typeof(System.Action<UnityEngine.AsyncOperation>), func);
+				ToLua.Push(L, arg1);
+			}
+			else
+			{
+				LuaTable self = ToLua.CheckLuaTable(L, 2);
+				Delegate arg1 = DelegateFactory.CreateDelegate(typeof(System.Action<UnityEngine.AsyncOperation>), func, self);
 				ToLua.Push(L, arg1);
 			}
 			return 1;

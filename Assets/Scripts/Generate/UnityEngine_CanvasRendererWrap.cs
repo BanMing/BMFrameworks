@@ -338,17 +338,40 @@ public class UnityEngine_CanvasRendererWrap
 	{
 		try
 		{
-			ToLua.CheckArgsCount(L, 8);
-			System.Collections.Generic.List<UnityEngine.UIVertex> arg0 = (System.Collections.Generic.List<UnityEngine.UIVertex>)ToLua.CheckObject(L, 1, typeof(System.Collections.Generic.List<UnityEngine.UIVertex>));
-			System.Collections.Generic.List<UnityEngine.Vector3> arg1 = (System.Collections.Generic.List<UnityEngine.Vector3>)ToLua.CheckObject(L, 2, typeof(System.Collections.Generic.List<UnityEngine.Vector3>));
-			System.Collections.Generic.List<UnityEngine.Color32> arg2 = (System.Collections.Generic.List<UnityEngine.Color32>)ToLua.CheckObject(L, 3, typeof(System.Collections.Generic.List<UnityEngine.Color32>));
-			System.Collections.Generic.List<UnityEngine.Vector2> arg3 = (System.Collections.Generic.List<UnityEngine.Vector2>)ToLua.CheckObject(L, 4, typeof(System.Collections.Generic.List<UnityEngine.Vector2>));
-			System.Collections.Generic.List<UnityEngine.Vector2> arg4 = (System.Collections.Generic.List<UnityEngine.Vector2>)ToLua.CheckObject(L, 5, typeof(System.Collections.Generic.List<UnityEngine.Vector2>));
-			System.Collections.Generic.List<UnityEngine.Vector3> arg5 = (System.Collections.Generic.List<UnityEngine.Vector3>)ToLua.CheckObject(L, 6, typeof(System.Collections.Generic.List<UnityEngine.Vector3>));
-			System.Collections.Generic.List<UnityEngine.Vector4> arg6 = (System.Collections.Generic.List<UnityEngine.Vector4>)ToLua.CheckObject(L, 7, typeof(System.Collections.Generic.List<UnityEngine.Vector4>));
-			System.Collections.Generic.List<int> arg7 = (System.Collections.Generic.List<int>)ToLua.CheckObject(L, 8, typeof(System.Collections.Generic.List<int>));
-			UnityEngine.CanvasRenderer.SplitUIVertexStreams(arg0, arg1, arg2, arg3, arg4, arg5, arg6, arg7);
-			return 0;
+			int count = LuaDLL.lua_gettop(L);
+
+			if (count == 8 && TypeChecker.CheckTypes(L, 1, typeof(System.Collections.Generic.List<UnityEngine.UIVertex>), typeof(System.Collections.Generic.List<UnityEngine.Vector3>), typeof(System.Collections.Generic.List<UnityEngine.Color32>), typeof(System.Collections.Generic.List<UnityEngine.Vector2>), typeof(System.Collections.Generic.List<UnityEngine.Vector2>), typeof(System.Collections.Generic.List<UnityEngine.Vector3>), typeof(System.Collections.Generic.List<UnityEngine.Vector4>), typeof(System.Collections.Generic.List<int>)))
+			{
+				System.Collections.Generic.List<UnityEngine.UIVertex> arg0 = (System.Collections.Generic.List<UnityEngine.UIVertex>)ToLua.ToObject(L, 1);
+				System.Collections.Generic.List<UnityEngine.Vector3> arg1 = (System.Collections.Generic.List<UnityEngine.Vector3>)ToLua.ToObject(L, 2);
+				System.Collections.Generic.List<UnityEngine.Color32> arg2 = (System.Collections.Generic.List<UnityEngine.Color32>)ToLua.ToObject(L, 3);
+				System.Collections.Generic.List<UnityEngine.Vector2> arg3 = (System.Collections.Generic.List<UnityEngine.Vector2>)ToLua.ToObject(L, 4);
+				System.Collections.Generic.List<UnityEngine.Vector2> arg4 = (System.Collections.Generic.List<UnityEngine.Vector2>)ToLua.ToObject(L, 5);
+				System.Collections.Generic.List<UnityEngine.Vector3> arg5 = (System.Collections.Generic.List<UnityEngine.Vector3>)ToLua.ToObject(L, 6);
+				System.Collections.Generic.List<UnityEngine.Vector4> arg6 = (System.Collections.Generic.List<UnityEngine.Vector4>)ToLua.ToObject(L, 7);
+				System.Collections.Generic.List<int> arg7 = (System.Collections.Generic.List<int>)ToLua.ToObject(L, 8);
+				UnityEngine.CanvasRenderer.SplitUIVertexStreams(arg0, arg1, arg2, arg3, arg4, arg5, arg6, arg7);
+				return 0;
+			}
+			else if (count == 10 && TypeChecker.CheckTypes(L, 1, typeof(System.Collections.Generic.List<UnityEngine.UIVertex>), typeof(System.Collections.Generic.List<UnityEngine.Vector3>), typeof(System.Collections.Generic.List<UnityEngine.Color32>), typeof(System.Collections.Generic.List<UnityEngine.Vector2>), typeof(System.Collections.Generic.List<UnityEngine.Vector2>), typeof(System.Collections.Generic.List<UnityEngine.Vector2>), typeof(System.Collections.Generic.List<UnityEngine.Vector2>), typeof(System.Collections.Generic.List<UnityEngine.Vector3>), typeof(System.Collections.Generic.List<UnityEngine.Vector4>), typeof(System.Collections.Generic.List<int>)))
+			{
+				System.Collections.Generic.List<UnityEngine.UIVertex> arg0 = (System.Collections.Generic.List<UnityEngine.UIVertex>)ToLua.ToObject(L, 1);
+				System.Collections.Generic.List<UnityEngine.Vector3> arg1 = (System.Collections.Generic.List<UnityEngine.Vector3>)ToLua.ToObject(L, 2);
+				System.Collections.Generic.List<UnityEngine.Color32> arg2 = (System.Collections.Generic.List<UnityEngine.Color32>)ToLua.ToObject(L, 3);
+				System.Collections.Generic.List<UnityEngine.Vector2> arg3 = (System.Collections.Generic.List<UnityEngine.Vector2>)ToLua.ToObject(L, 4);
+				System.Collections.Generic.List<UnityEngine.Vector2> arg4 = (System.Collections.Generic.List<UnityEngine.Vector2>)ToLua.ToObject(L, 5);
+				System.Collections.Generic.List<UnityEngine.Vector2> arg5 = (System.Collections.Generic.List<UnityEngine.Vector2>)ToLua.ToObject(L, 6);
+				System.Collections.Generic.List<UnityEngine.Vector2> arg6 = (System.Collections.Generic.List<UnityEngine.Vector2>)ToLua.ToObject(L, 7);
+				System.Collections.Generic.List<UnityEngine.Vector3> arg7 = (System.Collections.Generic.List<UnityEngine.Vector3>)ToLua.ToObject(L, 8);
+				System.Collections.Generic.List<UnityEngine.Vector4> arg8 = (System.Collections.Generic.List<UnityEngine.Vector4>)ToLua.ToObject(L, 9);
+				System.Collections.Generic.List<int> arg9 = (System.Collections.Generic.List<int>)ToLua.ToObject(L, 10);
+				UnityEngine.CanvasRenderer.SplitUIVertexStreams(arg0, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9);
+				return 0;
+			}
+			else
+			{
+				return LuaDLL.luaL_throw(L, "invalid arguments to method: UnityEngine.CanvasRenderer.SplitUIVertexStreams");
+			}
 		}
 		catch(Exception e)
 		{
@@ -361,17 +384,40 @@ public class UnityEngine_CanvasRendererWrap
 	{
 		try
 		{
-			ToLua.CheckArgsCount(L, 8);
-			System.Collections.Generic.List<UnityEngine.UIVertex> arg0 = (System.Collections.Generic.List<UnityEngine.UIVertex>)ToLua.CheckObject(L, 1, typeof(System.Collections.Generic.List<UnityEngine.UIVertex>));
-			System.Collections.Generic.List<UnityEngine.Vector3> arg1 = (System.Collections.Generic.List<UnityEngine.Vector3>)ToLua.CheckObject(L, 2, typeof(System.Collections.Generic.List<UnityEngine.Vector3>));
-			System.Collections.Generic.List<UnityEngine.Color32> arg2 = (System.Collections.Generic.List<UnityEngine.Color32>)ToLua.CheckObject(L, 3, typeof(System.Collections.Generic.List<UnityEngine.Color32>));
-			System.Collections.Generic.List<UnityEngine.Vector2> arg3 = (System.Collections.Generic.List<UnityEngine.Vector2>)ToLua.CheckObject(L, 4, typeof(System.Collections.Generic.List<UnityEngine.Vector2>));
-			System.Collections.Generic.List<UnityEngine.Vector2> arg4 = (System.Collections.Generic.List<UnityEngine.Vector2>)ToLua.CheckObject(L, 5, typeof(System.Collections.Generic.List<UnityEngine.Vector2>));
-			System.Collections.Generic.List<UnityEngine.Vector3> arg5 = (System.Collections.Generic.List<UnityEngine.Vector3>)ToLua.CheckObject(L, 6, typeof(System.Collections.Generic.List<UnityEngine.Vector3>));
-			System.Collections.Generic.List<UnityEngine.Vector4> arg6 = (System.Collections.Generic.List<UnityEngine.Vector4>)ToLua.CheckObject(L, 7, typeof(System.Collections.Generic.List<UnityEngine.Vector4>));
-			System.Collections.Generic.List<int> arg7 = (System.Collections.Generic.List<int>)ToLua.CheckObject(L, 8, typeof(System.Collections.Generic.List<int>));
-			UnityEngine.CanvasRenderer.CreateUIVertexStream(arg0, arg1, arg2, arg3, arg4, arg5, arg6, arg7);
-			return 0;
+			int count = LuaDLL.lua_gettop(L);
+
+			if (count == 8 && TypeChecker.CheckTypes(L, 1, typeof(System.Collections.Generic.List<UnityEngine.UIVertex>), typeof(System.Collections.Generic.List<UnityEngine.Vector3>), typeof(System.Collections.Generic.List<UnityEngine.Color32>), typeof(System.Collections.Generic.List<UnityEngine.Vector2>), typeof(System.Collections.Generic.List<UnityEngine.Vector2>), typeof(System.Collections.Generic.List<UnityEngine.Vector3>), typeof(System.Collections.Generic.List<UnityEngine.Vector4>), typeof(System.Collections.Generic.List<int>)))
+			{
+				System.Collections.Generic.List<UnityEngine.UIVertex> arg0 = (System.Collections.Generic.List<UnityEngine.UIVertex>)ToLua.ToObject(L, 1);
+				System.Collections.Generic.List<UnityEngine.Vector3> arg1 = (System.Collections.Generic.List<UnityEngine.Vector3>)ToLua.ToObject(L, 2);
+				System.Collections.Generic.List<UnityEngine.Color32> arg2 = (System.Collections.Generic.List<UnityEngine.Color32>)ToLua.ToObject(L, 3);
+				System.Collections.Generic.List<UnityEngine.Vector2> arg3 = (System.Collections.Generic.List<UnityEngine.Vector2>)ToLua.ToObject(L, 4);
+				System.Collections.Generic.List<UnityEngine.Vector2> arg4 = (System.Collections.Generic.List<UnityEngine.Vector2>)ToLua.ToObject(L, 5);
+				System.Collections.Generic.List<UnityEngine.Vector3> arg5 = (System.Collections.Generic.List<UnityEngine.Vector3>)ToLua.ToObject(L, 6);
+				System.Collections.Generic.List<UnityEngine.Vector4> arg6 = (System.Collections.Generic.List<UnityEngine.Vector4>)ToLua.ToObject(L, 7);
+				System.Collections.Generic.List<int> arg7 = (System.Collections.Generic.List<int>)ToLua.ToObject(L, 8);
+				UnityEngine.CanvasRenderer.CreateUIVertexStream(arg0, arg1, arg2, arg3, arg4, arg5, arg6, arg7);
+				return 0;
+			}
+			else if (count == 10 && TypeChecker.CheckTypes(L, 1, typeof(System.Collections.Generic.List<UnityEngine.UIVertex>), typeof(System.Collections.Generic.List<UnityEngine.Vector3>), typeof(System.Collections.Generic.List<UnityEngine.Color32>), typeof(System.Collections.Generic.List<UnityEngine.Vector2>), typeof(System.Collections.Generic.List<UnityEngine.Vector2>), typeof(System.Collections.Generic.List<UnityEngine.Vector2>), typeof(System.Collections.Generic.List<UnityEngine.Vector2>), typeof(System.Collections.Generic.List<UnityEngine.Vector3>), typeof(System.Collections.Generic.List<UnityEngine.Vector4>), typeof(System.Collections.Generic.List<int>)))
+			{
+				System.Collections.Generic.List<UnityEngine.UIVertex> arg0 = (System.Collections.Generic.List<UnityEngine.UIVertex>)ToLua.ToObject(L, 1);
+				System.Collections.Generic.List<UnityEngine.Vector3> arg1 = (System.Collections.Generic.List<UnityEngine.Vector3>)ToLua.ToObject(L, 2);
+				System.Collections.Generic.List<UnityEngine.Color32> arg2 = (System.Collections.Generic.List<UnityEngine.Color32>)ToLua.ToObject(L, 3);
+				System.Collections.Generic.List<UnityEngine.Vector2> arg3 = (System.Collections.Generic.List<UnityEngine.Vector2>)ToLua.ToObject(L, 4);
+				System.Collections.Generic.List<UnityEngine.Vector2> arg4 = (System.Collections.Generic.List<UnityEngine.Vector2>)ToLua.ToObject(L, 5);
+				System.Collections.Generic.List<UnityEngine.Vector2> arg5 = (System.Collections.Generic.List<UnityEngine.Vector2>)ToLua.ToObject(L, 6);
+				System.Collections.Generic.List<UnityEngine.Vector2> arg6 = (System.Collections.Generic.List<UnityEngine.Vector2>)ToLua.ToObject(L, 7);
+				System.Collections.Generic.List<UnityEngine.Vector3> arg7 = (System.Collections.Generic.List<UnityEngine.Vector3>)ToLua.ToObject(L, 8);
+				System.Collections.Generic.List<UnityEngine.Vector4> arg8 = (System.Collections.Generic.List<UnityEngine.Vector4>)ToLua.ToObject(L, 9);
+				System.Collections.Generic.List<int> arg9 = (System.Collections.Generic.List<int>)ToLua.ToObject(L, 10);
+				UnityEngine.CanvasRenderer.CreateUIVertexStream(arg0, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9);
+				return 0;
+			}
+			else
+			{
+				return LuaDLL.luaL_throw(L, "invalid arguments to method: UnityEngine.CanvasRenderer.CreateUIVertexStream");
+			}
 		}
 		catch(Exception e)
 		{
@@ -384,16 +430,38 @@ public class UnityEngine_CanvasRendererWrap
 	{
 		try
 		{
-			ToLua.CheckArgsCount(L, 7);
-			System.Collections.Generic.List<UnityEngine.UIVertex> arg0 = (System.Collections.Generic.List<UnityEngine.UIVertex>)ToLua.CheckObject(L, 1, typeof(System.Collections.Generic.List<UnityEngine.UIVertex>));
-			System.Collections.Generic.List<UnityEngine.Vector3> arg1 = (System.Collections.Generic.List<UnityEngine.Vector3>)ToLua.CheckObject(L, 2, typeof(System.Collections.Generic.List<UnityEngine.Vector3>));
-			System.Collections.Generic.List<UnityEngine.Color32> arg2 = (System.Collections.Generic.List<UnityEngine.Color32>)ToLua.CheckObject(L, 3, typeof(System.Collections.Generic.List<UnityEngine.Color32>));
-			System.Collections.Generic.List<UnityEngine.Vector2> arg3 = (System.Collections.Generic.List<UnityEngine.Vector2>)ToLua.CheckObject(L, 4, typeof(System.Collections.Generic.List<UnityEngine.Vector2>));
-			System.Collections.Generic.List<UnityEngine.Vector2> arg4 = (System.Collections.Generic.List<UnityEngine.Vector2>)ToLua.CheckObject(L, 5, typeof(System.Collections.Generic.List<UnityEngine.Vector2>));
-			System.Collections.Generic.List<UnityEngine.Vector3> arg5 = (System.Collections.Generic.List<UnityEngine.Vector3>)ToLua.CheckObject(L, 6, typeof(System.Collections.Generic.List<UnityEngine.Vector3>));
-			System.Collections.Generic.List<UnityEngine.Vector4> arg6 = (System.Collections.Generic.List<UnityEngine.Vector4>)ToLua.CheckObject(L, 7, typeof(System.Collections.Generic.List<UnityEngine.Vector4>));
-			UnityEngine.CanvasRenderer.AddUIVertexStream(arg0, arg1, arg2, arg3, arg4, arg5, arg6);
-			return 0;
+			int count = LuaDLL.lua_gettop(L);
+
+			if (count == 7 && TypeChecker.CheckTypes(L, 1, typeof(System.Collections.Generic.List<UnityEngine.UIVertex>), typeof(System.Collections.Generic.List<UnityEngine.Vector3>), typeof(System.Collections.Generic.List<UnityEngine.Color32>), typeof(System.Collections.Generic.List<UnityEngine.Vector2>), typeof(System.Collections.Generic.List<UnityEngine.Vector2>), typeof(System.Collections.Generic.List<UnityEngine.Vector3>), typeof(System.Collections.Generic.List<UnityEngine.Vector4>)))
+			{
+				System.Collections.Generic.List<UnityEngine.UIVertex> arg0 = (System.Collections.Generic.List<UnityEngine.UIVertex>)ToLua.ToObject(L, 1);
+				System.Collections.Generic.List<UnityEngine.Vector3> arg1 = (System.Collections.Generic.List<UnityEngine.Vector3>)ToLua.ToObject(L, 2);
+				System.Collections.Generic.List<UnityEngine.Color32> arg2 = (System.Collections.Generic.List<UnityEngine.Color32>)ToLua.ToObject(L, 3);
+				System.Collections.Generic.List<UnityEngine.Vector2> arg3 = (System.Collections.Generic.List<UnityEngine.Vector2>)ToLua.ToObject(L, 4);
+				System.Collections.Generic.List<UnityEngine.Vector2> arg4 = (System.Collections.Generic.List<UnityEngine.Vector2>)ToLua.ToObject(L, 5);
+				System.Collections.Generic.List<UnityEngine.Vector3> arg5 = (System.Collections.Generic.List<UnityEngine.Vector3>)ToLua.ToObject(L, 6);
+				System.Collections.Generic.List<UnityEngine.Vector4> arg6 = (System.Collections.Generic.List<UnityEngine.Vector4>)ToLua.ToObject(L, 7);
+				UnityEngine.CanvasRenderer.AddUIVertexStream(arg0, arg1, arg2, arg3, arg4, arg5, arg6);
+				return 0;
+			}
+			else if (count == 9 && TypeChecker.CheckTypes(L, 1, typeof(System.Collections.Generic.List<UnityEngine.UIVertex>), typeof(System.Collections.Generic.List<UnityEngine.Vector3>), typeof(System.Collections.Generic.List<UnityEngine.Color32>), typeof(System.Collections.Generic.List<UnityEngine.Vector2>), typeof(System.Collections.Generic.List<UnityEngine.Vector2>), typeof(System.Collections.Generic.List<UnityEngine.Vector2>), typeof(System.Collections.Generic.List<UnityEngine.Vector2>), typeof(System.Collections.Generic.List<UnityEngine.Vector3>), typeof(System.Collections.Generic.List<UnityEngine.Vector4>)))
+			{
+				System.Collections.Generic.List<UnityEngine.UIVertex> arg0 = (System.Collections.Generic.List<UnityEngine.UIVertex>)ToLua.ToObject(L, 1);
+				System.Collections.Generic.List<UnityEngine.Vector3> arg1 = (System.Collections.Generic.List<UnityEngine.Vector3>)ToLua.ToObject(L, 2);
+				System.Collections.Generic.List<UnityEngine.Color32> arg2 = (System.Collections.Generic.List<UnityEngine.Color32>)ToLua.ToObject(L, 3);
+				System.Collections.Generic.List<UnityEngine.Vector2> arg3 = (System.Collections.Generic.List<UnityEngine.Vector2>)ToLua.ToObject(L, 4);
+				System.Collections.Generic.List<UnityEngine.Vector2> arg4 = (System.Collections.Generic.List<UnityEngine.Vector2>)ToLua.ToObject(L, 5);
+				System.Collections.Generic.List<UnityEngine.Vector2> arg5 = (System.Collections.Generic.List<UnityEngine.Vector2>)ToLua.ToObject(L, 6);
+				System.Collections.Generic.List<UnityEngine.Vector2> arg6 = (System.Collections.Generic.List<UnityEngine.Vector2>)ToLua.ToObject(L, 7);
+				System.Collections.Generic.List<UnityEngine.Vector3> arg7 = (System.Collections.Generic.List<UnityEngine.Vector3>)ToLua.ToObject(L, 8);
+				System.Collections.Generic.List<UnityEngine.Vector4> arg8 = (System.Collections.Generic.List<UnityEngine.Vector4>)ToLua.ToObject(L, 9);
+				UnityEngine.CanvasRenderer.AddUIVertexStream(arg0, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8);
+				return 0;
+			}
+			else
+			{
+				return LuaDLL.luaL_throw(L, "invalid arguments to method: UnityEngine.CanvasRenderer.AddUIVertexStream");
+			}
 		}
 		catch(Exception e)
 		{

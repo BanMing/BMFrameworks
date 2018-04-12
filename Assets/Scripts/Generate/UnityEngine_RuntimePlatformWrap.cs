@@ -10,7 +10,6 @@ public class UnityEngine_RuntimePlatformWrap
 		L.RegVar("OSXEditor", get_OSXEditor, null);
 		L.RegVar("OSXPlayer", get_OSXPlayer, null);
 		L.RegVar("WindowsPlayer", get_WindowsPlayer, null);
-		L.RegVar("OSXDashboardPlayer", get_OSXDashboardPlayer, null);
 		L.RegVar("WindowsEditor", get_WindowsEditor, null);
 		L.RegVar("IPhonePlayer", get_IPhonePlayer, null);
 		L.RegVar("Android", get_Android, null);
@@ -25,7 +24,6 @@ public class UnityEngine_RuntimePlatformWrap
 		L.RegVar("PS4", get_PS4, null);
 		L.RegVar("PSM", get_PSM, null);
 		L.RegVar("XboxOne", get_XboxOne, null);
-		L.RegVar("SamsungTVPlayer", get_SamsungTVPlayer, null);
 		L.RegVar("WiiU", get_WiiU, null);
 		L.RegVar("tvOS", get_tvOS, null);
 		L.RegVar("Switch", get_Switch, null);
@@ -51,13 +49,6 @@ public class UnityEngine_RuntimePlatformWrap
 	static int get_WindowsPlayer(IntPtr L)
 	{
 		ToLua.Push(L, UnityEngine.RuntimePlatform.WindowsPlayer);
-		return 1;
-	}
-
-	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
-	static int get_OSXDashboardPlayer(IntPtr L)
-	{
-		ToLua.Push(L, UnityEngine.RuntimePlatform.OSXDashboardPlayer);
 		return 1;
 	}
 
@@ -156,13 +147,6 @@ public class UnityEngine_RuntimePlatformWrap
 	static int get_XboxOne(IntPtr L)
 	{
 		ToLua.Push(L, UnityEngine.RuntimePlatform.XboxOne);
-		return 1;
-	}
-
-	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
-	static int get_SamsungTVPlayer(IntPtr L)
-	{
-		ToLua.Push(L, UnityEngine.RuntimePlatform.SamsungTVPlayer);
 		return 1;
 	}
 
