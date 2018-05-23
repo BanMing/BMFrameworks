@@ -10,6 +10,7 @@ public class System_Collections_Generic_ListWrap
     public static void Register(LuaState L)
 	{        
         L.BeginClass(typeof(List<>), typeof(System.Object), "List");
+        L.RegFunction("stringNew", StringNew);
 		L.RegFunction("Add", Add);
 		L.RegFunction("AddRange", AddRange);
 		L.RegFunction("AsReadOnly", AsReadOnly);
@@ -47,6 +48,22 @@ public class System_Collections_Generic_ListWrap
 		L.RegVar("Capacity", get_Capacity, set_Capacity);
 		L.RegVar("Count", get_Count, null);
         L.EndClass();        
+    }
+
+
+    [MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+    static int StringNew(IntPtr L)
+    {
+        try
+        {
+            List<string> o = new List<string>();
+            ToLua.Push(L, o);
+            return 1;
+        }
+        catch (Exception e)
+        {
+            return LuaDLL.toluaL_exception(L, e);
+        }
     }
 
     [MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]

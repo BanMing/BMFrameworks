@@ -74,6 +74,7 @@ public class LuaClient : MonoBehaviour
         {
             OpenZbsDebugger();
         }
+        OpenCJson();
     }
 
     public void OpenZbsDebugger(string ip = "localhost")
@@ -157,16 +158,6 @@ public class LuaClient : MonoBehaviour
         LuaCoroutine.Register(luaState, this);
     }
 
-    protected virtual void BindAsync(Action callback)
-    {
-        StartCoroutine(LuaBinder.BindImp(luaState, () =>
-        {
-            //LuaBinder.Bind(luaState);
-            LuaCoroutine.Register(luaState, this);
-            callback();
-        }));
-    }
-
     protected void Init()
     {        
         InitLoader();
@@ -174,38 +165,20 @@ public class LuaClient : MonoBehaviour
         OpenLibs();
         luaState.LuaSetTop(0);
         Bind();
-        LoadLuaFiles();
-    }
-
-    protected void InitAsync(Action callback = null)
-    {
-        InitLoader();
-        luaState = new LuaState();
-        OpenLibs();
-        luaState.LuaSetTop(0);
-        BindAsync(() =>
-        {
-            LoadLuaFiles();
-            if (callback != null)
-            {
-                callback();
-            }
-        });
+        LoadLuaFiles();    
     }
 
     protected void Awake()
     {
         Instance = this;
-        InitAsync();
+        Init();
     }
 
     protected virtual void OnLoadFinished()
     {
-        luaState.StartAsync(()=>
-        {
-            StartLooper();
-            StartMain();
-        });
+        luaState.Start();
+        StartLooper();
+        StartMain();
     }
 
     protected void OnLevelWasLoaded(int level)
@@ -262,12 +235,4 @@ public class LuaClient : MonoBehaviour
     {
         return loop;
     }
-
-	public void ExecuteLuaFunction(string funcName,object[] obj)
-	{
-		LuaFunction luaFunc = luaState.GetFunction (funcName);
-		luaFunc.Call (obj);
-		luaFunc.Dispose ();
-		luaFunc = null;
-	}
 }

@@ -20,9 +20,9 @@ public class ServerConfig : GameData<ServerConfig>
 {
     static public readonly string fileName = "ServerConfig.xml";
 
-    public string CfgMapURL { set; get; } //服务器入口CFG URL
+    public string CfgMapURL { protected set; get; } //服务器入口CFG URL
 
-    public string Version { set; get; }   //客户端当前版本号
+    public string Version { protected set; get; }   //客户端当前版本号
 
     static bool IsInit = false;
 
@@ -115,27 +115,16 @@ public class ServerURLManager
 
     static private void Init(Action<bool> initFinish)
     {
-        //Debug.Log("ServerConfig-->Init()-->ServerConfig.Instance.CfgMapURL:" + ServerConfig.Instance.CfgMapURL);
         Action<string> getMapCfgAction = delegate (string cfgMapContent)
         {
-            if (string.IsNullOrEmpty(cfgMapContent) || cfgMapContent == "")
-            {
-                // UIWindowUpdate.Instance.ShowTips(LanguageConfig.GetText(15));
-                Init(initFinish);
-                return;
-            }
-
             CfgURLConfig.LoadFromText(cfgMapContent, "CfgURLConfig");
-
             string cfgURL = CfgURLConfig.GetCfgURL(ServerConfig.Instance.Version);
-            //Debug.Log("ServerConfig-->Init()-->getMapCfgAction-->cfgURL:" + cfgURL);
 
             Action<string> getCfgAction = delegate (string cfgContent)
             {
                 ServerURLConfig.LoadFromText(cfgContent, "ServerURLConfig");
                 foreach (var item in ServerURLConfig.dataMap)
                 {
-                    //Debug.Log("ServerConfig-->Init()-->getMapCfgAction-->getCfgAction-->cfg name:"+item.Value.name + " url:" + item.Value.url);
                     switch (item.Value.name.ToLower())
                     {
                         case "noticedata": NoticeURL = item.Value.url; break;
@@ -316,7 +305,6 @@ public class ServerURLManager
 
     static public void GetGameConfigData(Action<string> onLoad)
     {
-        //Debug.Log("ServerURLManager.cs-->GetGameConfigData-->GameConfigURL:" + GameConfigURL + " Init:" + IsInit);
         if (IsInit)
         {
             HTTPTool.GetText(GameConfigURL, onLoad);

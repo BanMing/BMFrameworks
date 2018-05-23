@@ -69,15 +69,21 @@ namespace cn.sharesdk.unity3d
 		WechatPlatform = 22,  
 		QQPlatform = 24,
 		YixinPlatform = 38,
-		#elif UNITY_IPHONE	
+#elif UNITY_IPHONE
 		YixinPlatform = 994,    //Yixin series
 		KakaoPlatform = 995,    //Kakao series
 		EvernoteInternational = 996,//Evernote InternationaL Edition
 		WechatPlatform = 997,   //Wechat Series
 		QQPlatform = 998,		//QQ Series  
-		#endif
+#else
+        	YixinPlatform = 994,    //Yixin series
+		KakaoPlatform = 995,    //Kakao series
+		EvernoteInternational = 996,//Evernote InternationaL Edition
+		WechatPlatform = 997,   //Wechat Series
+		QQPlatform = 998,		//QQ Series  
+#endif
 
-	}
+    }
 
 }
 

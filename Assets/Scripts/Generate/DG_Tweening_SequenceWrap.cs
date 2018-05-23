@@ -836,36 +836,12 @@ public class DG_Tweening_SequenceWrap
 	{
 		try
 		{
-			int count = LuaDLL.lua_gettop(L);
-
-			if (count == 2 && TypeChecker.CheckTypes(L, 1, typeof(DG.Tweening.Tween), typeof(string)))
-			{
-				DG.Tweening.Sequence obj = (DG.Tweening.Sequence)ToLua.ToObject(L, 1);
-				string arg0 = ToLua.ToString(L, 2);
-				DG.Tweening.Tween o = obj.SetId(arg0);
-				ToLua.PushObject(L, o);
-				return 1;
-			}
-			else if (count == 2 && TypeChecker.CheckTypes(L, 1, typeof(DG.Tweening.Tween), typeof(int)))
-			{
-				DG.Tweening.Sequence obj = (DG.Tweening.Sequence)ToLua.ToObject(L, 1);
-				int arg0 = (int)LuaDLL.lua_tonumber(L, 2);
-				DG.Tweening.Tween o = obj.SetId(arg0);
-				ToLua.PushObject(L, o);
-				return 1;
-			}
-			else if (count == 2 && TypeChecker.CheckTypes(L, 1, typeof(DG.Tweening.Tween), typeof(object)))
-			{
-				DG.Tweening.Sequence obj = (DG.Tweening.Sequence)ToLua.ToObject(L, 1);
-				object arg0 = ToLua.ToVarObject(L, 2);
-				DG.Tweening.Tween o = obj.SetId(arg0);
-				ToLua.PushObject(L, o);
-				return 1;
-			}
-			else
-			{
-				return LuaDLL.luaL_throw(L, "invalid arguments to method: DG.Tweening.Sequence.SetId");
-			}
+			ToLua.CheckArgsCount(L, 2);
+			DG.Tweening.Sequence obj = (DG.Tweening.Sequence)ToLua.CheckObject(L, 1, typeof(DG.Tweening.Sequence));
+			object arg0 = ToLua.ToVarObject(L, 2);
+			DG.Tweening.Tween o = obj.SetId(arg0);
+			ToLua.PushObject(L, o);
+			return 1;
 		}
 		catch(Exception e)
 		{

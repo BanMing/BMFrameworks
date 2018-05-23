@@ -20,6 +20,8 @@ public class UIWindowsWrap
 		L.RegFunction("SetImage", SetImage);
 		L.RegFunction("SetImageColor", SetImageColor);
 		L.RegFunction("SetRawImage", SetRawImage);
+		L.RegFunction("RegisterInputFeildOnEndEdit", RegisterInputFeildOnEndEdit);
+		L.RegFunction("UnRegisterInputFeildOnEndEdit", UnRegisterInputFeildOnEndEdit);
 		L.RegFunction("RegisterToggleValueChanged", RegisterToggleValueChanged);
 		L.RegFunction("UnRegisterToggleValueChanged", UnRegisterToggleValueChanged);
 		L.RegFunction("RegisterSliderValueChanged", RegisterSliderValueChanged);
@@ -139,12 +141,28 @@ public class UIWindowsWrap
 	{
 		try
 		{
-			ToLua.CheckArgsCount(L, 3);
-			UIWindows obj = (UIWindows)ToLua.CheckObject(L, 1, typeof(UIWindows));
-			string arg0 = ToLua.CheckString(L, 2);
-			string arg1 = ToLua.CheckString(L, 3);
-			obj.UnRegisterEventListener(arg0, arg1);
-			return 0;
+			int count = LuaDLL.lua_gettop(L);
+
+			if (count == 3 && TypeChecker.CheckTypes(L, 1, typeof(UIWindows), typeof(UnityEngine.Transform), typeof(string)))
+			{
+				UIWindows obj = (UIWindows)ToLua.ToObject(L, 1);
+				UnityEngine.Transform arg0 = (UnityEngine.Transform)ToLua.ToObject(L, 2);
+				string arg1 = ToLua.ToString(L, 3);
+				obj.UnRegisterEventListener(arg0, arg1);
+				return 0;
+			}
+			else if (count == 3 && TypeChecker.CheckTypes(L, 1, typeof(UIWindows), typeof(string), typeof(string)))
+			{
+				UIWindows obj = (UIWindows)ToLua.ToObject(L, 1);
+				string arg0 = ToLua.ToString(L, 2);
+				string arg1 = ToLua.ToString(L, 3);
+				obj.UnRegisterEventListener(arg0, arg1);
+				return 0;
+			}
+			else
+			{
+				return LuaDLL.luaL_throw(L, "invalid arguments to method: UIWindows.UnRegisterEventListener");
+			}
 		}
 		catch(Exception e)
 		{
@@ -191,26 +209,11 @@ public class UIWindowsWrap
 	{
 		try
 		{
-			int count = LuaDLL.lua_gettop(L);
-
-			if (count == 2 && TypeChecker.CheckTypes(L, 1, typeof(UIWindows), typeof(UnityEngine.Transform)))
-			{
-				UIWindows obj = (UIWindows)ToLua.ToObject(L, 1);
-				UnityEngine.Transform arg0 = (UnityEngine.Transform)ToLua.ToObject(L, 2);
-				obj.UnRegisterClickListener(arg0);
-				return 0;
-			}
-			else if (count == 2 && TypeChecker.CheckTypes(L, 1, typeof(UIWindows), typeof(string)))
-			{
-				UIWindows obj = (UIWindows)ToLua.ToObject(L, 1);
-				string arg0 = ToLua.ToString(L, 2);
-				obj.UnRegisterClickListener(arg0);
-				return 0;
-			}
-			else
-			{
-				return LuaDLL.luaL_throw(L, "invalid arguments to method: UIWindows.UnRegisterClickListener");
-			}
+			ToLua.CheckArgsCount(L, 2);
+			UIWindows obj = (UIWindows)ToLua.CheckObject(L, 1, typeof(UIWindows));
+			string arg0 = ToLua.CheckString(L, 2);
+			obj.UnRegisterClickListener(arg0);
+			return 0;
 		}
 		catch(Exception e)
 		{
@@ -487,6 +490,72 @@ public class UIWindowsWrap
 			else
 			{
 				return LuaDLL.luaL_throw(L, "invalid arguments to method: UIWindows.SetRawImage");
+			}
+		}
+		catch(Exception e)
+		{
+			return LuaDLL.toluaL_exception(L, e);
+		}
+	}
+
+	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	static int RegisterInputFeildOnEndEdit(IntPtr L)
+	{
+		try
+		{
+			int count = LuaDLL.lua_gettop(L);
+
+			if (count == 3 && TypeChecker.CheckTypes(L, 1, typeof(UIWindows), typeof(UnityEngine.Transform), typeof(LuaInterface.LuaFunction)))
+			{
+				UIWindows obj = (UIWindows)ToLua.ToObject(L, 1);
+				UnityEngine.Transform arg0 = (UnityEngine.Transform)ToLua.ToObject(L, 2);
+				LuaFunction arg1 = ToLua.ToLuaFunction(L, 3);
+				obj.RegisterInputFeildOnEndEdit(arg0, arg1);
+				return 0;
+			}
+			else if (count == 3 && TypeChecker.CheckTypes(L, 1, typeof(UIWindows), typeof(string), typeof(LuaInterface.LuaFunction)))
+			{
+				UIWindows obj = (UIWindows)ToLua.ToObject(L, 1);
+				string arg0 = ToLua.ToString(L, 2);
+				LuaFunction arg1 = ToLua.ToLuaFunction(L, 3);
+				obj.RegisterInputFeildOnEndEdit(arg0, arg1);
+				return 0;
+			}
+			else
+			{
+				return LuaDLL.luaL_throw(L, "invalid arguments to method: UIWindows.RegisterInputFeildOnEndEdit");
+			}
+		}
+		catch(Exception e)
+		{
+			return LuaDLL.toluaL_exception(L, e);
+		}
+	}
+
+	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	static int UnRegisterInputFeildOnEndEdit(IntPtr L)
+	{
+		try
+		{
+			int count = LuaDLL.lua_gettop(L);
+
+			if (count == 2 && TypeChecker.CheckTypes(L, 1, typeof(UIWindows), typeof(UnityEngine.Transform)))
+			{
+				UIWindows obj = (UIWindows)ToLua.ToObject(L, 1);
+				UnityEngine.Transform arg0 = (UnityEngine.Transform)ToLua.ToObject(L, 2);
+				obj.UnRegisterInputFeildOnEndEdit(arg0);
+				return 0;
+			}
+			else if (count == 2 && TypeChecker.CheckTypes(L, 1, typeof(UIWindows), typeof(string)))
+			{
+				UIWindows obj = (UIWindows)ToLua.ToObject(L, 1);
+				string arg0 = ToLua.ToString(L, 2);
+				obj.UnRegisterInputFeildOnEndEdit(arg0);
+				return 0;
+			}
+			else
+			{
+				return LuaDLL.luaL_throw(L, "invalid arguments to method: UIWindows.UnRegisterInputFeildOnEndEdit");
 			}
 		}
 		catch(Exception e)

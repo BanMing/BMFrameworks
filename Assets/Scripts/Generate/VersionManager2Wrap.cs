@@ -8,7 +8,6 @@ public class VersionManager2Wrap
 	{
 		L.BeginClass(typeof(VersionManager2), typeof(Singleton<VersionManager2>));
 		L.RegFunction("GetLocalVersionInfo", GetLocalVersionInfo);
-		L.RegFunction("GetLocalVersionInfoAsync", GetLocalVersionInfoAsync);
 		L.RegFunction("GetInnerVersionInfo", GetInnerVersionInfo);
 		L.RegFunction("CheckInstallationPackageVersionWithLocal", CheckInstallationPackageVersionWithLocal);
 		L.RegFunction("CheckLocalVersionInfoWithServer", CheckLocalVersionInfoWithServer);
@@ -17,11 +16,9 @@ public class VersionManager2Wrap
 		L.RegFunction("UpdateGame", UpdateGame);
 		L.RegFunction("GetServerVersionInfo", GetServerVersionInfo);
 		L.RegFunction("DownLoadSingleResItem", DownLoadSingleResItem);
-		L.RegFunction("GetServerResInfoList", GetServerResInfoList);
 		L.RegFunction("New", _CreateVersionManager2);
 		L.RegFunction("__tostring", ToLua.op_ToString);
 		L.RegVar("VersionInfoFilePath", get_VersionInfoFilePath, set_VersionInfoFilePath);
-		L.RegVar("serverVersionInfo", get_serverVersionInfo, set_serverVersionInfo);
 		L.RegVar("InnerVersionInfo", get_InnerVersionInfo, null);
 		L.EndClass();
 	}
@@ -68,35 +65,6 @@ public class VersionManager2Wrap
 	}
 
 	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
-	static int GetLocalVersionInfoAsync(IntPtr L)
-	{
-		try
-		{
-			ToLua.CheckArgsCount(L, 2);
-			VersionManager2 obj = (VersionManager2)ToLua.CheckObject(L, 1, typeof(VersionManager2));
-			System.Action<VersionInfo2> arg0 = null;
-			LuaTypes funcType2 = LuaDLL.lua_type(L, 2);
-
-			if (funcType2 != LuaTypes.LUA_TFUNCTION)
-			{
-				 arg0 = (System.Action<VersionInfo2>)ToLua.CheckObject(L, 2, typeof(System.Action<VersionInfo2>));
-			}
-			else
-			{
-				LuaFunction func = ToLua.ToLuaFunction(L, 2);
-				arg0 = DelegateFactory.CreateDelegate(typeof(System.Action<VersionInfo2>), func) as System.Action<VersionInfo2>;
-			}
-
-			obj.GetLocalVersionInfoAsync(arg0);
-			return 0;
-		}
-		catch(Exception e)
-		{
-			return LuaDLL.toluaL_exception(L, e);
-		}
-	}
-
-	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
 	static int GetInnerVersionInfo(IntPtr L)
 	{
 		try
@@ -118,22 +86,9 @@ public class VersionManager2Wrap
 	{
 		try
 		{
-			ToLua.CheckArgsCount(L, 2);
+			ToLua.CheckArgsCount(L, 1);
 			VersionManager2 obj = (VersionManager2)ToLua.CheckObject(L, 1, typeof(VersionManager2));
-			System.Action arg0 = null;
-			LuaTypes funcType2 = LuaDLL.lua_type(L, 2);
-
-			if (funcType2 != LuaTypes.LUA_TFUNCTION)
-			{
-				 arg0 = (System.Action)ToLua.CheckObject(L, 2, typeof(System.Action));
-			}
-			else
-			{
-				LuaFunction func = ToLua.ToLuaFunction(L, 2);
-				arg0 = DelegateFactory.CreateDelegate(typeof(System.Action), func) as System.Action;
-			}
-
-			obj.CheckInstallationPackageVersionWithLocal(arg0);
+			obj.CheckInstallationPackageVersionWithLocal();
 			return 0;
 		}
 		catch(Exception e)
@@ -307,42 +262,11 @@ public class VersionManager2Wrap
 	}
 
 	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
-	static int GetServerResInfoList(IntPtr L)
-	{
-		try
-		{
-			ToLua.CheckArgsCount(L, 1);
-			VersionManager2 obj = (VersionManager2)ToLua.CheckObject(L, 1, typeof(VersionManager2));
-			System.Collections.Generic.List<ResInfo> o = obj.GetServerResInfoList();
-			ToLua.PushObject(L, o);
-			return 1;
-		}
-		catch(Exception e)
-		{
-			return LuaDLL.toluaL_exception(L, e);
-		}
-	}
-
-	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
 	static int get_VersionInfoFilePath(IntPtr L)
 	{
 		try
 		{
 			LuaDLL.lua_pushstring(L, VersionManager2.VersionInfoFilePath);
-			return 1;
-		}
-		catch(Exception e)
-		{
-			return LuaDLL.toluaL_exception(L, e);
-		}
-	}
-
-	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
-	static int get_serverVersionInfo(IntPtr L)
-	{
-		try
-		{
-			ToLua.PushObject(L, VersionManager2.serverVersionInfo);
 			return 1;
 		}
 		catch(Exception e)
@@ -377,21 +301,6 @@ public class VersionManager2Wrap
 		{
 			string arg0 = ToLua.CheckString(L, 2);
 			VersionManager2.VersionInfoFilePath = arg0;
-			return 0;
-		}
-		catch(Exception e)
-		{
-			return LuaDLL.toluaL_exception(L, e);
-		}
-	}
-
-	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
-	static int set_serverVersionInfo(IntPtr L)
-	{
-		try
-		{
-			VersionInfo2 arg0 = (VersionInfo2)ToLua.CheckObject(L, 2, typeof(VersionInfo2));
-			VersionManager2.serverVersionInfo = arg0;
 			return 0;
 		}
 		catch(Exception e)

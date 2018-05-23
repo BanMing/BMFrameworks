@@ -25,7 +25,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Collections;
 using System.Text;
-using System;
 
 namespace LuaInterface
 {
@@ -190,32 +189,7 @@ namespace LuaInterface
             {
                 return ReadZipFile(fileName);
             }
-        }
-
-        public virtual void ReadFileAsync(string fileName, Action<byte[]> callback)
-        {
-            if (!beZip)
-            {
-                string path = FindFile(fileName);
-                byte[] str = null;
-
-                if (!string.IsNullOrEmpty(path) && File.Exists(path))
-                {
-#if !UNITY_WEBPLAYER
-                    str = File.ReadAllBytes(path);
-#else
-                    throw new LuaException("can't run in web platform, please switch to other platform");
-#endif
-                }
-
-                callback(str);
-            }
-            else
-            {
-                var bytes = ReadZipFile(fileName);
-                callback(bytes);
-            }
-        }
+        }        
 
         public virtual string FindFileError(string fileName)
         {
@@ -282,7 +256,7 @@ namespace LuaInterface
                 fileName += ".lua";
             }
 
-#if UNITY_5
+#if UNITY_5||UNITY_2017
             fileName += ".bytes";
 #endif
             zipName = StringBuilderCache.GetStringAndRelease(sb);
@@ -293,7 +267,7 @@ namespace LuaInterface
 // #if UNITY_5
                 TextAsset luaCode = zipFile.LoadAsset<TextAsset>(fileName);
 // #else
-                // TextAsset luaCode = zipFile.Load(fileName, typeof(TextAsset)) as TextAsset;
+//                 TextAsset luaCode = zipFile.Load(fileName, typeof(TextAsset)) as TextAsset;
 // #endif
 
                 if (luaCode != null)

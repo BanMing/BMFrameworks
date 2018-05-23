@@ -12,9 +12,6 @@ public class ZIPToolWrap
 		L.RegFunction("DecompressToDirectory", DecompressToDirectory);
 		L.RegFunction("PackFiles", PackFiles);
 		L.RegFunction("UnpackMemory", UnpackMemory);
-		L.RegFunction("ZLib_CopyStream", ZLib_CopyStream);
-		L.RegFunction("ZLib_Decompress", ZLib_Decompress);
-		L.RegFunction("ZLib_Compress", ZLib_Compress);
 		L.RegFunction("UnpackFiles", UnpackFiles);
 		L.EndStaticLibs();
 	}
@@ -150,57 +147,6 @@ public class ZIPToolWrap
 			ToLua.CheckArgsCount(L, 1);
 			byte[] arg0 = ToLua.CheckByteBuffer(L, 1);
 			byte[] o = ZIPTool.UnpackMemory(arg0);
-			ToLua.Push(L, o);
-			return 1;
-		}
-		catch(Exception e)
-		{
-			return LuaDLL.toluaL_exception(L, e);
-		}
-	}
-
-	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
-	static int ZLib_CopyStream(IntPtr L)
-	{
-		try
-		{
-			ToLua.CheckArgsCount(L, 2);
-			System.IO.Stream arg0 = (System.IO.Stream)ToLua.CheckObject(L, 1, typeof(System.IO.Stream));
-			System.IO.Stream arg1 = (System.IO.Stream)ToLua.CheckObject(L, 2, typeof(System.IO.Stream));
-			ZIPTool.ZLib_CopyStream(arg0, arg1);
-			return 0;
-		}
-		catch(Exception e)
-		{
-			return LuaDLL.toluaL_exception(L, e);
-		}
-	}
-
-	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
-	static int ZLib_Decompress(IntPtr L)
-	{
-		try
-		{
-			ToLua.CheckArgsCount(L, 1);
-			byte[] arg0 = ToLua.CheckByteBuffer(L, 1);
-			byte[] o = ZIPTool.ZLib_Decompress(arg0);
-			ToLua.Push(L, o);
-			return 1;
-		}
-		catch(Exception e)
-		{
-			return LuaDLL.toluaL_exception(L, e);
-		}
-	}
-
-	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
-	static int ZLib_Compress(IntPtr L)
-	{
-		try
-		{
-			ToLua.CheckArgsCount(L, 1);
-			byte[] arg0 = ToLua.CheckByteBuffer(L, 1);
-			byte[] o = ZIPTool.ZLib_Compress(arg0);
 			ToLua.Push(L, o);
 			return 1;
 		}

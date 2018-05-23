@@ -18,6 +18,7 @@ public class UnityEngine_MonoBehaviourWrap
 		L.RegFunction("__eq", op_Equality);
 		L.RegFunction("__tostring", ToLua.op_ToString);
 		L.RegVar("useGUILayout", get_useGUILayout, set_useGUILayout);
+		L.RegVar("runInEditMode", get_runInEditMode, set_runInEditMode);
 		L.EndClass();
 	}
 
@@ -274,6 +275,25 @@ public class UnityEngine_MonoBehaviourWrap
 	}
 
 	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	static int get_runInEditMode(IntPtr L)
+	{
+		object o = null;
+
+		try
+		{
+			o = ToLua.ToObject(L, 1);
+			UnityEngine.MonoBehaviour obj = (UnityEngine.MonoBehaviour)o;
+			bool ret = obj.runInEditMode;
+			LuaDLL.lua_pushboolean(L, ret);
+			return 1;
+		}
+		catch(Exception e)
+		{
+			return LuaDLL.toluaL_exception(L, e, o == null ? "attempt to index runInEditMode on a nil value" : e.Message);
+		}
+	}
+
+	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
 	static int set_useGUILayout(IntPtr L)
 	{
 		object o = null;
@@ -289,6 +309,25 @@ public class UnityEngine_MonoBehaviourWrap
 		catch(Exception e)
 		{
 			return LuaDLL.toluaL_exception(L, e, o == null ? "attempt to index useGUILayout on a nil value" : e.Message);
+		}
+	}
+
+	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	static int set_runInEditMode(IntPtr L)
+	{
+		object o = null;
+
+		try
+		{
+			o = ToLua.ToObject(L, 1);
+			UnityEngine.MonoBehaviour obj = (UnityEngine.MonoBehaviour)o;
+			bool arg0 = LuaDLL.luaL_checkboolean(L, 2);
+			obj.runInEditMode = arg0;
+			return 0;
+		}
+		catch(Exception e)
+		{
+			return LuaDLL.toluaL_exception(L, e, o == null ? "attempt to index runInEditMode on a nil value" : e.Message);
 		}
 	}
 }

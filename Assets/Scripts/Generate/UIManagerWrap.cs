@@ -18,7 +18,6 @@ public class UIManagerWrap
 		L.RegFunction("CloseAllWindowInRoot", CloseAllWindowInRoot);
 		L.RegFunction("CloseAllWindowInTopRoot", CloseAllWindowInTopRoot);
 		L.RegFunction("IsInit", IsInit);
-		L.RegFunction("GetCamera", GetCamera);
 		L.RegFunction("New", _CreateUIManager);
 		L.RegFunction("__tostring", ToLua.op_ToString);
 		L.RegVar("m_CreateWindow", get_m_CreateWindow, set_m_CreateWindow);
@@ -28,7 +27,6 @@ public class UIManagerWrap
 		L.RegVar("Instance", get_Instance, null);
 		L.RegVar("UIRoot", get_UIRoot, null);
 		L.RegVar("UITopRoot", get_UITopRoot, null);
-		L.RegVar("RootCanvas", get_RootCanvas, null);
 		L.EndClass();
 	}
 
@@ -315,23 +313,6 @@ public class UIManagerWrap
 	}
 
 	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
-	static int GetCamera(IntPtr L)
-	{
-		try
-		{
-			ToLua.CheckArgsCount(L, 1);
-			UIManager obj = (UIManager)ToLua.CheckObject(L, 1, typeof(UIManager));
-			UnityEngine.Camera o = obj.GetCamera();
-			ToLua.Push(L, o);
-			return 1;
-		}
-		catch(Exception e)
-		{
-			return LuaDLL.toluaL_exception(L, e);
-		}
-	}
-
-	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
 	static int get_m_CreateWindow(IntPtr L)
 	{
 		object o = null;
@@ -456,25 +437,6 @@ public class UIManagerWrap
 		catch(Exception e)
 		{
 			return LuaDLL.toluaL_exception(L, e, o == null ? "attempt to index UITopRoot on a nil value" : e.Message);
-		}
-	}
-
-	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
-	static int get_RootCanvas(IntPtr L)
-	{
-		object o = null;
-
-		try
-		{
-			o = ToLua.ToObject(L, 1);
-			UIManager obj = (UIManager)o;
-			UnityEngine.Canvas ret = obj.RootCanvas;
-			ToLua.Push(L, ret);
-			return 1;
-		}
-		catch(Exception e)
-		{
-			return LuaDLL.toluaL_exception(L, e, o == null ? "attempt to index RootCanvas on a nil value" : e.Message);
 		}
 	}
 

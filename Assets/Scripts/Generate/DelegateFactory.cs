@@ -23,14 +23,12 @@ public static class DelegateFactory
 		dict.Add(typeof(System.Action<int>), System_Action_int);
 		dict.Add(typeof(System.Comparison<int>), System_Comparison_int);
 		dict.Add(typeof(DG.Tweening.TweenCallback), DG_Tweening_TweenCallback);
-		dict.Add(typeof(System.Action<VersionInfo2>), System_Action_VersionInfo2);
 		dict.Add(typeof(System.Action<bool>), System_Action_bool);
+		dict.Add(typeof(System.Action<VersionInfo2>), System_Action_VersionInfo2);
 		dict.Add(typeof(System.Action<UnityEngine.Sprite>), System_Action_UnityEngine_Sprite);
 		dict.Add(typeof(System.Action<UnityEngine.Texture>), System_Action_UnityEngine_Texture);
 		dict.Add(typeof(System.Action<UnityEngine.Object>), System_Action_UnityEngine_Object);
 		dict.Add(typeof(System.Action<string>), System_Action_string);
-		dict.Add(typeof(EventCallback), EventCallback);
-		dict.Add(typeof(System.Action<object>), System_Action_object);
 		dict.Add(typeof(System.Action<string,int>), System_Action_string_int);
 		dict.Add(typeof(System.Action<byte[]>), System_Action_bytes);
 		dict.Add(typeof(System.Func<bool>), System_Func_bool);
@@ -62,7 +60,7 @@ public static class DelegateFactory
 		dict.Add(typeof(DG.Tweening.Core.DOSetter<UnityEngine.Rect>), DG_Tweening_Core_DOSetter_UnityEngine_Rect);
 		dict.Add(typeof(DG.Tweening.Core.DOGetter<UnityEngine.RectOffset>), DG_Tweening_Core_DOGetter_UnityEngine_RectOffset);
 		dict.Add(typeof(DG.Tweening.Core.DOSetter<UnityEngine.RectOffset>), DG_Tweening_Core_DOSetter_UnityEngine_RectOffset);
-		dict.Add(typeof(DG.Tweening.TweenCallback<int>), DG_Tweening_TweenCallback_int);
+		dict.Add(typeof(UnityEngine.RectTransform.ReapplyDrivenProperties), UnityEngine_RectTransform_ReapplyDrivenProperties);
 		dict.Add(typeof(UnityEngine.Camera.CameraCallback), UnityEngine_Camera_CameraCallback);
 		dict.Add(typeof(UnityEngine.Events.UnityAction<UnityEngine.SceneManagement.Scene,UnityEngine.SceneManagement.LoadSceneMode>), UnityEngine_Events_UnityAction_UnityEngine_SceneManagement_Scene_UnityEngine_SceneManagement_LoadSceneMode);
 		dict.Add(typeof(UnityEngine.Events.UnityAction<UnityEngine.SceneManagement.Scene>), UnityEngine_Events_UnityAction_UnityEngine_SceneManagement_Scene);
@@ -73,31 +71,9 @@ public static class DelegateFactory
 		dict.Add(typeof(UnityEngine.AudioClip.PCMReaderCallback), UnityEngine_AudioClip_PCMReaderCallback);
 		dict.Add(typeof(UnityEngine.AudioClip.PCMSetPositionCallback), UnityEngine_AudioClip_PCMSetPositionCallback);
 		dict.Add(typeof(System.Action<UnityEngine.AsyncOperation>), System_Action_UnityEngine_AsyncOperation);
-		dict.Add(typeof(UnityEngine.Events.UnityAction<bool>), UnityEngine_Events_UnityAction_bool);
-		dict.Add(typeof(System.Action<UnityEngine.Transform,int>), System_Action_UnityEngine_Transform_int);
-		dict.Add(typeof(UnityEngine.Events.UnityAction<float>), UnityEngine_Events_UnityAction_float);
-		dict.Add(typeof(UnityEngine.Events.UnityAction<int>), UnityEngine_Events_UnityAction_int);
 		dict.Add(typeof(UnityEngine.Canvas.WillRenderCanvases), UnityEngine_Canvas_WillRenderCanvases);
 		dict.Add(typeof(UnityEngine.UI.InputField.OnValidateInput), UnityEngine_UI_InputField_OnValidateInput);
-		dict.Add(typeof(UnityEngine.Events.UnityAction<string>), UnityEngine_Events_UnityAction_string);
-		dict.Add(typeof(UIEventListener.VoidDelegate), UIEventListener_VoidDelegate);
-		dict.Add(typeof(UIEventListener.VoidEventDelegate), UIEventListener_VoidEventDelegate);
-		dict.Add(typeof(UIEventListener.BoolDelegate), UIEventListener_BoolDelegate);
-		dict.Add(typeof(UIEventListener.BaseEventDelegate), UIEventListener_BaseEventDelegate);
-		dict.Add(typeof(UIEventListener.AxisEventDelegate), UIEventListener_AxisEventDelegate);
-		dict.Add(typeof(UIClickListener.VoidDelegate), UIClickListener_VoidDelegate);
-		dict.Add(typeof(UIAnimation.delegateMovieEvent), UIAnimation_delegateMovieEvent);
 		dict.Add(typeof(EventDelegate.Callback), EventDelegate_Callback);
-		dict.Add(typeof(System.Action<UnityEngine.SceneManagement.Scene,UnityEngine.SceneManagement.LoadSceneMode>), System_Action_UnityEngine_SceneManagement_Scene_UnityEngine_SceneManagement_LoadSceneMode);
-		dict.Add(typeof(System.Action<UnityEngine.SceneManagement.Scene>), System_Action_UnityEngine_SceneManagement_Scene);
-		dict.Add(typeof(System.Action<UnityEngine.SceneManagement.Scene,UnityEngine.SceneManagement.Scene>), System_Action_UnityEngine_SceneManagement_Scene_UnityEngine_SceneManagement_Scene);
-		dict.Add(typeof(System.Action<UnityEngine.Collision>), System_Action_UnityEngine_Collision);
-		dict.Add(typeof(System.Action<UnityEngine.Collision2D>), System_Action_UnityEngine_Collision2D);
-		dict.Add(typeof(System.Action<UnityEngine.GameObject>), System_Action_UnityEngine_GameObject);
-		dict.Add(typeof(System.Action<UnityEngine.Collider>), System_Action_UnityEngine_Collider);
-		dict.Add(typeof(System.Action<UnityEngine.Collider2D>), System_Action_UnityEngine_Collider2D);
-		dict.Add(typeof(System.Action<UnityEngine.RenderTexture,UnityEngine.RenderTexture>), System_Action_UnityEngine_RenderTexture_UnityEngine_RenderTexture);
-		dict.Add(typeof(System.Action<UnityEngine.Vector3>), System_Action_UnityEngine_Vector3);
 		dict.Add(typeof(System.EventHandler<System.Xml.Linq.XObjectChangeEventArgs>), System_EventHandler_System_Xml_Linq_XObjectChangeEventArgs);
 	}
 
@@ -434,49 +410,6 @@ public static class DelegateFactory
 		}
 	}
 
-	class System_Action_VersionInfo2_Event : LuaDelegate
-	{
-		public System_Action_VersionInfo2_Event(LuaFunction func) : base(func) { }
-		public System_Action_VersionInfo2_Event(LuaFunction func, LuaTable self) : base(func, self) { }
-
-		public void Call(VersionInfo2 param0)
-		{
-			func.BeginPCall();
-			func.PushObject(param0);
-			func.PCall();
-			func.EndPCall();
-		}
-
-		public void CallWithSelf(VersionInfo2 param0)
-		{
-			func.BeginPCall();
-			func.Push(self);
-			func.PushObject(param0);
-			func.PCall();
-			func.EndPCall();
-		}
-	}
-
-	public static Delegate System_Action_VersionInfo2(LuaFunction func, LuaTable self, bool flag)
-	{
-		if (func == null)
-		{
-			System.Action<VersionInfo2> fn = delegate(VersionInfo2 param0) { };
-			return fn;
-		}
-
-		if(!flag)
-		{
-			System.Action<VersionInfo2> d = (new System_Action_VersionInfo2_Event(func)).Call;
-			return d;
-		}
-		else
-		{
-			System.Action<VersionInfo2> d = (new System_Action_VersionInfo2_Event(func, self)).CallWithSelf;
-			return d;
-		}
-	}
-
 	class System_Action_bool_Event : LuaDelegate
 	{
 		public System_Action_bool_Event(LuaFunction func) : base(func) { }
@@ -516,6 +449,49 @@ public static class DelegateFactory
 		else
 		{
 			System.Action<bool> d = (new System_Action_bool_Event(func, self)).CallWithSelf;
+			return d;
+		}
+	}
+
+	class System_Action_VersionInfo2_Event : LuaDelegate
+	{
+		public System_Action_VersionInfo2_Event(LuaFunction func) : base(func) { }
+		public System_Action_VersionInfo2_Event(LuaFunction func, LuaTable self) : base(func, self) { }
+
+		public void Call(VersionInfo2 param0)
+		{
+			func.BeginPCall();
+			func.PushObject(param0);
+			func.PCall();
+			func.EndPCall();
+		}
+
+		public void CallWithSelf(VersionInfo2 param0)
+		{
+			func.BeginPCall();
+			func.Push(self);
+			func.PushObject(param0);
+			func.PCall();
+			func.EndPCall();
+		}
+	}
+
+	public static Delegate System_Action_VersionInfo2(LuaFunction func, LuaTable self, bool flag)
+	{
+		if (func == null)
+		{
+			System.Action<VersionInfo2> fn = delegate(VersionInfo2 param0) { };
+			return fn;
+		}
+
+		if(!flag)
+		{
+			System.Action<VersionInfo2> d = (new System_Action_VersionInfo2_Event(func)).Call;
+			return d;
+		}
+		else
+		{
+			System.Action<VersionInfo2> d = (new System_Action_VersionInfo2_Event(func, self)).CallWithSelf;
 			return d;
 		}
 	}
@@ -688,92 +664,6 @@ public static class DelegateFactory
 		else
 		{
 			System.Action<string> d = (new System_Action_string_Event(func, self)).CallWithSelf;
-			return d;
-		}
-	}
-
-	class EventCallback_Event : LuaDelegate
-	{
-		public EventCallback_Event(LuaFunction func) : base(func) { }
-		public EventCallback_Event(LuaFunction func, LuaTable self) : base(func, self) { }
-
-		public void Call(object param0)
-		{
-			func.BeginPCall();
-			func.Push(param0);
-			func.PCall();
-			func.EndPCall();
-		}
-
-		public void CallWithSelf(object param0)
-		{
-			func.BeginPCall();
-			func.Push(self);
-			func.Push(param0);
-			func.PCall();
-			func.EndPCall();
-		}
-	}
-
-	public static Delegate EventCallback(LuaFunction func, LuaTable self, bool flag)
-	{
-		if (func == null)
-		{
-			EventCallback fn = delegate(object param0) { };
-			return fn;
-		}
-
-		if(!flag)
-		{
-			EventCallback d = (new EventCallback_Event(func)).Call;
-			return d;
-		}
-		else
-		{
-			EventCallback d = (new EventCallback_Event(func, self)).CallWithSelf;
-			return d;
-		}
-	}
-
-	class System_Action_object_Event : LuaDelegate
-	{
-		public System_Action_object_Event(LuaFunction func) : base(func) { }
-		public System_Action_object_Event(LuaFunction func, LuaTable self) : base(func, self) { }
-
-		public void Call(object param0)
-		{
-			func.BeginPCall();
-			func.Push(param0);
-			func.PCall();
-			func.EndPCall();
-		}
-
-		public void CallWithSelf(object param0)
-		{
-			func.BeginPCall();
-			func.Push(self);
-			func.Push(param0);
-			func.PCall();
-			func.EndPCall();
-		}
-	}
-
-	public static Delegate System_Action_object(LuaFunction func, LuaTable self, bool flag)
-	{
-		if (func == null)
-		{
-			System.Action<object> fn = delegate(object param0) { };
-			return fn;
-		}
-
-		if(!flag)
-		{
-			System.Action<object> d = (new System_Action_object_Event(func)).Call;
-			return d;
-		}
-		else
-		{
-			System.Action<object> d = (new System_Action_object_Event(func, self)).CallWithSelf;
 			return d;
 		}
 	}
@@ -2143,12 +2033,12 @@ public static class DelegateFactory
 		}
 	}
 
-	class DG_Tweening_TweenCallback_int_Event : LuaDelegate
+	class UnityEngine_RectTransform_ReapplyDrivenProperties_Event : LuaDelegate
 	{
-		public DG_Tweening_TweenCallback_int_Event(LuaFunction func) : base(func) { }
-		public DG_Tweening_TweenCallback_int_Event(LuaFunction func, LuaTable self) : base(func, self) { }
+		public UnityEngine_RectTransform_ReapplyDrivenProperties_Event(LuaFunction func) : base(func) { }
+		public UnityEngine_RectTransform_ReapplyDrivenProperties_Event(LuaFunction func, LuaTable self) : base(func, self) { }
 
-		public void Call(int param0)
+		public void Call(UnityEngine.RectTransform param0)
 		{
 			func.BeginPCall();
 			func.Push(param0);
@@ -2156,7 +2046,7 @@ public static class DelegateFactory
 			func.EndPCall();
 		}
 
-		public void CallWithSelf(int param0)
+		public void CallWithSelf(UnityEngine.RectTransform param0)
 		{
 			func.BeginPCall();
 			func.Push(self);
@@ -2166,22 +2056,22 @@ public static class DelegateFactory
 		}
 	}
 
-	public static Delegate DG_Tweening_TweenCallback_int(LuaFunction func, LuaTable self, bool flag)
+	public static Delegate UnityEngine_RectTransform_ReapplyDrivenProperties(LuaFunction func, LuaTable self, bool flag)
 	{
 		if (func == null)
 		{
-			DG.Tweening.TweenCallback<int> fn = delegate(int param0) { };
+			UnityEngine.RectTransform.ReapplyDrivenProperties fn = delegate(UnityEngine.RectTransform param0) { };
 			return fn;
 		}
 
 		if(!flag)
 		{
-			DG.Tweening.TweenCallback<int> d = (new DG_Tweening_TweenCallback_int_Event(func)).Call;
+			UnityEngine.RectTransform.ReapplyDrivenProperties d = (new UnityEngine_RectTransform_ReapplyDrivenProperties_Event(func)).Call;
 			return d;
 		}
 		else
 		{
-			DG.Tweening.TweenCallback<int> d = (new DG_Tweening_TweenCallback_int_Event(func, self)).CallWithSelf;
+			UnityEngine.RectTransform.ReapplyDrivenProperties d = (new UnityEngine_RectTransform_ReapplyDrivenProperties_Event(func, self)).CallWithSelf;
 			return d;
 		}
 	}
@@ -2624,180 +2514,6 @@ public static class DelegateFactory
 		}
 	}
 
-	class UnityEngine_Events_UnityAction_bool_Event : LuaDelegate
-	{
-		public UnityEngine_Events_UnityAction_bool_Event(LuaFunction func) : base(func) { }
-		public UnityEngine_Events_UnityAction_bool_Event(LuaFunction func, LuaTable self) : base(func, self) { }
-
-		public void Call(bool param0)
-		{
-			func.BeginPCall();
-			func.Push(param0);
-			func.PCall();
-			func.EndPCall();
-		}
-
-		public void CallWithSelf(bool param0)
-		{
-			func.BeginPCall();
-			func.Push(self);
-			func.Push(param0);
-			func.PCall();
-			func.EndPCall();
-		}
-	}
-
-	public static Delegate UnityEngine_Events_UnityAction_bool(LuaFunction func, LuaTable self, bool flag)
-	{
-		if (func == null)
-		{
-			UnityEngine.Events.UnityAction<bool> fn = delegate(bool param0) { };
-			return fn;
-		}
-
-		if(!flag)
-		{
-			UnityEngine.Events.UnityAction<bool> d = (new UnityEngine_Events_UnityAction_bool_Event(func)).Call;
-			return d;
-		}
-		else
-		{
-			UnityEngine.Events.UnityAction<bool> d = (new UnityEngine_Events_UnityAction_bool_Event(func, self)).CallWithSelf;
-			return d;
-		}
-	}
-
-	class System_Action_UnityEngine_Transform_int_Event : LuaDelegate
-	{
-		public System_Action_UnityEngine_Transform_int_Event(LuaFunction func) : base(func) { }
-		public System_Action_UnityEngine_Transform_int_Event(LuaFunction func, LuaTable self) : base(func, self) { }
-
-		public void Call(UnityEngine.Transform param0, int param1)
-		{
-			func.BeginPCall();
-			func.Push(param0);
-			func.Push(param1);
-			func.PCall();
-			func.EndPCall();
-		}
-
-		public void CallWithSelf(UnityEngine.Transform param0, int param1)
-		{
-			func.BeginPCall();
-			func.Push(self);
-			func.Push(param0);
-			func.Push(param1);
-			func.PCall();
-			func.EndPCall();
-		}
-	}
-
-	public static Delegate System_Action_UnityEngine_Transform_int(LuaFunction func, LuaTable self, bool flag)
-	{
-		if (func == null)
-		{
-			System.Action<UnityEngine.Transform,int> fn = delegate(UnityEngine.Transform param0, int param1) { };
-			return fn;
-		}
-
-		if(!flag)
-		{
-			System.Action<UnityEngine.Transform,int> d = (new System_Action_UnityEngine_Transform_int_Event(func)).Call;
-			return d;
-		}
-		else
-		{
-			System.Action<UnityEngine.Transform,int> d = (new System_Action_UnityEngine_Transform_int_Event(func, self)).CallWithSelf;
-			return d;
-		}
-	}
-
-	class UnityEngine_Events_UnityAction_float_Event : LuaDelegate
-	{
-		public UnityEngine_Events_UnityAction_float_Event(LuaFunction func) : base(func) { }
-		public UnityEngine_Events_UnityAction_float_Event(LuaFunction func, LuaTable self) : base(func, self) { }
-
-		public void Call(float param0)
-		{
-			func.BeginPCall();
-			func.Push(param0);
-			func.PCall();
-			func.EndPCall();
-		}
-
-		public void CallWithSelf(float param0)
-		{
-			func.BeginPCall();
-			func.Push(self);
-			func.Push(param0);
-			func.PCall();
-			func.EndPCall();
-		}
-	}
-
-	public static Delegate UnityEngine_Events_UnityAction_float(LuaFunction func, LuaTable self, bool flag)
-	{
-		if (func == null)
-		{
-			UnityEngine.Events.UnityAction<float> fn = delegate(float param0) { };
-			return fn;
-		}
-
-		if(!flag)
-		{
-			UnityEngine.Events.UnityAction<float> d = (new UnityEngine_Events_UnityAction_float_Event(func)).Call;
-			return d;
-		}
-		else
-		{
-			UnityEngine.Events.UnityAction<float> d = (new UnityEngine_Events_UnityAction_float_Event(func, self)).CallWithSelf;
-			return d;
-		}
-	}
-
-	class UnityEngine_Events_UnityAction_int_Event : LuaDelegate
-	{
-		public UnityEngine_Events_UnityAction_int_Event(LuaFunction func) : base(func) { }
-		public UnityEngine_Events_UnityAction_int_Event(LuaFunction func, LuaTable self) : base(func, self) { }
-
-		public void Call(int param0)
-		{
-			func.BeginPCall();
-			func.Push(param0);
-			func.PCall();
-			func.EndPCall();
-		}
-
-		public void CallWithSelf(int param0)
-		{
-			func.BeginPCall();
-			func.Push(self);
-			func.Push(param0);
-			func.PCall();
-			func.EndPCall();
-		}
-	}
-
-	public static Delegate UnityEngine_Events_UnityAction_int(LuaFunction func, LuaTable self, bool flag)
-	{
-		if (func == null)
-		{
-			UnityEngine.Events.UnityAction<int> fn = delegate(int param0) { };
-			return fn;
-		}
-
-		if(!flag)
-		{
-			UnityEngine.Events.UnityAction<int> d = (new UnityEngine_Events_UnityAction_int_Event(func)).Call;
-			return d;
-		}
-		else
-		{
-			UnityEngine.Events.UnityAction<int> d = (new UnityEngine_Events_UnityAction_int_Event(func, self)).CallWithSelf;
-			return d;
-		}
-	}
-
 	class UnityEngine_Canvas_WillRenderCanvases_Event : LuaDelegate
 	{
 		public UnityEngine_Canvas_WillRenderCanvases_Event(LuaFunction func) : base(func) { }
@@ -2888,352 +2604,6 @@ public static class DelegateFactory
 		}
 	}
 
-	class UnityEngine_Events_UnityAction_string_Event : LuaDelegate
-	{
-		public UnityEngine_Events_UnityAction_string_Event(LuaFunction func) : base(func) { }
-		public UnityEngine_Events_UnityAction_string_Event(LuaFunction func, LuaTable self) : base(func, self) { }
-
-		public void Call(string param0)
-		{
-			func.BeginPCall();
-			func.Push(param0);
-			func.PCall();
-			func.EndPCall();
-		}
-
-		public void CallWithSelf(string param0)
-		{
-			func.BeginPCall();
-			func.Push(self);
-			func.Push(param0);
-			func.PCall();
-			func.EndPCall();
-		}
-	}
-
-	public static Delegate UnityEngine_Events_UnityAction_string(LuaFunction func, LuaTable self, bool flag)
-	{
-		if (func == null)
-		{
-			UnityEngine.Events.UnityAction<string> fn = delegate(string param0) { };
-			return fn;
-		}
-
-		if(!flag)
-		{
-			UnityEngine.Events.UnityAction<string> d = (new UnityEngine_Events_UnityAction_string_Event(func)).Call;
-			return d;
-		}
-		else
-		{
-			UnityEngine.Events.UnityAction<string> d = (new UnityEngine_Events_UnityAction_string_Event(func, self)).CallWithSelf;
-			return d;
-		}
-	}
-
-	class UIEventListener_VoidDelegate_Event : LuaDelegate
-	{
-		public UIEventListener_VoidDelegate_Event(LuaFunction func) : base(func) { }
-		public UIEventListener_VoidDelegate_Event(LuaFunction func, LuaTable self) : base(func, self) { }
-
-		public void Call(UnityEngine.GameObject param0, UnityEngine.EventSystems.PointerEventData param1)
-		{
-			func.BeginPCall();
-			func.Push(param0);
-			func.PushObject(param1);
-			func.PCall();
-			func.EndPCall();
-		}
-
-		public void CallWithSelf(UnityEngine.GameObject param0, UnityEngine.EventSystems.PointerEventData param1)
-		{
-			func.BeginPCall();
-			func.Push(self);
-			func.Push(param0);
-			func.PushObject(param1);
-			func.PCall();
-			func.EndPCall();
-		}
-	}
-
-	public static Delegate UIEventListener_VoidDelegate(LuaFunction func, LuaTable self, bool flag)
-	{
-		if (func == null)
-		{
-			UIEventListener.VoidDelegate fn = delegate(UnityEngine.GameObject param0, UnityEngine.EventSystems.PointerEventData param1) { };
-			return fn;
-		}
-
-		if(!flag)
-		{
-			UIEventListener.VoidDelegate d = (new UIEventListener_VoidDelegate_Event(func)).Call;
-			return d;
-		}
-		else
-		{
-			UIEventListener.VoidDelegate d = (new UIEventListener_VoidDelegate_Event(func, self)).CallWithSelf;
-			return d;
-		}
-	}
-
-	class UIEventListener_VoidEventDelegate_Event : LuaDelegate
-	{
-		public UIEventListener_VoidEventDelegate_Event(LuaFunction func) : base(func) { }
-		public UIEventListener_VoidEventDelegate_Event(LuaFunction func, LuaTable self) : base(func, self) { }
-
-		public void Call()
-		{
-			func.Call();
-		}
-
-		public void CallWithSelf()
-		{
-			func.BeginPCall();
-			func.Push(self);
-			func.PCall();
-			func.EndPCall();
-		}
-	}
-
-	public static Delegate UIEventListener_VoidEventDelegate(LuaFunction func, LuaTable self, bool flag)
-	{
-		if (func == null)
-		{
-			UIEventListener.VoidEventDelegate fn = delegate() { };
-			return fn;
-		}
-
-		if(!flag)
-		{
-			UIEventListener.VoidEventDelegate d = (new UIEventListener_VoidEventDelegate_Event(func)).Call;
-			return d;
-		}
-		else
-		{
-			UIEventListener.VoidEventDelegate d = (new UIEventListener_VoidEventDelegate_Event(func, self)).CallWithSelf;
-			return d;
-		}
-	}
-
-	class UIEventListener_BoolDelegate_Event : LuaDelegate
-	{
-		public UIEventListener_BoolDelegate_Event(LuaFunction func) : base(func) { }
-		public UIEventListener_BoolDelegate_Event(LuaFunction func, LuaTable self) : base(func, self) { }
-
-		public void Call(UnityEngine.GameObject param0, bool param1)
-		{
-			func.BeginPCall();
-			func.Push(param0);
-			func.Push(param1);
-			func.PCall();
-			func.EndPCall();
-		}
-
-		public void CallWithSelf(UnityEngine.GameObject param0, bool param1)
-		{
-			func.BeginPCall();
-			func.Push(self);
-			func.Push(param0);
-			func.Push(param1);
-			func.PCall();
-			func.EndPCall();
-		}
-	}
-
-	public static Delegate UIEventListener_BoolDelegate(LuaFunction func, LuaTable self, bool flag)
-	{
-		if (func == null)
-		{
-			UIEventListener.BoolDelegate fn = delegate(UnityEngine.GameObject param0, bool param1) { };
-			return fn;
-		}
-
-		if(!flag)
-		{
-			UIEventListener.BoolDelegate d = (new UIEventListener_BoolDelegate_Event(func)).Call;
-			return d;
-		}
-		else
-		{
-			UIEventListener.BoolDelegate d = (new UIEventListener_BoolDelegate_Event(func, self)).CallWithSelf;
-			return d;
-		}
-	}
-
-	class UIEventListener_BaseEventDelegate_Event : LuaDelegate
-	{
-		public UIEventListener_BaseEventDelegate_Event(LuaFunction func) : base(func) { }
-		public UIEventListener_BaseEventDelegate_Event(LuaFunction func, LuaTable self) : base(func, self) { }
-
-		public void Call(UnityEngine.GameObject param0, UnityEngine.EventSystems.BaseEventData param1)
-		{
-			func.BeginPCall();
-			func.Push(param0);
-			func.PushObject(param1);
-			func.PCall();
-			func.EndPCall();
-		}
-
-		public void CallWithSelf(UnityEngine.GameObject param0, UnityEngine.EventSystems.BaseEventData param1)
-		{
-			func.BeginPCall();
-			func.Push(self);
-			func.Push(param0);
-			func.PushObject(param1);
-			func.PCall();
-			func.EndPCall();
-		}
-	}
-
-	public static Delegate UIEventListener_BaseEventDelegate(LuaFunction func, LuaTable self, bool flag)
-	{
-		if (func == null)
-		{
-			UIEventListener.BaseEventDelegate fn = delegate(UnityEngine.GameObject param0, UnityEngine.EventSystems.BaseEventData param1) { };
-			return fn;
-		}
-
-		if(!flag)
-		{
-			UIEventListener.BaseEventDelegate d = (new UIEventListener_BaseEventDelegate_Event(func)).Call;
-			return d;
-		}
-		else
-		{
-			UIEventListener.BaseEventDelegate d = (new UIEventListener_BaseEventDelegate_Event(func, self)).CallWithSelf;
-			return d;
-		}
-	}
-
-	class UIEventListener_AxisEventDelegate_Event : LuaDelegate
-	{
-		public UIEventListener_AxisEventDelegate_Event(LuaFunction func) : base(func) { }
-		public UIEventListener_AxisEventDelegate_Event(LuaFunction func, LuaTable self) : base(func, self) { }
-
-		public void Call(UnityEngine.GameObject param0, UnityEngine.EventSystems.AxisEventData param1)
-		{
-			func.BeginPCall();
-			func.Push(param0);
-			func.PushObject(param1);
-			func.PCall();
-			func.EndPCall();
-		}
-
-		public void CallWithSelf(UnityEngine.GameObject param0, UnityEngine.EventSystems.AxisEventData param1)
-		{
-			func.BeginPCall();
-			func.Push(self);
-			func.Push(param0);
-			func.PushObject(param1);
-			func.PCall();
-			func.EndPCall();
-		}
-	}
-
-	public static Delegate UIEventListener_AxisEventDelegate(LuaFunction func, LuaTable self, bool flag)
-	{
-		if (func == null)
-		{
-			UIEventListener.AxisEventDelegate fn = delegate(UnityEngine.GameObject param0, UnityEngine.EventSystems.AxisEventData param1) { };
-			return fn;
-		}
-
-		if(!flag)
-		{
-			UIEventListener.AxisEventDelegate d = (new UIEventListener_AxisEventDelegate_Event(func)).Call;
-			return d;
-		}
-		else
-		{
-			UIEventListener.AxisEventDelegate d = (new UIEventListener_AxisEventDelegate_Event(func, self)).CallWithSelf;
-			return d;
-		}
-	}
-
-	class UIClickListener_VoidDelegate_Event : LuaDelegate
-	{
-		public UIClickListener_VoidDelegate_Event(LuaFunction func) : base(func) { }
-		public UIClickListener_VoidDelegate_Event(LuaFunction func, LuaTable self) : base(func, self) { }
-
-		public void Call(UnityEngine.GameObject param0, UnityEngine.EventSystems.PointerEventData param1)
-		{
-			func.BeginPCall();
-			func.Push(param0);
-			func.PushObject(param1);
-			func.PCall();
-			func.EndPCall();
-		}
-
-		public void CallWithSelf(UnityEngine.GameObject param0, UnityEngine.EventSystems.PointerEventData param1)
-		{
-			func.BeginPCall();
-			func.Push(self);
-			func.Push(param0);
-			func.PushObject(param1);
-			func.PCall();
-			func.EndPCall();
-		}
-	}
-
-	public static Delegate UIClickListener_VoidDelegate(LuaFunction func, LuaTable self, bool flag)
-	{
-		if (func == null)
-		{
-			UIClickListener.VoidDelegate fn = delegate(UnityEngine.GameObject param0, UnityEngine.EventSystems.PointerEventData param1) { };
-			return fn;
-		}
-
-		if(!flag)
-		{
-			UIClickListener.VoidDelegate d = (new UIClickListener_VoidDelegate_Event(func)).Call;
-			return d;
-		}
-		else
-		{
-			UIClickListener.VoidDelegate d = (new UIClickListener_VoidDelegate_Event(func, self)).CallWithSelf;
-			return d;
-		}
-	}
-
-	class UIAnimation_delegateMovieEvent_Event : LuaDelegate
-	{
-		public UIAnimation_delegateMovieEvent_Event(LuaFunction func) : base(func) { }
-		public UIAnimation_delegateMovieEvent_Event(LuaFunction func, LuaTable self) : base(func, self) { }
-
-		public void Call()
-		{
-			func.Call();
-		}
-
-		public void CallWithSelf()
-		{
-			func.BeginPCall();
-			func.Push(self);
-			func.PCall();
-			func.EndPCall();
-		}
-	}
-
-	public static Delegate UIAnimation_delegateMovieEvent(LuaFunction func, LuaTable self, bool flag)
-	{
-		if (func == null)
-		{
-			UIAnimation.delegateMovieEvent fn = delegate() { };
-			return fn;
-		}
-
-		if(!flag)
-		{
-			UIAnimation.delegateMovieEvent d = (new UIAnimation_delegateMovieEvent_Event(func)).Call;
-			return d;
-		}
-		else
-		{
-			UIAnimation.delegateMovieEvent d = (new UIAnimation_delegateMovieEvent_Event(func, self)).CallWithSelf;
-			return d;
-		}
-	}
-
 	class EventDelegate_Callback_Event : LuaDelegate
 	{
 		public EventDelegate_Callback_Event(LuaFunction func) : base(func) { }
@@ -3269,442 +2639,6 @@ public static class DelegateFactory
 		else
 		{
 			EventDelegate.Callback d = (new EventDelegate_Callback_Event(func, self)).CallWithSelf;
-			return d;
-		}
-	}
-
-	class System_Action_UnityEngine_SceneManagement_Scene_UnityEngine_SceneManagement_LoadSceneMode_Event : LuaDelegate
-	{
-		public System_Action_UnityEngine_SceneManagement_Scene_UnityEngine_SceneManagement_LoadSceneMode_Event(LuaFunction func) : base(func) { }
-		public System_Action_UnityEngine_SceneManagement_Scene_UnityEngine_SceneManagement_LoadSceneMode_Event(LuaFunction func, LuaTable self) : base(func, self) { }
-
-		public void Call(UnityEngine.SceneManagement.Scene param0, UnityEngine.SceneManagement.LoadSceneMode param1)
-		{
-			func.BeginPCall();
-			func.PushValue(param0);
-			func.Push(param1);
-			func.PCall();
-			func.EndPCall();
-		}
-
-		public void CallWithSelf(UnityEngine.SceneManagement.Scene param0, UnityEngine.SceneManagement.LoadSceneMode param1)
-		{
-			func.BeginPCall();
-			func.Push(self);
-			func.PushValue(param0);
-			func.Push(param1);
-			func.PCall();
-			func.EndPCall();
-		}
-	}
-
-	public static Delegate System_Action_UnityEngine_SceneManagement_Scene_UnityEngine_SceneManagement_LoadSceneMode(LuaFunction func, LuaTable self, bool flag)
-	{
-		if (func == null)
-		{
-			System.Action<UnityEngine.SceneManagement.Scene,UnityEngine.SceneManagement.LoadSceneMode> fn = delegate(UnityEngine.SceneManagement.Scene param0, UnityEngine.SceneManagement.LoadSceneMode param1) { };
-			return fn;
-		}
-
-		if(!flag)
-		{
-			System.Action<UnityEngine.SceneManagement.Scene,UnityEngine.SceneManagement.LoadSceneMode> d = (new System_Action_UnityEngine_SceneManagement_Scene_UnityEngine_SceneManagement_LoadSceneMode_Event(func)).Call;
-			return d;
-		}
-		else
-		{
-			System.Action<UnityEngine.SceneManagement.Scene,UnityEngine.SceneManagement.LoadSceneMode> d = (new System_Action_UnityEngine_SceneManagement_Scene_UnityEngine_SceneManagement_LoadSceneMode_Event(func, self)).CallWithSelf;
-			return d;
-		}
-	}
-
-	class System_Action_UnityEngine_SceneManagement_Scene_Event : LuaDelegate
-	{
-		public System_Action_UnityEngine_SceneManagement_Scene_Event(LuaFunction func) : base(func) { }
-		public System_Action_UnityEngine_SceneManagement_Scene_Event(LuaFunction func, LuaTable self) : base(func, self) { }
-
-		public void Call(UnityEngine.SceneManagement.Scene param0)
-		{
-			func.BeginPCall();
-			func.PushValue(param0);
-			func.PCall();
-			func.EndPCall();
-		}
-
-		public void CallWithSelf(UnityEngine.SceneManagement.Scene param0)
-		{
-			func.BeginPCall();
-			func.Push(self);
-			func.PushValue(param0);
-			func.PCall();
-			func.EndPCall();
-		}
-	}
-
-	public static Delegate System_Action_UnityEngine_SceneManagement_Scene(LuaFunction func, LuaTable self, bool flag)
-	{
-		if (func == null)
-		{
-			System.Action<UnityEngine.SceneManagement.Scene> fn = delegate(UnityEngine.SceneManagement.Scene param0) { };
-			return fn;
-		}
-
-		if(!flag)
-		{
-			System.Action<UnityEngine.SceneManagement.Scene> d = (new System_Action_UnityEngine_SceneManagement_Scene_Event(func)).Call;
-			return d;
-		}
-		else
-		{
-			System.Action<UnityEngine.SceneManagement.Scene> d = (new System_Action_UnityEngine_SceneManagement_Scene_Event(func, self)).CallWithSelf;
-			return d;
-		}
-	}
-
-	class System_Action_UnityEngine_SceneManagement_Scene_UnityEngine_SceneManagement_Scene_Event : LuaDelegate
-	{
-		public System_Action_UnityEngine_SceneManagement_Scene_UnityEngine_SceneManagement_Scene_Event(LuaFunction func) : base(func) { }
-		public System_Action_UnityEngine_SceneManagement_Scene_UnityEngine_SceneManagement_Scene_Event(LuaFunction func, LuaTable self) : base(func, self) { }
-
-		public void Call(UnityEngine.SceneManagement.Scene param0, UnityEngine.SceneManagement.Scene param1)
-		{
-			func.BeginPCall();
-			func.PushValue(param0);
-			func.PushValue(param1);
-			func.PCall();
-			func.EndPCall();
-		}
-
-		public void CallWithSelf(UnityEngine.SceneManagement.Scene param0, UnityEngine.SceneManagement.Scene param1)
-		{
-			func.BeginPCall();
-			func.Push(self);
-			func.PushValue(param0);
-			func.PushValue(param1);
-			func.PCall();
-			func.EndPCall();
-		}
-	}
-
-	public static Delegate System_Action_UnityEngine_SceneManagement_Scene_UnityEngine_SceneManagement_Scene(LuaFunction func, LuaTable self, bool flag)
-	{
-		if (func == null)
-		{
-			System.Action<UnityEngine.SceneManagement.Scene,UnityEngine.SceneManagement.Scene> fn = delegate(UnityEngine.SceneManagement.Scene param0, UnityEngine.SceneManagement.Scene param1) { };
-			return fn;
-		}
-
-		if(!flag)
-		{
-			System.Action<UnityEngine.SceneManagement.Scene,UnityEngine.SceneManagement.Scene> d = (new System_Action_UnityEngine_SceneManagement_Scene_UnityEngine_SceneManagement_Scene_Event(func)).Call;
-			return d;
-		}
-		else
-		{
-			System.Action<UnityEngine.SceneManagement.Scene,UnityEngine.SceneManagement.Scene> d = (new System_Action_UnityEngine_SceneManagement_Scene_UnityEngine_SceneManagement_Scene_Event(func, self)).CallWithSelf;
-			return d;
-		}
-	}
-
-	class System_Action_UnityEngine_Collision_Event : LuaDelegate
-	{
-		public System_Action_UnityEngine_Collision_Event(LuaFunction func) : base(func) { }
-		public System_Action_UnityEngine_Collision_Event(LuaFunction func, LuaTable self) : base(func, self) { }
-
-		public void Call(UnityEngine.Collision param0)
-		{
-			func.BeginPCall();
-			func.PushObject(param0);
-			func.PCall();
-			func.EndPCall();
-		}
-
-		public void CallWithSelf(UnityEngine.Collision param0)
-		{
-			func.BeginPCall();
-			func.Push(self);
-			func.PushObject(param0);
-			func.PCall();
-			func.EndPCall();
-		}
-	}
-
-	public static Delegate System_Action_UnityEngine_Collision(LuaFunction func, LuaTable self, bool flag)
-	{
-		if (func == null)
-		{
-			System.Action<UnityEngine.Collision> fn = delegate(UnityEngine.Collision param0) { };
-			return fn;
-		}
-
-		if(!flag)
-		{
-			System.Action<UnityEngine.Collision> d = (new System_Action_UnityEngine_Collision_Event(func)).Call;
-			return d;
-		}
-		else
-		{
-			System.Action<UnityEngine.Collision> d = (new System_Action_UnityEngine_Collision_Event(func, self)).CallWithSelf;
-			return d;
-		}
-	}
-
-	class System_Action_UnityEngine_Collision2D_Event : LuaDelegate
-	{
-		public System_Action_UnityEngine_Collision2D_Event(LuaFunction func) : base(func) { }
-		public System_Action_UnityEngine_Collision2D_Event(LuaFunction func, LuaTable self) : base(func, self) { }
-
-		public void Call(UnityEngine.Collision2D param0)
-		{
-			func.BeginPCall();
-			func.PushObject(param0);
-			func.PCall();
-			func.EndPCall();
-		}
-
-		public void CallWithSelf(UnityEngine.Collision2D param0)
-		{
-			func.BeginPCall();
-			func.Push(self);
-			func.PushObject(param0);
-			func.PCall();
-			func.EndPCall();
-		}
-	}
-
-	public static Delegate System_Action_UnityEngine_Collision2D(LuaFunction func, LuaTable self, bool flag)
-	{
-		if (func == null)
-		{
-			System.Action<UnityEngine.Collision2D> fn = delegate(UnityEngine.Collision2D param0) { };
-			return fn;
-		}
-
-		if(!flag)
-		{
-			System.Action<UnityEngine.Collision2D> d = (new System_Action_UnityEngine_Collision2D_Event(func)).Call;
-			return d;
-		}
-		else
-		{
-			System.Action<UnityEngine.Collision2D> d = (new System_Action_UnityEngine_Collision2D_Event(func, self)).CallWithSelf;
-			return d;
-		}
-	}
-
-	class System_Action_UnityEngine_GameObject_Event : LuaDelegate
-	{
-		public System_Action_UnityEngine_GameObject_Event(LuaFunction func) : base(func) { }
-		public System_Action_UnityEngine_GameObject_Event(LuaFunction func, LuaTable self) : base(func, self) { }
-
-		public void Call(UnityEngine.GameObject param0)
-		{
-			func.BeginPCall();
-			func.Push(param0);
-			func.PCall();
-			func.EndPCall();
-		}
-
-		public void CallWithSelf(UnityEngine.GameObject param0)
-		{
-			func.BeginPCall();
-			func.Push(self);
-			func.Push(param0);
-			func.PCall();
-			func.EndPCall();
-		}
-	}
-
-	public static Delegate System_Action_UnityEngine_GameObject(LuaFunction func, LuaTable self, bool flag)
-	{
-		if (func == null)
-		{
-			System.Action<UnityEngine.GameObject> fn = delegate(UnityEngine.GameObject param0) { };
-			return fn;
-		}
-
-		if(!flag)
-		{
-			System.Action<UnityEngine.GameObject> d = (new System_Action_UnityEngine_GameObject_Event(func)).Call;
-			return d;
-		}
-		else
-		{
-			System.Action<UnityEngine.GameObject> d = (new System_Action_UnityEngine_GameObject_Event(func, self)).CallWithSelf;
-			return d;
-		}
-	}
-
-	class System_Action_UnityEngine_Collider_Event : LuaDelegate
-	{
-		public System_Action_UnityEngine_Collider_Event(LuaFunction func) : base(func) { }
-		public System_Action_UnityEngine_Collider_Event(LuaFunction func, LuaTable self) : base(func, self) { }
-
-		public void Call(UnityEngine.Collider param0)
-		{
-			func.BeginPCall();
-			func.Push(param0);
-			func.PCall();
-			func.EndPCall();
-		}
-
-		public void CallWithSelf(UnityEngine.Collider param0)
-		{
-			func.BeginPCall();
-			func.Push(self);
-			func.Push(param0);
-			func.PCall();
-			func.EndPCall();
-		}
-	}
-
-	public static Delegate System_Action_UnityEngine_Collider(LuaFunction func, LuaTable self, bool flag)
-	{
-		if (func == null)
-		{
-			System.Action<UnityEngine.Collider> fn = delegate(UnityEngine.Collider param0) { };
-			return fn;
-		}
-
-		if(!flag)
-		{
-			System.Action<UnityEngine.Collider> d = (new System_Action_UnityEngine_Collider_Event(func)).Call;
-			return d;
-		}
-		else
-		{
-			System.Action<UnityEngine.Collider> d = (new System_Action_UnityEngine_Collider_Event(func, self)).CallWithSelf;
-			return d;
-		}
-	}
-
-	class System_Action_UnityEngine_Collider2D_Event : LuaDelegate
-	{
-		public System_Action_UnityEngine_Collider2D_Event(LuaFunction func) : base(func) { }
-		public System_Action_UnityEngine_Collider2D_Event(LuaFunction func, LuaTable self) : base(func, self) { }
-
-		public void Call(UnityEngine.Collider2D param0)
-		{
-			func.BeginPCall();
-			func.Push(param0);
-			func.PCall();
-			func.EndPCall();
-		}
-
-		public void CallWithSelf(UnityEngine.Collider2D param0)
-		{
-			func.BeginPCall();
-			func.Push(self);
-			func.Push(param0);
-			func.PCall();
-			func.EndPCall();
-		}
-	}
-
-	public static Delegate System_Action_UnityEngine_Collider2D(LuaFunction func, LuaTable self, bool flag)
-	{
-		if (func == null)
-		{
-			System.Action<UnityEngine.Collider2D> fn = delegate(UnityEngine.Collider2D param0) { };
-			return fn;
-		}
-
-		if(!flag)
-		{
-			System.Action<UnityEngine.Collider2D> d = (new System_Action_UnityEngine_Collider2D_Event(func)).Call;
-			return d;
-		}
-		else
-		{
-			System.Action<UnityEngine.Collider2D> d = (new System_Action_UnityEngine_Collider2D_Event(func, self)).CallWithSelf;
-			return d;
-		}
-	}
-
-	class System_Action_UnityEngine_RenderTexture_UnityEngine_RenderTexture_Event : LuaDelegate
-	{
-		public System_Action_UnityEngine_RenderTexture_UnityEngine_RenderTexture_Event(LuaFunction func) : base(func) { }
-		public System_Action_UnityEngine_RenderTexture_UnityEngine_RenderTexture_Event(LuaFunction func, LuaTable self) : base(func, self) { }
-
-		public void Call(UnityEngine.RenderTexture param0, UnityEngine.RenderTexture param1)
-		{
-			func.BeginPCall();
-			func.Push(param0);
-			func.Push(param1);
-			func.PCall();
-			func.EndPCall();
-		}
-
-		public void CallWithSelf(UnityEngine.RenderTexture param0, UnityEngine.RenderTexture param1)
-		{
-			func.BeginPCall();
-			func.Push(self);
-			func.Push(param0);
-			func.Push(param1);
-			func.PCall();
-			func.EndPCall();
-		}
-	}
-
-	public static Delegate System_Action_UnityEngine_RenderTexture_UnityEngine_RenderTexture(LuaFunction func, LuaTable self, bool flag)
-	{
-		if (func == null)
-		{
-			System.Action<UnityEngine.RenderTexture,UnityEngine.RenderTexture> fn = delegate(UnityEngine.RenderTexture param0, UnityEngine.RenderTexture param1) { };
-			return fn;
-		}
-
-		if(!flag)
-		{
-			System.Action<UnityEngine.RenderTexture,UnityEngine.RenderTexture> d = (new System_Action_UnityEngine_RenderTexture_UnityEngine_RenderTexture_Event(func)).Call;
-			return d;
-		}
-		else
-		{
-			System.Action<UnityEngine.RenderTexture,UnityEngine.RenderTexture> d = (new System_Action_UnityEngine_RenderTexture_UnityEngine_RenderTexture_Event(func, self)).CallWithSelf;
-			return d;
-		}
-	}
-
-	class System_Action_UnityEngine_Vector3_Event : LuaDelegate
-	{
-		public System_Action_UnityEngine_Vector3_Event(LuaFunction func) : base(func) { }
-		public System_Action_UnityEngine_Vector3_Event(LuaFunction func, LuaTable self) : base(func, self) { }
-
-		public void Call(UnityEngine.Vector3 param0)
-		{
-			func.BeginPCall();
-			func.Push(param0);
-			func.PCall();
-			func.EndPCall();
-		}
-
-		public void CallWithSelf(UnityEngine.Vector3 param0)
-		{
-			func.BeginPCall();
-			func.Push(self);
-			func.Push(param0);
-			func.PCall();
-			func.EndPCall();
-		}
-	}
-
-	public static Delegate System_Action_UnityEngine_Vector3(LuaFunction func, LuaTable self, bool flag)
-	{
-		if (func == null)
-		{
-			System.Action<UnityEngine.Vector3> fn = delegate(UnityEngine.Vector3 param0) { };
-			return fn;
-		}
-
-		if(!flag)
-		{
-			System.Action<UnityEngine.Vector3> d = (new System_Action_UnityEngine_Vector3_Event(func)).Call;
-			return d;
-		}
-		else
-		{
-			System.Action<UnityEngine.Vector3> d = (new System_Action_UnityEngine_Vector3_Event(func, self)).CallWithSelf;
 			return d;
 		}
 	}

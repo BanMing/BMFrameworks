@@ -860,27 +860,25 @@ public class UnityEngine_CameraWrap
 		{
 			int count = LuaDLL.lua_gettop(L);
 
-			if (count == 6 && TypeChecker.CheckTypes(L, 1, typeof(UnityEngine.Camera), typeof(float), typeof(float), typeof(int), typeof(float), typeof(bool)))
+			if (count == 5 && TypeChecker.CheckTypes(L, 1, typeof(UnityEngine.Camera), typeof(float), typeof(float), typeof(int), typeof(float)))
 			{
 				UnityEngine.Camera obj = (UnityEngine.Camera)ToLua.ToObject(L, 1);
 				float arg0 = (float)LuaDLL.lua_tonumber(L, 2);
 				float arg1 = (float)LuaDLL.lua_tonumber(L, 3);
 				int arg2 = (int)LuaDLL.lua_tonumber(L, 4);
 				float arg3 = (float)LuaDLL.lua_tonumber(L, 5);
-				bool arg4 = LuaDLL.lua_toboolean(L, 6);
-				DG.Tweening.Tweener o = obj.DOShakeRotation(arg0, arg1, arg2, arg3, arg4);
+				DG.Tweening.Tweener o = obj.DOShakeRotation(arg0, arg1, arg2, arg3);
 				ToLua.PushObject(L, o);
 				return 1;
 			}
-			else if (count == 6 && TypeChecker.CheckTypes(L, 1, typeof(UnityEngine.Camera), typeof(float), typeof(UnityEngine.Vector3), typeof(int), typeof(float), typeof(bool)))
+			else if (count == 5 && TypeChecker.CheckTypes(L, 1, typeof(UnityEngine.Camera), typeof(float), typeof(UnityEngine.Vector3), typeof(int), typeof(float)))
 			{
 				UnityEngine.Camera obj = (UnityEngine.Camera)ToLua.ToObject(L, 1);
 				float arg0 = (float)LuaDLL.lua_tonumber(L, 2);
 				UnityEngine.Vector3 arg1 = ToLua.ToVector3(L, 3);
 				int arg2 = (int)LuaDLL.lua_tonumber(L, 4);
 				float arg3 = (float)LuaDLL.lua_tonumber(L, 5);
-				bool arg4 = LuaDLL.lua_toboolean(L, 6);
-				DG.Tweening.Tweener o = obj.DOShakeRotation(arg0, arg1, arg2, arg3, arg4);
+				DG.Tweening.Tweener o = obj.DOShakeRotation(arg0, arg1, arg2, arg3);
 				ToLua.PushObject(L, o);
 				return 1;
 			}
@@ -902,27 +900,25 @@ public class UnityEngine_CameraWrap
 		{
 			int count = LuaDLL.lua_gettop(L);
 
-			if (count == 6 && TypeChecker.CheckTypes(L, 1, typeof(UnityEngine.Camera), typeof(float), typeof(float), typeof(int), typeof(float), typeof(bool)))
+			if (count == 5 && TypeChecker.CheckTypes(L, 1, typeof(UnityEngine.Camera), typeof(float), typeof(float), typeof(int), typeof(float)))
 			{
 				UnityEngine.Camera obj = (UnityEngine.Camera)ToLua.ToObject(L, 1);
 				float arg0 = (float)LuaDLL.lua_tonumber(L, 2);
 				float arg1 = (float)LuaDLL.lua_tonumber(L, 3);
 				int arg2 = (int)LuaDLL.lua_tonumber(L, 4);
 				float arg3 = (float)LuaDLL.lua_tonumber(L, 5);
-				bool arg4 = LuaDLL.lua_toboolean(L, 6);
-				DG.Tweening.Tweener o = obj.DOShakePosition(arg0, arg1, arg2, arg3, arg4);
+				DG.Tweening.Tweener o = obj.DOShakePosition(arg0, arg1, arg2, arg3);
 				ToLua.PushObject(L, o);
 				return 1;
 			}
-			else if (count == 6 && TypeChecker.CheckTypes(L, 1, typeof(UnityEngine.Camera), typeof(float), typeof(UnityEngine.Vector3), typeof(int), typeof(float), typeof(bool)))
+			else if (count == 5 && TypeChecker.CheckTypes(L, 1, typeof(UnityEngine.Camera), typeof(float), typeof(UnityEngine.Vector3), typeof(int), typeof(float)))
 			{
 				UnityEngine.Camera obj = (UnityEngine.Camera)ToLua.ToObject(L, 1);
 				float arg0 = (float)LuaDLL.lua_tonumber(L, 2);
 				UnityEngine.Vector3 arg1 = ToLua.ToVector3(L, 3);
 				int arg2 = (int)LuaDLL.lua_tonumber(L, 4);
 				float arg3 = (float)LuaDLL.lua_tonumber(L, 5);
-				bool arg4 = LuaDLL.lua_toboolean(L, 6);
-				DG.Tweening.Tweener o = obj.DOShakePosition(arg0, arg1, arg2, arg3, arg4);
+				DG.Tweening.Tweener o = obj.DOShakePosition(arg0, arg1, arg2, arg3);
 				ToLua.PushObject(L, o);
 				return 1;
 			}

@@ -507,6 +507,20 @@ public class MyUnityTool
         else
             return 0;
     }
+    public static float Divide(long n1 ,long n2)
+	{
+		return (float)(n1*1.0 / n2);
+	}
+
+	public static float Mod(long n1 ,long n2)
+	{
+		return (float)(n1 % n2);
+	}
+
+    public static float Multiply(long n1, float f2)
+    {
+        return (float)(n1 * f2);
+    }
 
     //--------------------------------------------------------------------------//
 

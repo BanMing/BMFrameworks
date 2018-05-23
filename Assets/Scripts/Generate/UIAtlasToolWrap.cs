@@ -24,37 +24,10 @@ public class UIAtlasToolWrap
 	{
 		try
 		{
-			int count = LuaDLL.lua_gettop(L);
-
-			if (count == 1 && TypeChecker.CheckTypes(L, 1, typeof(UIAtlasTool)))
-			{
-				UIAtlasTool obj = (UIAtlasTool)ToLua.ToObject(L, 1);
-				obj.Init();
-				return 0;
-			}
-			else if (count == 2 && TypeChecker.CheckTypes(L, 1, typeof(UIAtlasTool), typeof(System.Action)))
-			{
-				UIAtlasTool obj = (UIAtlasTool)ToLua.ToObject(L, 1);
-				System.Action arg0 = null;
-				LuaTypes funcType2 = LuaDLL.lua_type(L, 2);
-
-				if (funcType2 != LuaTypes.LUA_TFUNCTION)
-				{
-					 arg0 = (System.Action)ToLua.ToObject(L, 2);
-				}
-				else
-				{
-					LuaFunction func = ToLua.ToLuaFunction(L, 2);
-					arg0 = DelegateFactory.CreateDelegate(typeof(System.Action), func) as System.Action;
-				}
-
-				obj.Init(arg0);
-				return 0;
-			}
-			else
-			{
-				return LuaDLL.luaL_throw(L, "invalid arguments to method: UIAtlasTool.Init");
-			}
+			ToLua.CheckArgsCount(L, 1);
+			UIAtlasTool obj = (UIAtlasTool)ToLua.CheckObject(L, 1, typeof(UIAtlasTool));
+			obj.Init();
+			return 0;
 		}
 		catch(Exception e)
 		{

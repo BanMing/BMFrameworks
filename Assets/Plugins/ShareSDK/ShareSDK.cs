@@ -14,16 +14,10 @@ namespace cn.sharesdk.unity3d
 	public class ShareSDK : MonoBehaviour 
 	{
 		private int reqID;
-        //配置ShareSDK AppKey
-        //注:此处区分仅为demo测试而区分，实际使用时可以不区分安卓或iOS
-#if UNITY_ANDROID
-		public string appKey = "androidv1101";
-#elif UNITY_IPHONE
-		public string appKey = "iosv1101";
-#else
-        public string appKey = "";
-#endif
+		//配置ShareSDK AppKey
+        public string appKey = "165754873490d";
         public DevInfoSet devInfo;
+
 		public ShareSDKImpl shareSDKUtils;
 
 		public EventHandler authHandler;

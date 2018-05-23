@@ -207,8 +207,8 @@ public class MyFileUtil
         }
     }
 
-    #region config
     /***************************************************************************************/
+
     //配置表目录
     static public string InnerConfigDir
     {
@@ -226,22 +226,6 @@ public class MyFileUtil
         }
     }
 
-    static public string InnerDataDir
-    {
-        get
-        {
-            return Application.streamingAssetsPath + "/Data/";
-        }
-    }
-
-    static public string InnerEntitiesDir
-    {
-        get
-        {
-            return Application.streamingAssetsPath + "/Entities/";
-        }
-    }
-
     //读取配置文件数据
     public static string ReadConfigData(string filePath)
     {
@@ -251,19 +235,6 @@ public class MyFileUtil
             return str;
         }
         return ReadConfigDataInStreamingAssets(filePath);
-    }
-    //异步读取配置文件数据
-    public static void ReadConfigDataAsync(string filePath, Action<string> callback)
-    {
-        ReadConfigDataInCacheDirAsync(filePath, (str) =>
-        {
-            if (string.IsNullOrEmpty(str) == false)
-            {
-                callback(str);
-                return;
-            }
-            ReadConfigDataInStreamingAssetsAsync(filePath, callback);
-        });
     }
 
     public static string ReadConfigDataInCacheDir(string filePath)
@@ -291,41 +262,6 @@ public class MyFileUtil
         return null;
     }
 
-
-    public static void ReadConfigDataInCacheDirAsync(string filePath, Action<string> callback)
-    {
-        string newPath = OuterConfigDir + filePath;
-
-        if (SystemConfig.Instance.IsEncryptConfigFile && newPath.EndsWith(EncryptXMLFileSuffix) == false)
-        {
-            newPath = newPath + EncryptXMLFileSuffix;
-        }
-
-        if (File.Exists(newPath))
-        {
-            byte[] data = File.ReadAllBytes(newPath);
-
-            //解密
-            if (SystemConfig.Instance.IsEncryptConfigFile)
-            {
-                DESCrypto.DecryptAsync(data, MyFileUtil.EncryptKey, (decryptedData)=>
-                {
-                    string result = System.Text.UTF8Encoding.UTF8.GetString(decryptedData);
-                    callback(result);
-                });
-            }
-            else
-            {
-                string result = System.Text.UTF8Encoding.UTF8.GetString(data);
-                callback(result);
-            }
-        }
-        else
-        {
-            callback(null);
-        }
-    }
-
     public static string ReadNotEncryptionConfigDataInStreamingAssets(string filePath)
     {
         byte[] data = ReadConfigDataInStreamingAssetsImp(filePath);
@@ -347,33 +283,6 @@ public class MyFileUtil
         }
         return System.Text.UTF8Encoding.UTF8.GetString(data);
     }
-
-    public static void ReadConfigDataInStreamingAssetsAsync(string filePath, Action<string> callback)
-    {
-        if (SystemConfig.Instance.IsEncryptConfigFile && filePath.EndsWith(EncryptXMLFileSuffix) == false)
-        {
-            filePath = filePath + EncryptXMLFileSuffix;
-        }
-
-        byte[] data = ReadConfigDataInStreamingAssetsImp(filePath);
-        //解密
-        if (SystemConfig.Instance.IsEncryptConfigFile)
-        {
-            DESCrypto.DecryptAsync(data, MyFileUtil.EncryptKey, (decryptedData) => {
-                string result = System.Text.UTF8Encoding.UTF8.GetString(decryptedData);
-                callback(result);
-            });
-        }
-        else
-        {
-            string result = System.Text.UTF8Encoding.UTF8.GetString(data);
-            if(callback != null)
-            {
-                callback(result);
-            }
-        }
-    }
-
 
     public static byte[] ReadConfigDataInStreamingAssetsImp(string filePath)
     {
@@ -477,191 +386,8 @@ public class MyFileUtil
             File.WriteAllText(filePath, text);
         }
     }
+
     /***************************************************************************************/
-    #endregion
-
-
-    #region streamingAssets/Cache目录文件操作
-    /***************************************************************************************/
-    //配置表目录
-    static public string InnerDir
-    {
-        get
-        {
-            return Application.streamingAssetsPath;
-        }
-    }
-
-    static public string OuterDir
-    {
-        get
-        {
-            return CacheDir;
-        }
-    }
-
-    //读取配置文件数据
-    public static string ReadData(string filePath)
-    {
-        string str = ReadDataInCacheDir(filePath);
-        if (string.IsNullOrEmpty(str) == false)
-        {
-            return str;
-        }
-        return ReadDataInStreamingAssets(filePath);
-    }
-
-    public static string ReadDataInCacheDir(string filePath)
-    {
-        string newPath = OuterDir + "/" + filePath;
-
-        if (SystemConfig.Instance.IsEncryptConfigFile && newPath.EndsWith(EncryptXMLFileSuffix) == false)
-        {
-            newPath = newPath + EncryptXMLFileSuffix;
-        }
-
-        if (File.Exists(newPath))
-        {
-            byte[] data = File.ReadAllBytes(newPath);
-
-            //解密
-            if (SystemConfig.Instance.IsEncryptConfigFile)
-            {
-                data = DESCrypto.Decrypt(data, MyFileUtil.EncryptKey);
-            }
-
-            return System.Text.UTF8Encoding.UTF8.GetString(data);
-        }
-
-        return null;
-    }
-
-    public static string ReadNotEncryptionDataInStreamingAssets(string filePath)
-    {
-        byte[] data = ReadDataInStreamingAssetsImp(filePath);
-        return System.Text.UTF8Encoding.UTF8.GetString(data);
-    }
-
-    public static string ReadDataInStreamingAssets(string filePath)
-    {
-        if (SystemConfig.Instance.IsEncryptConfigFile && filePath.EndsWith(EncryptXMLFileSuffix) == false)
-        {
-            filePath = filePath + EncryptXMLFileSuffix;
-        }
-
-        byte[] data = ReadDataInStreamingAssetsImp(filePath);
-        //解密
-        if (SystemConfig.Instance.IsEncryptConfigFile)
-        {
-            data = DESCrypto.Decrypt(data, MyFileUtil.EncryptKey);
-        }
-        return System.Text.UTF8Encoding.UTF8.GetString(data);
-    }
-
-    public static byte[] ReadDataInStreamingAssetsImp(string filePath)
-    {
-        filePath = InnerDir + "/" + filePath;
-
-        if (filePath.Contains("://"))
-        {
-            WWW www = new WWW(filePath);
-            while (!www.isDone)
-            {
-                //等待加载完成
-            }
-            if (string.IsNullOrEmpty(www.error))
-            {
-                return www.bytes;
-            }
-            else
-            {
-                string strError = string.Format("MyFileUtil.ReadDataInStreamingAssets:{0}", www.error);
-                Debug.LogError(strError);
-                return null;
-            }
-        }
-        else
-        {
-            if (File.Exists(filePath))
-            {
-                return File.ReadAllBytes(filePath);
-            }
-        }
-
-        string str = string.Format("MyFileUtil.ReadDataInStreamingAssets:读取文件{0}文件失败", filePath);
-        Debug.LogError(str);
-        return null;
-    }
-
-    //存储配置文件数据
-    public static void WriteDataInStreamingAssets(string filePath, string text)
-    {
-        filePath = InnerDir + filePath;
-        string dir = GetParentDir(filePath);
-        if (Directory.Exists(dir) == false)
-        {
-            Directory.CreateDirectory(dir);
-        }
-
-        //加密配置文件
-        if (SystemConfig.Instance.IsEncryptConfigFile)
-        {
-            if (filePath.EndsWith(EncryptXMLFileSuffix) == false)
-            {
-                filePath = filePath + EncryptXMLFileSuffix;
-            }
-
-            byte[] data = System.Text.UTF8Encoding.UTF8.GetBytes(text);
-            data = DESCrypto.Encrypt(data, EncryptKey);
-            File.WriteAllBytes(filePath, data);
-        }
-        else
-        {
-            File.WriteAllText(filePath, text);
-        }
-    }
-
-    public static void WriteUnEncryptDataInStreamingAssets(string filePath, string text)
-    {
-        filePath = InnerDir + filePath;
-        string dir = GetParentDir(filePath);
-        if (Directory.Exists(dir) == false)
-        {
-            Directory.CreateDirectory(dir);
-        }
-
-        File.WriteAllText(filePath, text);
-    }
-
-    //存储配置文件数据
-    public static void WriteDataInCacheDir(string filePath, string text)
-    {
-        filePath = OuterDir + "/" + filePath;
-        string dir = GetParentDir(filePath);
-        if (Directory.Exists(dir) == false)
-        {
-            Directory.CreateDirectory(dir);
-        }
-
-        //加密
-        if (SystemConfig.Instance.IsEncryptConfigFile)
-        {
-            if (filePath.EndsWith(EncryptXMLFileSuffix) == false)
-            {
-                filePath = filePath + EncryptXMLFileSuffix;
-            }
-
-            byte[] data = System.Text.UTF8Encoding.UTF8.GetBytes(text);
-            data = DESCrypto.Encrypt(data, EncryptKey);
-            File.WriteAllBytes(filePath, data);
-        }
-        else
-        {
-            File.WriteAllText(filePath, text);
-        }
-    }
-    /***************************************************************************************/
-    #endregion
 
     public static byte[] EncryptData(byte[] data)
     {

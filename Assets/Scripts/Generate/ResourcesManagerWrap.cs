@@ -17,8 +17,6 @@ public class ResourcesManagerWrap
 		L.RegFunction("LoadAssetBundle", LoadAssetBundle);
 		L.RegFunction("LoadAssetBundleSync", LoadAssetBundleSync);
 		L.RegFunction("FixShader", FixShader);
-		L.RegFunction("UnloadAsset", UnloadAsset);
-		L.RegFunction("UnloadUnusedAssets", UnloadUnusedAssets);
 		L.RegFunction("UnloadAssetBundle", UnloadAssetBundle);
 		L.RegFunction("ForceUnloadAssetBundle", ForceUnloadAssetBundle);
 		L.RegFunction("PrintReferencedCountInfo", PrintReferencedCountInfo);
@@ -293,48 +291,14 @@ public class ResourcesManagerWrap
 	}
 
 	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
-	static int UnloadAsset(IntPtr L)
+	static int UnloadAssetBundle(IntPtr L)
 	{
 		try
 		{
 			ToLua.CheckArgsCount(L, 2);
 			ResourcesManager obj = (ResourcesManager)ToLua.CheckObject(L, 1, typeof(ResourcesManager));
 			string arg0 = ToLua.CheckString(L, 2);
-			obj.UnloadAsset(arg0);
-			return 0;
-		}
-		catch(Exception e)
-		{
-			return LuaDLL.toluaL_exception(L, e);
-		}
-	}
-
-	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
-	static int UnloadUnusedAssets(IntPtr L)
-	{
-		try
-		{
-			ToLua.CheckArgsCount(L, 1);
-			ResourcesManager obj = (ResourcesManager)ToLua.CheckObject(L, 1, typeof(ResourcesManager));
-			obj.UnloadUnusedAssets();
-			return 0;
-		}
-		catch(Exception e)
-		{
-			return LuaDLL.toluaL_exception(L, e);
-		}
-	}
-
-	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
-	static int UnloadAssetBundle(IntPtr L)
-	{
-		try
-		{
-			ToLua.CheckArgsCount(L, 3);
-			ResourcesManager obj = (ResourcesManager)ToLua.CheckObject(L, 1, typeof(ResourcesManager));
-			string arg0 = ToLua.CheckString(L, 2);
-			bool arg1 = LuaDLL.luaL_checkboolean(L, 3);
-			obj.UnloadAssetBundle(arg0, arg1);
+			obj.UnloadAssetBundle(arg0);
 			return 0;
 		}
 		catch(Exception e)

@@ -15,10 +15,8 @@ public class UtilWrap
 		L.RegFunction("Assert", Assert);
 		L.RegFunction("UnicodeToString", UnicodeToString);
 		L.RegFunction("GetTime", GetTime);
-		L.RegFunction("GetNowTimeStamp", GetNowTimeStamp);
 		L.RegFunction("Capture", Capture);
 		L.RegFunction("IsTypeAction", IsTypeAction);
-		L.RegFunction("Vibrate", Vibrate);
 		L.RegFunction("New", _CreateUtil);
 		L.RegFunction("__tostring", ToLua.op_ToString);
 		L.EndClass();
@@ -187,22 +185,6 @@ public class UtilWrap
 	}
 
 	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
-	static int GetNowTimeStamp(IntPtr L)
-	{
-		try
-		{
-			ToLua.CheckArgsCount(L, 0);
-			float o = Util.GetNowTimeStamp();
-			LuaDLL.lua_pushnumber(L, o);
-			return 1;
-		}
-		catch(Exception e)
-		{
-			return LuaDLL.toluaL_exception(L, e);
-		}
-	}
-
-	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
 	static int Capture(IntPtr L)
 	{
 		try
@@ -229,21 +211,6 @@ public class UtilWrap
 			bool o = Util.IsTypeAction(arg0);
 			LuaDLL.lua_pushboolean(L, o);
 			return 1;
-		}
-		catch(Exception e)
-		{
-			return LuaDLL.toluaL_exception(L, e);
-		}
-	}
-
-	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
-	static int Vibrate(IntPtr L)
-	{
-		try
-		{
-			ToLua.CheckArgsCount(L, 0);
-			Util.Vibrate();
-			return 0;
 		}
 		catch(Exception e)
 		{

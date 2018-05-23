@@ -210,15 +210,6 @@ namespace LuaInterface
             DoFile("tolua.lua");            //tolua table名字已经存在了,不能用require
             LuaUnityLibs.OpenLuaLibs(L);
         }
-        void OpenBaseLuaLibsAsync(Action callback)
-        {
-            DoFileAsync("tolua.lua", (objects) =>
-            {
-                LuaUnityLibs.OpenLuaLibs(L);
-                callback();
-            });            //tolua table名字已经存在了,不能用require
-
-        }
 
         public void Start()
         {
@@ -233,24 +224,6 @@ namespace LuaInterface
             UnpackRay = GetFuncRef("Ray.Get");
             PackRaycastHit = GetFuncRef("RaycastHit.New");
             PackTouch = GetFuncRef("Touch.New");
-        }
-
-        public void StartAsync(Action callback)
-        {
-#if UNITY_EDITOR
-            beStart = true;
-#endif
-            Debugger.Log("LuaState start");
-            OpenBaseLuaLibsAsync(() =>
-            {
-                PackBounds = GetFuncRef("Bounds.New");
-                UnpackBounds = GetFuncRef("Bounds.Get");
-                PackRay = GetFuncRef("Ray.New");
-                UnpackRay = GetFuncRef("Ray.Get");
-                PackRaycastHit = GetFuncRef("RaycastHit.New");
-                PackTouch = GetFuncRef("Touch.New");
-                callback();
-            });
         }
 
         public int OpenLibs(LuaCSFunction open)
@@ -620,34 +593,6 @@ namespace LuaInterface
             }
 
             return LuaLoadBuffer(buffer, fileName);
-        }
-
-        public void DoFileAsync(string fileName, Action<object> callback)
-        {
-#if UNITY_EDITOR
-            if (!beStart)
-            {
-                throw new LuaException("you must call Start() first to initialize LuaState");
-            }
-#endif                        
-            LuaFileUtils.Instance.ReadFileAsync(fileName, (buffer)=>
-            {
-                if (buffer == null)
-                {
-                    string error = string.Format("cannot open {0}: No such file or directory", fileName);
-                    error += LuaFileUtils.Instance.FindFileError(fileName);
-                    throw new LuaException(error);
-                }
-
-                if (LuaConst.openZbsDebugger)
-                {
-                    fileName = LuaFileUtils.Instance.FindFile(fileName);
-                }
-
-                var objects = LuaLoadBuffer(buffer, fileName);
-                callback(objects);
-            });
-
         }
 
         //注意fileName与lua文件中require一致。

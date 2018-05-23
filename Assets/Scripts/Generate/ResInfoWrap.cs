@@ -14,7 +14,6 @@ public class ResInfoWrap
 		L.RegVar("resSize", get_resSize, set_resSize);
 		L.RegVar("resURL", get_resURL, set_resURL);
 		L.RegVar("isResRequire", get_isResRequire, set_isResRequire);
-		L.RegVar("resRequireID", get_resRequireID, set_resRequireID);
 		L.EndClass();
 	}
 
@@ -138,25 +137,6 @@ public class ResInfoWrap
 	}
 
 	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
-	static int get_resRequireID(IntPtr L)
-	{
-		object o = null;
-
-		try
-		{
-			o = ToLua.ToObject(L, 1);
-			ResInfo obj = (ResInfo)o;
-			int ret = obj.resRequireID;
-			LuaDLL.lua_pushinteger(L, ret);
-			return 1;
-		}
-		catch(Exception e)
-		{
-			return LuaDLL.toluaL_exception(L, e, o == null ? "attempt to index resRequireID on a nil value" : e.Message);
-		}
-	}
-
-	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
 	static int set_resName(IntPtr L)
 	{
 		object o = null;
@@ -248,25 +228,6 @@ public class ResInfoWrap
 		catch(Exception e)
 		{
 			return LuaDLL.toluaL_exception(L, e, o == null ? "attempt to index isResRequire on a nil value" : e.Message);
-		}
-	}
-
-	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
-	static int set_resRequireID(IntPtr L)
-	{
-		object o = null;
-
-		try
-		{
-			o = ToLua.ToObject(L, 1);
-			ResInfo obj = (ResInfo)o;
-			int arg0 = (int)LuaDLL.luaL_checknumber(L, 2);
-			obj.resRequireID = arg0;
-			return 0;
-		}
-		catch(Exception e)
-		{
-			return LuaDLL.toluaL_exception(L, e, o == null ? "attempt to index resRequireID on a nil value" : e.Message);
 		}
 	}
 }

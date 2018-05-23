@@ -18,12 +18,11 @@ using System.Collections;
 using System.Collections.Generic;
 using LuaInterface;
 
-
 public class LuaManager : LuaClient
 {
 	void Start ()
     {
-        LogTool.Log("LuaManager.Start(MonoBehavior)");
+        Debug.Log("LuaManager.Start");
 	}
 
     static public System.Action m_InitFinishCB = null; //初始化结束
@@ -32,12 +31,6 @@ public class LuaManager : LuaClient
     {
         return new MyLuaResLoader();
         //return new LuaResLoader();
-    }
-
-    protected override void OpenLibs()
-    {
-        base.OpenLibs();
-        OpenCJson();
     }
 
     protected override void OnLoadFinished()
@@ -57,25 +50,23 @@ public class LuaManager : LuaClient
 
     protected override void StartMain()
     {
-        luaState.DoFileAsync("Main.lua", (objects)=>
+        luaState.DoFile("Main.lua");
+
+        InitUI();
+
+        levelLoaded = luaState.GetFunction("OnLevelWasLoaded");
+        DispatchSocketMsgAction = luaState.GetFunction("MsgManager.DispatchMsg");
+
+        Debug.Log("LuaManager.StartMain:准备执行Lua主函数");
+        CallMain();
+        Debug.Log("LuaManager.StartMain:执行Lua主函数结束");
+
+        if (m_InitFinishCB != null)
         {
-            InitUI();
+            m_InitFinishCB();
+        }
 
-            levelLoaded = luaState.GetFunction("OnLevelWasLoaded");
-            //DispatchSocketMsgAction = luaState.GetFunction("MsgManager.DispatchMsg");
-
-            LogTool.Log("LuaManager.StartMain:准备执行Lua主函数");
-            CallMain();
-            LogTool.Log("LuaManager.StartMain:执行Lua主函数结束");
-
-            if (m_InitFinishCB != null)
-            {
-                m_InitFinishCB();
-            }
-
-            Debug.Log("LuaManager.StartMain");
-        });
-
+        Debug.Log("LuaManager.StartMain");
     }
 
     static private LuaInterface.LuaFunction DispatchSocketMsgAction = null;
@@ -95,16 +86,11 @@ public class LuaManager : LuaClient
     }
     */
 
-    public void SetDispatchMsgFunction(string functionName)
-    {
-        DispatchSocketMsgAction = luaState.GetFunction(functionName);
-    }
-
-    // static public void DispatchSocketMsg(NetManager netManager, Pluto pluto)
+    // static public void DispatchSocketMsg(NetManager netManager, TCP_Buffer buffer)
     // {
     //     if (DispatchSocketMsgAction != null)
     //     {
-    //         DispatchSocketMsgAction.Call(netManager, pluto);
+    //         DispatchSocketMsgAction.Call(netManager, buffer);
     //     }
     // }
 
@@ -255,47 +241,6 @@ public class MyLuaResLoader : LuaResLoader
         }
     }
 
-    public override void ReadFileAsync(string fileName, Action<byte[]> callback)
-    {
-        if (SystemConfig.Instance.IsUseLuaBytecode)
-        {
-            if (fileName.EndsWith(".lua"))
-            {
-                fileName = fileName.Replace(".lua", LuaByteCodeFileSuffix);
-            }
-
-            if (fileName.EndsWith(LuaByteCodeFileSuffix) == false)
-            {
-                fileName = fileName + LuaByteCodeFileSuffix;
-            }
-        }
-        else
-        {
-            if (fileName.EndsWith(LuaByteCodeFileSuffix))
-            {
-                fileName = fileName.Replace(LuaByteCodeFileSuffix, ".lua");
-            }
-
-            if (fileName.EndsWith(".lua") == false)
-            {
-                fileName = fileName + ".lua";
-            }
-        }
-
-        if (ResourcesManager.IsLuaUseZip)
-        {
-            var bytes = GetLuaFileDataFromZip(fileName);
-            callback(bytes);
-        }
-        else
-        {
-            GetLuaFileDataFromStreamingAssetsPathAsync(fileName, (bytes)=>
-            {
-                callback(bytes);
-            });
-        }
-    }
-
     private byte[] GetLuaFileDataFromStreamingAssetsPath(string fileName)
     {
         for (int i = 0; i < m_ListLuaSearchDir.Length; ++i)
@@ -325,45 +270,6 @@ public class MyLuaResLoader : LuaResLoader
         string str = string.Format("GetLuaFileDataFromStreamingAssetsPath:读取文件{0}文件失败", fileName);
         Debug.LogError(str);
         return null;
-    }
-
-    private void GetLuaFileDataFromStreamingAssetsPathAsync(string fileName, Action<byte[]> callback)
-    {
-        ScriptThread.Instance.StartCoroutine(GetLuaFileDataFromStreamingAssetsPathAsyncImp(fileName, callback));
-    }
-    private IEnumerator GetLuaFileDataFromStreamingAssetsPathAsyncImp(string fileName, Action<byte[]> callback)
-    {
-        for (int i = 0; i < m_ListLuaSearchDir.Length; ++i)
-        {
-            string filePath = Application.streamingAssetsPath + "/" + m_ListLuaSearchDir[i] + fileName;
-            if (filePath.Contains("://"))
-            {
-                WWW www = new WWW(filePath);
-                while (!www.isDone)
-                {
-                    //等待加载完成
-                    yield return null;
-                }
-                if (string.IsNullOrEmpty(www.error))
-                {
-                    callback(www.bytes);
-                    yield break;
-                }
-            }
-            else
-            {
-                if (File.Exists(filePath))
-                {
-                    callback(File.ReadAllBytes(filePath));
-                    yield break;
-                }
-            }
-        }
-
-        string str = string.Format("GetLuaFileDataFromStreamingAssetsPath:读取文件{0}文件失败", fileName);
-        Debug.LogError(str);
-        callback(null);
-        yield return null;
     }
 
     private byte[] GetLuaFileDataFromZip(string fileName)

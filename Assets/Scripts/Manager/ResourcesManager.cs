@@ -1,4 +1,15 @@
+﻿/******************************************************************
+** 文件名:	
+** 版  权:	(C)  
+** 创建人:  Liange
+** 日  期:	2015.4.27
+** 描  述: 	
 
+**************************** 修改记录 ******************************
+** 修改人: 
+** 日  期: 
+** 描  述: 
+*******************************************************************/
 using UnityEngine;
 using System;
 using System.IO;
@@ -394,8 +405,8 @@ public class ResourcesManager : SingletonMonoBehaviour<ResourcesManager>
                 return "Android";
             case UnityEditor.BuildTarget.iOS:
                 return "IOS";
-            // case UnityEditor.BuildTarget.WebPlayer:
-            //     return "WebPlayer";
+            case UnityEditor.BuildTarget.WebGL:
+                return "WebPlayer";
             case UnityEditor.BuildTarget.StandaloneWindows:
             case UnityEditor.BuildTarget.StandaloneWindows64:
                 return "Windows";
@@ -420,9 +431,9 @@ public class ResourcesManager : SingletonMonoBehaviour<ResourcesManager>
                 return "Android";
             case RuntimePlatform.IPhonePlayer:
                 return "IOS";
-            // case RuntimePlatform.WindowsWebPlayer:
+            case RuntimePlatform.WebGLPlayer:
             // case RuntimePlatform.OSXWebPlayer:
-            //     return "WebPlayer";
+                return "WebPlayer";
             case RuntimePlatform.WindowsPlayer:
             case RuntimePlatform.WindowsEditor:
                 return "Windows";
@@ -798,53 +809,7 @@ public class ResourcesManager : SingletonMonoBehaviour<ResourcesManager>
 
     public static bool IsReleaseAssetBundleImmediately = false; //是否立即释放AssetBundle
 
-	public void UnloadAsset(string assetBundleName)
-	{
-		if (IsUseAssetBundle) {
-			assetBundleName = GetFilePathByFileName(assetBundleName);
-			UnloadAssetBundle(assetBundleName,true);
-		} else {
-			assetBundleName = GetFilePathByFileName(assetBundleName);
-			if (assetBundleName.EndsWith(mAssetBundleSuffix))
-			{
-				assetBundleName = assetBundleName.Remove(assetBundleName.Length - mAssetBundleSuffix.Length);
-			}
-
-			//去掉后缀名
-			assetBundleName = MyFileUtil.GetFileNameWithoutExtension(assetBundleName);
-
-			string newAbName = DirNameForAssetBundlesBuildFrom + "/" + assetBundleName;
-			if (mDictResources.ContainsKey (newAbName) == false) {
-				if (mDictResources.ContainsKey (assetBundleName) == false) {
-					ResourceUnit ru = mDictResources[assetBundleName];
-					mDictResources.Remove (assetBundleName);
-					foreach (UnityEngine.Object obj in ru.instanceList) {
-						UnityEngine.Object.Destroy (obj);
-					}
-					ru.prefab = null;
-					ru = null;
-					Resources.UnloadUnusedAssets();
-				} else {
-					Debug.LogError ("Not Found Resource When UnloadAsset : " + assetBundleName);
-				}
-			} else {
-				ResourceUnit ru = mDictResources[newAbName];
-				mDictResources.Remove (newAbName);
-				foreach (UnityEngine.Object obj in ru.instanceList) {
-					UnityEngine.Object.Destroy (obj);
-				}
-				ru.prefab = null;
-				ru = null;
-			}
-		}
-	}
-
-	public void UnloadUnusedAssets()
-	{
-		Resources.UnloadUnusedAssets ();
-	}
-
-	public void UnloadAssetBundle(string assetBundleName,bool isForceUnload = false)
+    public void UnloadAssetBundle(string assetBundleName)
     {
         if (mDictLoadedAssetBundle.ContainsKey(assetBundleName) == false)
         {
@@ -852,7 +817,7 @@ public class ResourcesManager : SingletonMonoBehaviour<ResourcesManager>
         }
 
         //卸载自身
-		UnloadAssetBundleImp(assetBundleName,isForceUnload);
+        UnloadAssetBundleImp(assetBundleName);
 
         //卸载依赖
         List<string> assetBundleNameList = new List<string>();
@@ -860,19 +825,18 @@ public class ResourcesManager : SingletonMonoBehaviour<ResourcesManager>
 
         for (int i = 0; i < assetBundleNameList.Count; ++i)
         {
-			UnloadAssetBundleImp(assetBundleNameList[i],isForceUnload);
+            UnloadAssetBundleImp(assetBundleNameList[i]);
         }
     }
 
-	private void UnloadAssetBundleImp(string assetBundleName,bool isForceUnload = false)
+    private void UnloadAssetBundleImp(string assetBundleName)
     {
         LoadedAssetBundle bundle = mDictLoadedAssetBundle[assetBundleName];
         --bundle.referencedCount;
-		if (bundle.referencedCount == 0 && (IsReleaseAssetBundleImmediately || isForceUnload))
+        if (bundle.referencedCount == 0 && IsReleaseAssetBundleImmediately)
         {
             bundle.assetBundle.Unload(false);
-			mDictLoadedAssetBundle.Remove(assetBundleName);
-			Resources.UnloadAsset (bundle.assetBundle);
+            mDictLoadedAssetBundle.Remove(assetBundleName);
         }
     }
 
@@ -964,15 +928,10 @@ public class ResourcesManager : SingletonMonoBehaviour<ResourcesManager>
                 return;
             }
             //解密
-            //data = DecryptLuaCode(data);
-            DecryptLuaCodeAsync(data, (decryptedData) =>
-            {
-                ParseZipAsync(decryptedData, (unzipedData)=>
-                {
-                    m_IsInitLuaZipData = true;
-                    loadFinish(true);
-                });
-            });
+            data = DecryptLuaCode(data);
+            ParseZip(data);
+            m_IsInitLuaZipData = true;
+            loadFinish(true);
         };
         StartCoroutine(LoadLuaZipFileImp(luaCodeZipFileName, loadZip));
     }
@@ -1046,67 +1005,6 @@ public class ResourcesManager : SingletonMonoBehaviour<ResourcesManager>
         stream.Close();
     }
 
-    private void ParseZipAsync(byte[] zipFileData, Action<byte[]> callback)
-    {
-        Loom.RunAsync(() =>
-        {
-            MemoryStream stream = new MemoryStream(zipFileData);
-            stream.Seek(0, SeekOrigin.Begin);
-            ICSharpCode.SharpZipLib.Zip.ZipInputStream zipStream = new ICSharpCode.SharpZipLib.Zip.ZipInputStream(stream);
-
-            for (ICSharpCode.SharpZipLib.Zip.ZipEntry theEntry = zipStream.GetNextEntry(); theEntry != null; theEntry = zipStream.GetNextEntry())
-            {
-                if (theEntry.IsFile == false)
-                {
-                    continue;
-                }
-
-                if (theEntry.Name.EndsWith(".meta"))
-                {
-                    continue;
-                }
-
-                string fileName = Path.GetFileName(theEntry.Name);
-                if (fileName != String.Empty)
-                {
-                    List<byte> result = new List<byte>();
-                    byte[] data = new byte[2048];
-                    while (true)
-                    {
-                        int size = zipStream.Read(data, 0, data.Length);
-                        if (size > 0)
-                        {
-                            var bytes = new Byte[size];
-                            Array.Copy(data, bytes, size);
-                            result.AddRange(bytes);
-                        }
-                        else
-                        {
-                            break;
-                        }
-                    }
-
-                    //文件名都转为小写
-                    if (m_DictLuaScriptData.ContainsKey(fileName.ToLower()))
-                    {
-                        string str = string.Format("ResourcesManager.InitZip:Zip中文件名{0}重复", fileName);
-                        Debug.LogError(str);
-                        continue;
-                    }
-                    m_DictLuaScriptData.Add(theEntry.Name.ToLower(), result.ToArray());
-                }
-            }
-
-            zipStream.Close();
-            stream.Close();
-
-            Loom.QueueOnMainThread(() =>
-            {
-                callback(zipFileData);
-            });
-        });
-    }
-
     public byte[] GetLuaScriptDataFromZip(string fileName)
     {
         fileName = fileName.ToLower(); //文件名转为小写
@@ -1156,19 +1054,6 @@ public class ResourcesManager : SingletonMonoBehaviour<ResourcesManager>
         return data;
     }
 
-    //解密Lua代码
-    static private void DecryptLuaCodeAsync(byte[] data, Action<byte[]> callback)
-    {
-        if (SystemConfig.Instance.IsEncryptLuaCode)
-        {
-            DESCrypto.DecryptAsync(data, MyFileUtil.EncryptKey, callback);
-        }
-        else
-        {
-            callback(data);
-        }
-    }
-
     //获得lua zip文件md5值
     public void GetLuaZipFileMD5(string luaCodeZipFileName, System.Action<string> getFinish)
     {
@@ -1202,43 +1087,30 @@ public class ResourcesManager : SingletonMonoBehaviour<ResourcesManager>
 
     static private Dictionary<string, string> m_DictFileInfo = new Dictionary<string, string>();
 
-    static private void LoadFileList(Action callback = null)
+    static private void LoadFileList()
     {
 #if UNITY_EDITOR
         SaveFileList();
 #endif
         //加载文件列表
-        MyFileUtil.ReadConfigDataAsync(FileListConfigFileName, (xmlContent) =>
+        string xmlContent = MyFileUtil.ReadConfigData(FileListConfigFileName);
+        SecurityParser securityParser = new SecurityParser();
+        securityParser.LoadXml(xmlContent);
+        SecurityElement xml = securityParser.ToXml();
+
+        for (int i = 0; i < xml.Children.Count; i += 2)
         {
-            //string xmlContent = MyFileUtil.ReadConfigData(FileListConfigFileName);
-            Loom.RunAsync(() =>
+            var key = xml.Children[i] as System.Security.SecurityElement;
+            var value = xml.Children[i + 1] as System.Security.SecurityElement;
+
+            if(m_DictFileInfo.ContainsKey(key.Text))
             {
-                SecurityParser securityParser = new SecurityParser();
-                securityParser.LoadXml(xmlContent);
-                SecurityElement xml = securityParser.ToXml();
-
-                for (int i = 0; i < xml.Children.Count; i += 2)
-                {
-                    var key = xml.Children[i] as System.Security.SecurityElement;
-                    var value = xml.Children[i + 1] as System.Security.SecurityElement;
-
-                    if(m_DictFileInfo.ContainsKey(key.Text))
-                    {
-                        string str = string.Format("ResourcesManager.LoadFileList:资源名{0}重复", key.Text);
-                        //Debug.LogError(str);
-                        continue;
-                    }
-                    m_DictFileInfo.Add(key.Text, value.Text);
-                }
-                Loom.QueueOnMainThread(() =>
-                {
-                    if(callback != null)
-                    {
-                        callback();
-                    }
-                });
-            });
-        });
+                string str = string.Format("ResourcesManager.LoadFileList:资源名{0}重复", key.Text);
+                Debug.LogError(str);
+                continue;
+            }
+            m_DictFileInfo.Add(key.Text, value.Text);
+        }
     }
 
     static public List<string> GenerateFileList(string rootDir)
@@ -1248,7 +1120,7 @@ public class ResourcesManager : SingletonMonoBehaviour<ResourcesManager>
         //资源目录--生成此目录下的资源名列表
         //Common路径不能交换，即Common目录首先加入
         dirList.Add(rootDir + "Common");
-        dirList.Add(rootDir + SDKConfig.GetCurrentVersionResPath());
+        // dirList.Add(rootDir + SDKConfig.GetCurrentVersionResPath());
 
         Dictionary<string, string> dictFilePath = new Dictionary<string, string>();
         foreach (string dir in dirList)
@@ -1366,37 +1238,35 @@ public class ResourcesManager : SingletonMonoBehaviour<ResourcesManager>
 #endif
 
         //加载文件列表
-        LoadFileList(()=>
-        {
-            Action<bool> initAction = delegate (bool result)
-            {
-                LoadLuaZipFile(LuaZipFileName, initFinishCB);
-            };
+        LoadFileList();
 
-            if(IsLuaUseZip)
+        Action<bool> initAction = delegate (bool result)
+        {
+            LoadLuaZipFile(LuaZipFileName, initFinishCB);
+        };
+
+        if(IsLuaUseZip)
+        {
+            if(IsUseAssetBundle)
             {
-                if(IsUseAssetBundle)
-                {
-                    LoadAssetBundleManifest(initAction);
-                }
-                else
-                {
-                    LoadLuaZipFile(LuaZipFileName, initFinishCB);
-                }
+                LoadAssetBundleManifest(initAction);
             }
             else
             {
-                if(IsUseAssetBundle)
-                {
-                    LoadAssetBundleManifest(initFinishCB);
-                }
-                else
-                {
-                    initFinishCB(true);
-                }
+                LoadLuaZipFile(LuaZipFileName, initFinishCB);
             }
-        });
-
+        }
+        else
+        {
+            if(IsUseAssetBundle)
+            {
+                LoadAssetBundleManifest(initFinishCB);
+            }
+            else
+            {
+                initFinishCB(true);
+            }
+        }
     }
 
 
@@ -1477,7 +1347,6 @@ public class ResourcesManager : SingletonMonoBehaviour<ResourcesManager>
             }
 
             onLoad(obj);
-			obj = null;
         }
     }
     /// <summary>
@@ -1520,7 +1389,6 @@ public class ResourcesManager : SingletonMonoBehaviour<ResourcesManager>
             obj = UnityEngine.Object.Instantiate(obj);
             m_DictInstanceIDABName.Add(obj.GetInstanceID(), abName);
             onLoad(obj);
-			obj = null;
         };
 
         GetPrefab(abName, assetName, loadPrefab);
@@ -1631,7 +1499,6 @@ public class ResourcesManager : SingletonMonoBehaviour<ResourcesManager>
             obj = UnityEngine.Object.Instantiate(obj);
             m_DictInstanceIDABName.Add(obj.GetInstanceID(), abName);
             onLoad(obj);
-			obj = null;
         };
 
         GetUIPrefab(abName, assetName, loadPrefab);

@@ -27,6 +27,9 @@ public class MyUnityToolWrap
 		L.RegFunction("CreateInstance", CreateInstance);
 		L.RegFunction("Approximately", Approximately);
 		L.RegFunction("Compare", Compare);
+		L.RegFunction("Divide", Divide);
+		L.RegFunction("Mod", Mod);
+		L.RegFunction("Multiply", Multiply);
 		L.RegFunction("IsProcessorArch64", IsProcessorArch64);
 		L.RegFunction("New", _CreateMyUnityTool);
 		L.RegFunction("__tostring", ToLua.op_ToString);
@@ -486,6 +489,60 @@ public class MyUnityToolWrap
 			long arg1 = LuaDLL.tolua_checkint64(L, 2);
 			int o = MyUnityTool.Compare(arg0, arg1);
 			LuaDLL.lua_pushinteger(L, o);
+			return 1;
+		}
+		catch(Exception e)
+		{
+			return LuaDLL.toluaL_exception(L, e);
+		}
+	}
+
+	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	static int Divide(IntPtr L)
+	{
+		try
+		{
+			ToLua.CheckArgsCount(L, 2);
+			long arg0 = LuaDLL.tolua_checkint64(L, 1);
+			long arg1 = LuaDLL.tolua_checkint64(L, 2);
+			float o = MyUnityTool.Divide(arg0, arg1);
+			LuaDLL.lua_pushnumber(L, o);
+			return 1;
+		}
+		catch(Exception e)
+		{
+			return LuaDLL.toluaL_exception(L, e);
+		}
+	}
+
+	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	static int Mod(IntPtr L)
+	{
+		try
+		{
+			ToLua.CheckArgsCount(L, 2);
+			long arg0 = LuaDLL.tolua_checkint64(L, 1);
+			long arg1 = LuaDLL.tolua_checkint64(L, 2);
+			float o = MyUnityTool.Mod(arg0, arg1);
+			LuaDLL.lua_pushnumber(L, o);
+			return 1;
+		}
+		catch(Exception e)
+		{
+			return LuaDLL.toluaL_exception(L, e);
+		}
+	}
+
+	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	static int Multiply(IntPtr L)
+	{
+		try
+		{
+			ToLua.CheckArgsCount(L, 2);
+			long arg0 = LuaDLL.tolua_checkint64(L, 1);
+			float arg1 = (float)LuaDLL.luaL_checknumber(L, 2);
+			float o = MyUnityTool.Multiply(arg0, arg1);
+			LuaDLL.lua_pushnumber(L, o);
 			return 1;
 		}
 		catch(Exception e)

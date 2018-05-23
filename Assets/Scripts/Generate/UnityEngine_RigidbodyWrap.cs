@@ -27,8 +27,6 @@ public class UnityEngine_RigidbodyWrap
 		L.RegFunction("ResetInertiaTensor", ResetInertiaTensor);
 		L.RegFunction("SweepTest", SweepTest);
 		L.RegFunction("SweepTestAll", SweepTestAll);
-		L.RegFunction("DOLocalPath", DOLocalPath);
-		L.RegFunction("DOPath", DOPath);
 		L.RegFunction("DOJump", DOJump);
 		L.RegFunction("DOLookAt", DOLookAt);
 		L.RegFunction("DORotate", DORotate);
@@ -655,52 +653,6 @@ public class UnityEngine_RigidbodyWrap
 			{
 				return LuaDLL.luaL_throw(L, "invalid arguments to method: UnityEngine.Rigidbody.SweepTestAll");
 			}
-		}
-		catch(Exception e)
-		{
-			return LuaDLL.toluaL_exception(L, e);
-		}
-	}
-
-	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
-	static int DOLocalPath(IntPtr L)
-	{
-		try
-		{
-			ToLua.CheckArgsCount(L, 7);
-			UnityEngine.Rigidbody obj = (UnityEngine.Rigidbody)ToLua.CheckObject(L, 1, typeof(UnityEngine.Rigidbody));
-			UnityEngine.Vector3[] arg0 = ToLua.CheckObjectArray<UnityEngine.Vector3>(L, 2);
-			float arg1 = (float)LuaDLL.luaL_checknumber(L, 3);
-			DG.Tweening.PathType arg2 = (DG.Tweening.PathType)ToLua.CheckObject(L, 4, typeof(DG.Tweening.PathType));
-			DG.Tweening.PathMode arg3 = (DG.Tweening.PathMode)ToLua.CheckObject(L, 5, typeof(DG.Tweening.PathMode));
-			int arg4 = (int)LuaDLL.luaL_checknumber(L, 6);
-			System.Nullable<UnityEngine.Color> arg5 = (System.Nullable<UnityEngine.Color>)ToLua.CheckVarObject(L, 7, typeof(System.Nullable<UnityEngine.Color>));
-			DG.Tweening.Core.TweenerCore<UnityEngine.Vector3,DG.Tweening.Plugins.Core.PathCore.Path,DG.Tweening.Plugins.Options.PathOptions> o = obj.DOLocalPath(arg0, arg1, arg2, arg3, arg4, arg5);
-			ToLua.PushObject(L, o);
-			return 1;
-		}
-		catch(Exception e)
-		{
-			return LuaDLL.toluaL_exception(L, e);
-		}
-	}
-
-	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
-	static int DOPath(IntPtr L)
-	{
-		try
-		{
-			ToLua.CheckArgsCount(L, 7);
-			UnityEngine.Rigidbody obj = (UnityEngine.Rigidbody)ToLua.CheckObject(L, 1, typeof(UnityEngine.Rigidbody));
-			UnityEngine.Vector3[] arg0 = ToLua.CheckObjectArray<UnityEngine.Vector3>(L, 2);
-			float arg1 = (float)LuaDLL.luaL_checknumber(L, 3);
-			DG.Tweening.PathType arg2 = (DG.Tweening.PathType)ToLua.CheckObject(L, 4, typeof(DG.Tweening.PathType));
-			DG.Tweening.PathMode arg3 = (DG.Tweening.PathMode)ToLua.CheckObject(L, 5, typeof(DG.Tweening.PathMode));
-			int arg4 = (int)LuaDLL.luaL_checknumber(L, 6);
-			System.Nullable<UnityEngine.Color> arg5 = (System.Nullable<UnityEngine.Color>)ToLua.CheckVarObject(L, 7, typeof(System.Nullable<UnityEngine.Color>));
-			DG.Tweening.Core.TweenerCore<UnityEngine.Vector3,DG.Tweening.Plugins.Core.PathCore.Path,DG.Tweening.Plugins.Options.PathOptions> o = obj.DOPath(arg0, arg1, arg2, arg3, arg4, arg5);
-			ToLua.PushObject(L, o);
-			return 1;
 		}
 		catch(Exception e)
 		{

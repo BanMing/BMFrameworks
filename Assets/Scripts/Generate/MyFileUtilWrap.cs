@@ -11,24 +11,13 @@ public class MyFileUtilWrap
 		L.RegFunction("ReadFileText", ReadFileText);
 		L.RegFunction("WriteFile", WriteFile);
 		L.RegFunction("ReadConfigData", ReadConfigData);
-		L.RegFunction("ReadConfigDataAsync", ReadConfigDataAsync);
 		L.RegFunction("ReadConfigDataInCacheDir", ReadConfigDataInCacheDir);
-		L.RegFunction("ReadConfigDataInCacheDirAsync", ReadConfigDataInCacheDirAsync);
 		L.RegFunction("ReadNotEncryptionConfigDataInStreamingAssets", ReadNotEncryptionConfigDataInStreamingAssets);
 		L.RegFunction("ReadConfigDataInStreamingAssets", ReadConfigDataInStreamingAssets);
-		L.RegFunction("ReadConfigDataInStreamingAssetsAsync", ReadConfigDataInStreamingAssetsAsync);
 		L.RegFunction("ReadConfigDataInStreamingAssetsImp", ReadConfigDataInStreamingAssetsImp);
 		L.RegFunction("WriteConfigDataInStreamingAssets", WriteConfigDataInStreamingAssets);
 		L.RegFunction("WriteUnEncryptConfigDataInStreamingAssets", WriteUnEncryptConfigDataInStreamingAssets);
 		L.RegFunction("WriteConfigDataInCacheDir", WriteConfigDataInCacheDir);
-		L.RegFunction("ReadData", ReadData);
-		L.RegFunction("ReadDataInCacheDir", ReadDataInCacheDir);
-		L.RegFunction("ReadNotEncryptionDataInStreamingAssets", ReadNotEncryptionDataInStreamingAssets);
-		L.RegFunction("ReadDataInStreamingAssets", ReadDataInStreamingAssets);
-		L.RegFunction("ReadDataInStreamingAssetsImp", ReadDataInStreamingAssetsImp);
-		L.RegFunction("WriteDataInStreamingAssets", WriteDataInStreamingAssets);
-		L.RegFunction("WriteUnEncryptDataInStreamingAssets", WriteUnEncryptDataInStreamingAssets);
-		L.RegFunction("WriteDataInCacheDir", WriteDataInCacheDir);
 		L.RegFunction("EncryptData", EncryptData);
 		L.RegFunction("DecryptData", DecryptData);
 		L.RegFunction("CopyFile", CopyFile);
@@ -57,10 +46,6 @@ public class MyFileUtilWrap
 		L.RegVar("SDCardDir", get_SDCardDir, null);
 		L.RegVar("InnerConfigDir", get_InnerConfigDir, null);
 		L.RegVar("OuterConfigDir", get_OuterConfigDir, null);
-		L.RegVar("InnerDataDir", get_InnerDataDir, null);
-		L.RegVar("InnerEntitiesDir", get_InnerEntitiesDir, null);
-		L.RegVar("InnerDir", get_InnerDir, null);
-		L.RegVar("OuterDir", get_OuterDir, null);
 		L.EndClass();
 	}
 
@@ -176,35 +161,6 @@ public class MyFileUtilWrap
 	}
 
 	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
-	static int ReadConfigDataAsync(IntPtr L)
-	{
-		try
-		{
-			ToLua.CheckArgsCount(L, 2);
-			string arg0 = ToLua.CheckString(L, 1);
-			System.Action<string> arg1 = null;
-			LuaTypes funcType2 = LuaDLL.lua_type(L, 2);
-
-			if (funcType2 != LuaTypes.LUA_TFUNCTION)
-			{
-				 arg1 = (System.Action<string>)ToLua.CheckObject(L, 2, typeof(System.Action<string>));
-			}
-			else
-			{
-				LuaFunction func = ToLua.ToLuaFunction(L, 2);
-				arg1 = DelegateFactory.CreateDelegate(typeof(System.Action<string>), func) as System.Action<string>;
-			}
-
-			MyFileUtil.ReadConfigDataAsync(arg0, arg1);
-			return 0;
-		}
-		catch(Exception e)
-		{
-			return LuaDLL.toluaL_exception(L, e);
-		}
-	}
-
-	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
 	static int ReadConfigDataInCacheDir(IntPtr L)
 	{
 		try
@@ -214,35 +170,6 @@ public class MyFileUtilWrap
 			string o = MyFileUtil.ReadConfigDataInCacheDir(arg0);
 			LuaDLL.lua_pushstring(L, o);
 			return 1;
-		}
-		catch(Exception e)
-		{
-			return LuaDLL.toluaL_exception(L, e);
-		}
-	}
-
-	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
-	static int ReadConfigDataInCacheDirAsync(IntPtr L)
-	{
-		try
-		{
-			ToLua.CheckArgsCount(L, 2);
-			string arg0 = ToLua.CheckString(L, 1);
-			System.Action<string> arg1 = null;
-			LuaTypes funcType2 = LuaDLL.lua_type(L, 2);
-
-			if (funcType2 != LuaTypes.LUA_TFUNCTION)
-			{
-				 arg1 = (System.Action<string>)ToLua.CheckObject(L, 2, typeof(System.Action<string>));
-			}
-			else
-			{
-				LuaFunction func = ToLua.ToLuaFunction(L, 2);
-				arg1 = DelegateFactory.CreateDelegate(typeof(System.Action<string>), func) as System.Action<string>;
-			}
-
-			MyFileUtil.ReadConfigDataInCacheDirAsync(arg0, arg1);
-			return 0;
 		}
 		catch(Exception e)
 		{
@@ -277,35 +204,6 @@ public class MyFileUtilWrap
 			string o = MyFileUtil.ReadConfigDataInStreamingAssets(arg0);
 			LuaDLL.lua_pushstring(L, o);
 			return 1;
-		}
-		catch(Exception e)
-		{
-			return LuaDLL.toluaL_exception(L, e);
-		}
-	}
-
-	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
-	static int ReadConfigDataInStreamingAssetsAsync(IntPtr L)
-	{
-		try
-		{
-			ToLua.CheckArgsCount(L, 2);
-			string arg0 = ToLua.CheckString(L, 1);
-			System.Action<string> arg1 = null;
-			LuaTypes funcType2 = LuaDLL.lua_type(L, 2);
-
-			if (funcType2 != LuaTypes.LUA_TFUNCTION)
-			{
-				 arg1 = (System.Action<string>)ToLua.CheckObject(L, 2, typeof(System.Action<string>));
-			}
-			else
-			{
-				LuaFunction func = ToLua.ToLuaFunction(L, 2);
-				arg1 = DelegateFactory.CreateDelegate(typeof(System.Action<string>), func) as System.Action<string>;
-			}
-
-			MyFileUtil.ReadConfigDataInStreamingAssetsAsync(arg0, arg1);
-			return 0;
 		}
 		catch(Exception e)
 		{
@@ -373,142 +271,6 @@ public class MyFileUtilWrap
 			string arg0 = ToLua.CheckString(L, 1);
 			string arg1 = ToLua.CheckString(L, 2);
 			MyFileUtil.WriteConfigDataInCacheDir(arg0, arg1);
-			return 0;
-		}
-		catch(Exception e)
-		{
-			return LuaDLL.toluaL_exception(L, e);
-		}
-	}
-
-	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
-	static int ReadData(IntPtr L)
-	{
-		try
-		{
-			ToLua.CheckArgsCount(L, 1);
-			string arg0 = ToLua.CheckString(L, 1);
-			string o = MyFileUtil.ReadData(arg0);
-			LuaDLL.lua_pushstring(L, o);
-			return 1;
-		}
-		catch(Exception e)
-		{
-			return LuaDLL.toluaL_exception(L, e);
-		}
-	}
-
-	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
-	static int ReadDataInCacheDir(IntPtr L)
-	{
-		try
-		{
-			ToLua.CheckArgsCount(L, 1);
-			string arg0 = ToLua.CheckString(L, 1);
-			string o = MyFileUtil.ReadDataInCacheDir(arg0);
-			LuaDLL.lua_pushstring(L, o);
-			return 1;
-		}
-		catch(Exception e)
-		{
-			return LuaDLL.toluaL_exception(L, e);
-		}
-	}
-
-	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
-	static int ReadNotEncryptionDataInStreamingAssets(IntPtr L)
-	{
-		try
-		{
-			ToLua.CheckArgsCount(L, 1);
-			string arg0 = ToLua.CheckString(L, 1);
-			string o = MyFileUtil.ReadNotEncryptionDataInStreamingAssets(arg0);
-			LuaDLL.lua_pushstring(L, o);
-			return 1;
-		}
-		catch(Exception e)
-		{
-			return LuaDLL.toluaL_exception(L, e);
-		}
-	}
-
-	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
-	static int ReadDataInStreamingAssets(IntPtr L)
-	{
-		try
-		{
-			ToLua.CheckArgsCount(L, 1);
-			string arg0 = ToLua.CheckString(L, 1);
-			string o = MyFileUtil.ReadDataInStreamingAssets(arg0);
-			LuaDLL.lua_pushstring(L, o);
-			return 1;
-		}
-		catch(Exception e)
-		{
-			return LuaDLL.toluaL_exception(L, e);
-		}
-	}
-
-	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
-	static int ReadDataInStreamingAssetsImp(IntPtr L)
-	{
-		try
-		{
-			ToLua.CheckArgsCount(L, 1);
-			string arg0 = ToLua.CheckString(L, 1);
-			byte[] o = MyFileUtil.ReadDataInStreamingAssetsImp(arg0);
-			ToLua.Push(L, o);
-			return 1;
-		}
-		catch(Exception e)
-		{
-			return LuaDLL.toluaL_exception(L, e);
-		}
-	}
-
-	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
-	static int WriteDataInStreamingAssets(IntPtr L)
-	{
-		try
-		{
-			ToLua.CheckArgsCount(L, 2);
-			string arg0 = ToLua.CheckString(L, 1);
-			string arg1 = ToLua.CheckString(L, 2);
-			MyFileUtil.WriteDataInStreamingAssets(arg0, arg1);
-			return 0;
-		}
-		catch(Exception e)
-		{
-			return LuaDLL.toluaL_exception(L, e);
-		}
-	}
-
-	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
-	static int WriteUnEncryptDataInStreamingAssets(IntPtr L)
-	{
-		try
-		{
-			ToLua.CheckArgsCount(L, 2);
-			string arg0 = ToLua.CheckString(L, 1);
-			string arg1 = ToLua.CheckString(L, 2);
-			MyFileUtil.WriteUnEncryptDataInStreamingAssets(arg0, arg1);
-			return 0;
-		}
-		catch(Exception e)
-		{
-			return LuaDLL.toluaL_exception(L, e);
-		}
-	}
-
-	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
-	static int WriteDataInCacheDir(IntPtr L)
-	{
-		try
-		{
-			ToLua.CheckArgsCount(L, 2);
-			string arg0 = ToLua.CheckString(L, 1);
-			string arg1 = ToLua.CheckString(L, 2);
-			MyFileUtil.WriteDataInCacheDir(arg0, arg1);
 			return 0;
 		}
 		catch(Exception e)
@@ -1012,62 +774,6 @@ public class MyFileUtilWrap
 		try
 		{
 			LuaDLL.lua_pushstring(L, MyFileUtil.OuterConfigDir);
-			return 1;
-		}
-		catch(Exception e)
-		{
-			return LuaDLL.toluaL_exception(L, e);
-		}
-	}
-
-	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
-	static int get_InnerDataDir(IntPtr L)
-	{
-		try
-		{
-			LuaDLL.lua_pushstring(L, MyFileUtil.InnerDataDir);
-			return 1;
-		}
-		catch(Exception e)
-		{
-			return LuaDLL.toluaL_exception(L, e);
-		}
-	}
-
-	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
-	static int get_InnerEntitiesDir(IntPtr L)
-	{
-		try
-		{
-			LuaDLL.lua_pushstring(L, MyFileUtil.InnerEntitiesDir);
-			return 1;
-		}
-		catch(Exception e)
-		{
-			return LuaDLL.toluaL_exception(L, e);
-		}
-	}
-
-	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
-	static int get_InnerDir(IntPtr L)
-	{
-		try
-		{
-			LuaDLL.lua_pushstring(L, MyFileUtil.InnerDir);
-			return 1;
-		}
-		catch(Exception e)
-		{
-			return LuaDLL.toluaL_exception(L, e);
-		}
-	}
-
-	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
-	static int get_OuterDir(IntPtr L)
-	{
-		try
-		{
-			LuaDLL.lua_pushstring(L, MyFileUtil.OuterDir);
 			return 1;
 		}
 		catch(Exception e)

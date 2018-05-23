@@ -1,10 +1,12 @@
 --主入口函数。从这里开始lua逻辑
 function Main()					
-	print("logic start")
-	-- local textTrans= ResourcesManager.GetInstanceGameOject("Perfabs/Text").transform	 
-	-- textTrans:SetParent(UnityEngine.GameObject.Find("Canvas").transform)
-	-- textTrans.localPosition=Vector3.zero		
-	UnityEngine.GameObject.Find("Text(Clone)"):GetComponent("Text").text="sssssssssssssssss"
+	print("logic start")	 
+	coroutine.start(ImprotFiles)
+end
+
+function InitMain()	
+	UIWindowFirstLoading.Close()
+	MyUnityTool.Find("UIRoot/TopRoot/CommonViews"):SetActive(true)
 end
 
 --场景切换通知
@@ -14,4 +16,10 @@ function OnLevelWasLoaded(level)
 end
 
 function OnApplicationQuit()
+	
+end
+
+function ImprotFiles()
+	coroutine.wait(1)
+	InitMain()
 end

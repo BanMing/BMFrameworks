@@ -27,6 +27,7 @@ public class UnityEngine_LightWrap
 		L.RegVar("cookieSize", get_cookieSize, set_cookieSize);
 		L.RegVar("cookie", get_cookie, set_cookie);
 		L.RegVar("renderMode", get_renderMode, set_renderMode);
+		L.RegVar("lightmapBakeType", get_lightmapBakeType, set_lightmapBakeType);
 		L.RegVar("commandBufferCount", get_commandBufferCount, null);
 		L.RegVar("type", get_type, set_type);
 		L.RegVar("spotAngle", get_spotAngle, set_spotAngle);
@@ -396,6 +397,25 @@ public class UnityEngine_LightWrap
 		catch(Exception e)
 		{
 			return LuaDLL.toluaL_exception(L, e, o == null ? "attempt to index renderMode on a nil value" : e.Message);
+		}
+	}
+
+	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	static int get_lightmapBakeType(IntPtr L)
+	{
+		object o = null;
+
+		try
+		{
+			o = ToLua.ToObject(L, 1);
+			UnityEngine.Light obj = (UnityEngine.Light)o;
+			UnityEngine.LightmapBakeType ret = obj.lightmapBakeType;
+			ToLua.Push(L, ret);
+			return 1;
+		}
+		catch(Exception e)
+		{
+			return LuaDLL.toluaL_exception(L, e, o == null ? "attempt to index lightmapBakeType on a nil value" : e.Message);
 		}
 	}
 
@@ -795,6 +815,25 @@ public class UnityEngine_LightWrap
 		catch(Exception e)
 		{
 			return LuaDLL.toluaL_exception(L, e, o == null ? "attempt to index renderMode on a nil value" : e.Message);
+		}
+	}
+
+	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	static int set_lightmapBakeType(IntPtr L)
+	{
+		object o = null;
+
+		try
+		{
+			o = ToLua.ToObject(L, 1);
+			UnityEngine.Light obj = (UnityEngine.Light)o;
+			UnityEngine.LightmapBakeType arg0 = (UnityEngine.LightmapBakeType)ToLua.CheckObject(L, 2, typeof(UnityEngine.LightmapBakeType));
+			obj.lightmapBakeType = arg0;
+			return 0;
+		}
+		catch(Exception e)
+		{
+			return LuaDLL.toluaL_exception(L, e, o == null ? "attempt to index lightmapBakeType on a nil value" : e.Message);
 		}
 	}
 

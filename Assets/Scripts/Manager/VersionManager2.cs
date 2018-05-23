@@ -30,9 +30,7 @@ public class ResInfo
 
     //true：本地没有这个资源包则会下载这个资源包，需要更新则更新
     //false:本地没有这个资源包则不会下载，如果本地有，需要更新则会更新
-    public bool isResRequire = true;
-
-    public int resRequireID = 0;
+    public bool isResRequire = false;
 }
 
 public class VersionInfo2
@@ -46,8 +44,6 @@ public class VersionInfo2
     public string IOSAppStoreUrl { set; get; }  //IOS更新URL，商店版
     public bool IsAppleAppStore { set; get; }   //是否属于IOS App Store版本
     public bool IsOpenAutoUpdateInAppStore { set; get; } //是否开启App Store版本的自动更新，服务器开关，动态开启关闭自动更新
-
-	public bool IsForceToUpdate { set; get;}	//是否强制更新(由服务器控制)
 
     public Dictionary<string, ResInfo> dictRes = new Dictionary<string, ResInfo>();
 
@@ -93,7 +89,6 @@ public class VersionInfo2
                     case "iosappstoreurl": versionInfo.IOSAppStoreUrl = se.Text; break;
                     case "isappleappstore": versionInfo.IsAppleAppStore = StrBoolParse(se.Text); break;
                     case "isopenautoupdateinappstore": versionInfo.IsOpenAutoUpdateInAppStore = StrBoolParse(se.Text); break;
-					case "isforcetoupdate": versionInfo.IsForceToUpdate = StrBoolParse(se.Text); break;
                     case "resinfo":
                         {
                             if (se.Children == null || se.Children.Count == 0)
@@ -127,9 +122,6 @@ public class VersionInfo2
                                                 else
                                                     resInfo.isResRequire = bool.Parse(node.Text);
                                             }
-                                            break;
-                                        case "resrequireid":
-                                            resInfo.resRequireID = int.Parse(node.Text);
                                             break;
                                     }
                                 }
@@ -201,7 +193,6 @@ public class VersionInfo2
         root.AddChild(new System.Security.SecurityElement("IOSAppStoreUrl", innerVersionInfo.IOSAppStoreUrl));
         root.AddChild(new System.Security.SecurityElement("IsAppleAppStore", innerVersionInfo.IsAppleAppStore.ToString()));
         root.AddChild(new System.Security.SecurityElement("IsOpenAutoUpdateInAppStore", innerVersionInfo.IsOpenAutoUpdateInAppStore.ToString()));
-		root.AddChild(new System.Security.SecurityElement("IsForceToUpdate", innerVersionInfo.IsForceToUpdate.ToString()));
         var resInfoNode = new System.Security.SecurityElement("ResInfo");
         root.AddChild(resInfoNode);
 
@@ -214,8 +205,7 @@ public class VersionInfo2
             recordNode.AddChild(new System.Security.SecurityElement("ResMD5", item.resMD5));
             recordNode.AddChild(new System.Security.SecurityElement("ResURL", item.resURL));
             recordNode.AddChild(new System.Security.SecurityElement("ResSize", item.resSize.ToString()));
-            recordNode.AddChild(new System.Security.SecurityElement("ResRequire", "true"));
-            recordNode.AddChild(new System.Security.SecurityElement("resRequireID", item.resRequireID.ToString()));
+            recordNode.AddChild(new System.Security.SecurityElement("ResRequire", "false"));
         }
 
         return root.ToString();
@@ -225,15 +215,10 @@ public class VersionInfo2
 public class VersionManager2 : Singleton<VersionManager2>
 {
     static public string VersionInfoFilePath = "VersionInfo.xml"; //版本配置文件路径
-    static public VersionInfo2 serverVersionInfo;
 
     //获取本地版本信息
     public VersionInfo2 GetLocalVersionInfo()
     {
-        if(m_LocalVersionInfo != null)
-        {
-            return m_LocalVersionInfo;
-        }
         //获取安装包中版本信息
         string innerText = MyFileUtil.ReadConfigDataInStreamingAssets(VersionInfoFilePath);
         VersionInfo2 innerVersionInfo = VersionInfo2.ParseData(innerText);
@@ -248,35 +233,6 @@ public class VersionManager2 : Singleton<VersionManager2>
         }
 
         return innerVersionInfo;
-    }
-
-    //异步获取本地版本信息
-    public void GetLocalVersionInfoAsync(Action<VersionInfo2> callback)
-    {
-        if (m_LocalVersionInfo != null)
-        {
-            callback(m_LocalVersionInfo);
-            return;
-        }
-        //获取安装包中版本信息
-        MyFileUtil.ReadConfigDataInStreamingAssetsAsync(VersionInfoFilePath, (innerText)=>
-        {
-            VersionInfo2 innerVersionInfo = VersionInfo2.ParseData(innerText);
-
-            //外部版本信息
-            MyFileUtil.ReadConfigDataInCacheDirAsync(VersionInfoFilePath, (outText)=>
-            {
-                if (outText != null)
-                {
-                    VersionInfo2 outVersionInfo = VersionInfo2.ParseData(outText);
-                    outVersionInfo.ProgramVersion = innerVersionInfo.ProgramVersion;
-                    callback(outVersionInfo);
-                    return;
-                }
-
-                callback(innerVersionInfo);
-            });
-        });
     }
 
     public VersionInfo2 GetInnerVersionInfo()
@@ -303,50 +259,38 @@ public class VersionManager2 : Singleton<VersionManager2>
     //-----------------------------------------------------------------------------------//
 
     //检查安装包中版本号和本地版本号
-    public void CheckInstallationPackageVersionWithLocal(Action callback = null)
+    public void CheckInstallationPackageVersionWithLocal()
     {
-        MyFileUtil.ReadConfigDataInCacheDirAsync(VersionInfoFilePath, (outText)=>
+        string outText = MyFileUtil.ReadConfigDataInCacheDir(VersionInfoFilePath);
+        if (outText == null)
         {
-            if (outText == null)
+            return;
+        }
+
+        //判断本地版本号和包体内部版本号
+        string innerText = MyFileUtil.ReadConfigDataInStreamingAssets(VersionInfoFilePath);
+        VersionInfo2 innerVersionInfo = VersionInfo2.ParseData(innerText);
+
+        VersionInfo2 outVersionInfo = VersionInfo2.ParseData(outText);
+
+        if (innerVersionInfo.ProgramVersion > outVersionInfo.ProgramVersion)
+        {
+            //清空本地资源
+            MyFileUtil.DeleteDir(MyFileUtil.CacheDir);
+            MyFileUtil.CreateDir(MyFileUtil.CacheDir);
+        }
+
+        /*
+        foreach(var item in innerVersionInfo.dictRes)
+        {
+            if(outVersionInfo.dictRes.ContainsKey(item.Key))
             {
-                if (callback != null)
-                {
-                    callback();
-                }
-                return;
+                ResInfo outResInfo = outVersionInfo.dictRes[item.Key];
             }
+        }
+        */
 
-            //判断本地版本号和包体内部版本号
-            MyFileUtil.ReadConfigDataInStreamingAssetsAsync(VersionInfoFilePath, (innerText)=>
-            {
-                VersionInfo2 innerVersionInfo = VersionInfo2.ParseData(innerText);
-
-                VersionInfo2 outVersionInfo = VersionInfo2.ParseData(outText);
-
-                if (innerVersionInfo.ProgramVersion > outVersionInfo.ProgramVersion)
-                {
-                    //清空本地资源
-                    MyFileUtil.DeleteDir(MyFileUtil.CacheDir);
-                    MyFileUtil.CreateDir(MyFileUtil.CacheDir);
-                }
-
-                /*
-                foreach(var item in innerVersionInfo.dictRes)
-                {
-                    if(outVersionInfo.dictRes.ContainsKey(item.Key))
-                    {
-                        ResInfo outResInfo = outVersionInfo.dictRes[item.Key];
-                    }
-                }
-                */
-
-                Debug.Log("VersionManager.CheckLocalLuaCodeVersion");
-                if(callback != null)
-                {
-                    callback();
-                }
-            });
-        });
+        Debug.Log("VersionManager.CheckLocalLuaCodeVersion");
     }
 
     //检查服务器和本地版本号
@@ -356,86 +300,77 @@ public class VersionManager2 : Singleton<VersionManager2>
         {
             //服务器版本
             VersionInfo2 serverVersionInfo = VersionInfo2.ParseData(data);
-            m_serverVersionInfo = serverVersionInfo;
-			if(serverVersionInfo.IsForceToUpdate)
-				SystemConfig.Instance.IsAutoUpdate = true;
-			if(!SystemConfig.Instance.IsAutoUpdate)
-			{
-				updateFinish(true);
-				return;
-			}
-            //本地版本
-            GetLocalVersionInfoAsync((localVersionInfo) =>
-            {
-                //苹果商店版本
-					if (InnerVersionInfo.IsAppleAppStore && serverVersionInfo.IsOpenAutoUpdateInAppStore == false)
-                {
-                    updateFinish(true);
-                    return;
-                }
 
-                if (localVersionInfo.ProgramVersion < serverVersionInfo.ProgramVersion)
+            //本地版本
+            VersionInfo2 localVersionInfo = GetLocalVersionInfo();
+
+            //苹果商店版本
+            if (InnerVersionInfo.IsAppleAppStore && serverVersionInfo.IsOpenAutoUpdateInAppStore == false)
+            {
+                updateFinish(true);
+                return;
+            }
+
+            if (localVersionInfo.ProgramVersion < serverVersionInfo.ProgramVersion)
+            {
+                //整个客户端需要更新
+                System.Action clickAction = delegate ()
                 {
-                    //整个客户端需要更新
-                    System.Action clickAction = delegate ()
+                    if (Application.platform == RuntimePlatform.IPhonePlayer)
                     {
-                        if (Application.platform == RuntimePlatform.IPhonePlayer)
+                        if (InnerVersionInfo.IsAppleAppStore)
                         {
-                            if (InnerVersionInfo.IsAppleAppStore)
-                            {
-                                Application.OpenURL(serverVersionInfo.IOSAppStoreUrl);
-                            }
-                            else
-                            {
-                                Application.OpenURL(serverVersionInfo.IOSAppUrl);
-                            }
+                            Application.OpenURL(serverVersionInfo.IOSAppStoreUrl);
                         }
                         else
                         {
-                            Application.OpenURL(serverVersionInfo.ApkUrl);
-                        }
-                    };
-
-                    //UIMsgBox.Instance.ShowMsgBoxOK(LanguageConfig.WordUpdate, "有新客户端发布了，点击按钮进行更新", "更新", clickAction, false);
-                    // UIMsgBox.Instance.ShowMsgBoxOK(LanguageConfig.WordUpdate, LanguageConfig.GetText(3), LanguageConfig.WordUpdate, clickAction, false);
-                    Debug.Log("提示更新整包");
-                    return;
-                }
-
-                //计算需要更新的资源
-                List<ResInfo> listResInfo = new List<ResInfo>();
-                foreach(KeyValuePair<string, ResInfo> item in serverVersionInfo.dictRes)
-                {
-                    string key = item.Key;
-                    var resinfo = item.Value;
-                    if(localVersionInfo.dictRes.ContainsKey(item.Key))
-                    {
-                        ResInfo localResInfo = localVersionInfo.dictRes[item.Key];
-                        if(string.Compare(item.Value.resMD5, localResInfo.resMD5, true) != 0 && item.Value.resRequireID == 0)
-                        {
-                            listResInfo.Add(item.Value);
+                            Application.OpenURL(serverVersionInfo.IOSAppUrl);
                         }
                     }
                     else
                     {
-                        //本地没有
-                        if(item.Value.isResRequire && item.Value.resRequireID == 0)
-                        {
-                            listResInfo.Add(item.Value);
-                        }
+                        Application.OpenURL(serverVersionInfo.ApkUrl);
                     }
-                }
+                };
 
-                if (listResInfo.Count != 0)
+                //UIMsgBox.Instance.ShowMsgBoxOK(LanguageConfig.WordUpdate, "有新客户端发布了，点击按钮进行更新", "更新", clickAction, false);
+                UIMsgBox.Instance.ShowMsgBoxOK(LanguageConfig.WordUpdate, LanguageConfig.GetText(3), LanguageConfig.WordUpdate, clickAction, false);
+                Debug.Log("提示更新整包");
+                return;
+            }
+
+            //计算需要更新的资源
+            List<ResInfo> listResInfo = new List<ResInfo>();
+            foreach(var item in serverVersionInfo.dictRes)
+            {
+                if(localVersionInfo.dictRes.ContainsKey(item.Key))
                 {
-                    //更新Lua脚本和资源
-                    DownLoadRes(listResInfo, updateFinish);
+                    ResInfo localResInfo = localVersionInfo.dictRes[item.Key];
+                    Debug.Log("local" + localResInfo.resMD5 + "server" + item.Value.resMD5);
+                    if(string.Compare(item.Value.resMD5, localResInfo.resMD5, true) != 0)
+                    {
+                        listResInfo.Add(item.Value);
+                    }
                 }
                 else
                 {
-                    updateFinish(true);
+                    //本地没有
+                    if(item.Value.isResRequire)
+                    {
+                        listResInfo.Add(item.Value);
+                    }
                 }
-            });
+            }
+
+            if (listResInfo.Count != 0)
+            {
+                //更新Lua脚本和资源
+                DownLoadRes(listResInfo, updateFinish);
+            }
+            else
+            {
+                updateFinish(true);
+            }
         };
 
         //获取服务器版本信息
@@ -472,7 +407,7 @@ public class VersionManager2 : Singleton<VersionManager2>
             //提示处于移动网络，是否继续更新
             float downSize = totalSize / (1024.0f * 1024.0f); //换算为mb
             string tips = string.Format(LanguageConfig.GetText(4), downSize);
-            // UIMsgBox.Instance.ShowMsgBoxOKCancel(LanguageConfig.WordUpdate, tips, LanguageConfig.WordUpdate, LanguageConfig.WordCancel, onClick);
+            UIMsgBox.Instance.ShowMsgBoxOKCancel(LanguageConfig.WordUpdate, tips, LanguageConfig.WordUpdate, LanguageConfig.WordCancel, onClick);
         }
         else
         {
@@ -485,7 +420,6 @@ public class VersionManager2 : Singleton<VersionManager2>
     private List<ResInfo> m_ListResInfo = null;
     private System.Action<bool> m_UpdateFinish = null;
     private VersionInfo2 m_LocalVersionInfo = null;
-    private VersionInfo2 m_serverVersionInfo = null;
 
     void StartDownLoadResFile(List<ResInfo> listResInfo, System.Action<bool> updateFinish)
     {
@@ -518,8 +452,7 @@ public class VersionManager2 : Singleton<VersionManager2>
         WWW www = HTTPTool.GetWWW(item.resURL);
 
         //ui提示
-        // UIWindowUpdate.Instance.ShowDownloadTips(totalCount, current + 1, item.resName, www, item.resSize);
-        // UIWindowFirstLoading.Hide();
+        UIWindowUpdate.Instance.ShowDownloadTips(totalCount, current + 1, item.resName, www);
 
         yield return www;
 
@@ -533,24 +466,25 @@ public class VersionManager2 : Singleton<VersionManager2>
         }
         else
         {
-            // UIWindowUpdate.Instance.ShowVerifyTips();
-            // UIWindowFirstLoading.Hide();
+            UIWindowUpdate.Instance.ShowVerifyTips();
+
+            
             if (MD5Tool.Verify(www.bytes, item.resMD5))
             {
                 //解压文件--下载成功
-                // UIWindowUpdate.Instance.ShowUnZipTips();
-                // UIWindowFirstLoading.Hide();
+                UIWindowUpdate.Instance.ShowUnZipTips();
                 ZIPTool.DecompressToDirectory(www.bytes, MyFileUtil.CacheDir);
                 updateFinish(true, "", item);
             }
             else
             {
                 //md5 匹配不上
-                string str = string.Format("VersionManager.DownLoadResImp:资源{0} md5出错", item.resURL);
+                string str = string.Format("VersionManager.DownLoadResImp:资源{0} md5出错 severStrmd5:{1} severResmd5:{2}", item.resURL,item.resMD5, MD5Tool.Get(www.bytes));
                 Debug.LogError(str);
 
+                str = "details:" + str;
                 //updateFinish(false, "资源校验失败，md5值不匹配，请点击重新下载", item);
-                updateFinish(false, LanguageConfig.GetText(6), item);
+                updateFinish(false, LanguageConfig.GetText(6) + str, item);
                 yield break;
             }
         }
@@ -592,11 +526,11 @@ public class VersionManager2 : Singleton<VersionManager2>
                     if (Application.internetReachability == NetworkReachability.NotReachable)
                     {
                         //更新失败，先检查网络
-                        // UIFloatingMsgBox.Instance.ShowText(LanguageConfig.GetText(12));
+                        UIFloatingMsgBox.Instance.ShowText(LanguageConfig.GetText(12));
                     }
                     else
                     {
-                        // UIMsgBox.Instance.HideMsgBox();
+                        UIMsgBox.Instance.HideMsgBox();
                         DownLoadResItem();
                     }
                 }
@@ -607,14 +541,13 @@ public class VersionManager2 : Singleton<VersionManager2>
             };
 
             //错误提示
-            // UIMsgBox.Instance.ShowMsgBoxOKCancel(LanguageConfig.WordUpdate, errorInfo, LanguageConfig.GetText(13), LanguageConfig.GetText(14), onClick, false);
+            UIMsgBox.Instance.ShowMsgBoxOKCancel(LanguageConfig.WordUpdate, errorInfo, LanguageConfig.GetText(13), LanguageConfig.GetText(14), onClick, false);
         }
     }
 
     //保存版本信息
     public void SaveLocalVersionInfo(VersionInfo2 versionInfo)
     {
-        m_LocalVersionInfo = versionInfo;
         string data = VersionInfo2.Serialize(versionInfo);
         MyFileUtil.WriteConfigDataInCacheDir(VersionInfoFilePath, data);
     }
@@ -623,11 +556,10 @@ public class VersionManager2 : Singleton<VersionManager2>
     public void UpdateGame(System.Action<bool> updateFinish)
     {
         //先检查安装包中的版本号和本地版本号
-        CheckInstallationPackageVersionWithLocal(()=>
-        {
-            //检查本地版本号和服务器版本号
-            CheckLocalVersionInfoWithServer(updateFinish);
-        });
+        CheckInstallationPackageVersionWithLocal();
+
+        //检查本地版本号和服务器版本号
+        CheckLocalVersionInfoWithServer(updateFinish);
     }
 
     //-----------------------------------------------------------------------------------//
@@ -648,32 +580,5 @@ public class VersionManager2 : Singleton<VersionManager2>
         List<ResInfo> list = new List<ResInfo>();
         list.Add(info);
         DownLoadRes(list, onLoad);
-    }
-
-    public List<ResInfo> GetServerResInfoList()
-    {
-        List<ResInfo> resInfoList = new List<ResInfo>();
-        m_LocalVersionInfo = GetLocalVersionInfo();
-        
-        if(m_serverVersionInfo!= null && m_LocalVersionInfo != null)
-        {
-            foreach(var item in m_serverVersionInfo.dictRes)
-            {
-                if(!m_LocalVersionInfo.dictRes.ContainsKey(item.Key))
-                {
-                    resInfoList.Add(item.Value);
-                }
-                else
-                {                    
-                    ResInfo localResInfo = m_LocalVersionInfo.dictRes[item.Key];
-                    Debug.Log(item.Value.resMD5 + "----" + localResInfo.resMD5);
-                    if(string.Compare(item.Value.resMD5, localResInfo.resMD5, true) != 0)
-                    {
-                        resInfoList.Add(item.Value);
-                    }
-                }
-            }
-        }
-        return resInfoList;
     }
 }

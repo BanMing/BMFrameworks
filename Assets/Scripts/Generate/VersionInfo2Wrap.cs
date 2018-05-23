@@ -21,7 +21,6 @@ public class VersionInfo2Wrap
 		L.RegVar("IOSAppStoreUrl", get_IOSAppStoreUrl, set_IOSAppStoreUrl);
 		L.RegVar("IsAppleAppStore", get_IsAppleAppStore, set_IsAppleAppStore);
 		L.RegVar("IsOpenAutoUpdateInAppStore", get_IsOpenAutoUpdateInAppStore, set_IsOpenAutoUpdateInAppStore);
-		L.RegVar("IsForceToUpdate", get_IsForceToUpdate, set_IsForceToUpdate);
 		L.EndClass();
 	}
 
@@ -270,25 +269,6 @@ public class VersionInfo2Wrap
 	}
 
 	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
-	static int get_IsForceToUpdate(IntPtr L)
-	{
-		object o = null;
-
-		try
-		{
-			o = ToLua.ToObject(L, 1);
-			VersionInfo2 obj = (VersionInfo2)o;
-			bool ret = obj.IsForceToUpdate;
-			LuaDLL.lua_pushboolean(L, ret);
-			return 1;
-		}
-		catch(Exception e)
-		{
-			return LuaDLL.toluaL_exception(L, e, o == null ? "attempt to index IsForceToUpdate on a nil value" : e.Message);
-		}
-	}
-
-	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
 	static int set_dictRes(IntPtr L)
 	{
 		object o = null;
@@ -437,25 +417,6 @@ public class VersionInfo2Wrap
 		catch(Exception e)
 		{
 			return LuaDLL.toluaL_exception(L, e, o == null ? "attempt to index IsOpenAutoUpdateInAppStore on a nil value" : e.Message);
-		}
-	}
-
-	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
-	static int set_IsForceToUpdate(IntPtr L)
-	{
-		object o = null;
-
-		try
-		{
-			o = ToLua.ToObject(L, 1);
-			VersionInfo2 obj = (VersionInfo2)o;
-			bool arg0 = LuaDLL.luaL_checkboolean(L, 2);
-			obj.IsForceToUpdate = arg0;
-			return 0;
-		}
-		catch(Exception e)
-		{
-			return LuaDLL.toluaL_exception(L, e, o == null ? "attempt to index IsForceToUpdate on a nil value" : e.Message);
 		}
 	}
 }

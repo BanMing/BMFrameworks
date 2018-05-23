@@ -45,7 +45,7 @@ public static class ToLuaMenu
     public static List<Type> dropType = new List<Type>
     {
         typeof(ValueType),                                  //不需要
-#if !UNITY_5
+#if !UNITY_5 && !UNITY_2017 && !UNITY_2018
         typeof(Motion),                                     //很多平台只是空类
 #endif
         typeof(UnityEngine.YieldInstruction),               //无需导出的类      
@@ -627,13 +627,9 @@ public static class ToLuaMenu
         sb.AppendLineEx("using System;");
         sb.AppendLineEx("using UnityEngine;");
         sb.AppendLineEx("using LuaInterface;");
-        sb.AppendLineEx("using System.Collections;");
         sb.AppendLineEx();
         sb.AppendLineEx("public static class LuaBinder");
         sb.AppendLineEx("{");
-
-        #region 生成bind()
-        //----生成bind()开始
         sb.AppendLineEx("\tpublic static void Bind(LuaState L)");
         sb.AppendLineEx("\t{");
         sb.AppendLineEx("\t\tfloat t = Time.realtimeSinceStartup;");
@@ -681,87 +677,6 @@ public static class ToLuaMenu
 
         sb.AppendLineEx("\t\tDebugger.Log(\"Register lua type cost time: {0}\", Time.realtimeSinceStartup - t);");
         sb.AppendLineEx("\t}");
-        //-----生成bind()结束
-        #endregion 生成bind()
-
-        //--生成bindImp()开始
-        allTypes.Clear();
-        tree = InitTree();
-        //StringBuilder sb = new StringBuilder();
-        dtList = new List<DelegateType>();
-
-        list = new List<DelegateType>();
-        list.AddRange(CustomSettings.customDelegateList);
-        set = GetCustomTypeDelegates();
-
-        backupList = new List<BindType>();
-        backupList.AddRange(allTypes);
-        root = tree.GetRoot();
-        libname = null;
-
-        foreach (Type t in set)
-        {
-            if (null == list.Find((p) => { return p.type == t; }))
-            {
-                DelegateType dt = new DelegateType(t);
-                AddSpaceNameToTree(tree, root, ToLuaExport.GetNameSpace(t, out libname));
-                list.Add(dt);
-            }
-        }
-
-        sb.AppendLineEx("\tpublic static IEnumerator BindImp(LuaState L, Action callback)");
-        sb.AppendLineEx("\t{");
-        sb.AppendLineEx("\t\tfloat t = Time.realtimeSinceStartup;");
-        sb.AppendLineEx("\t\tL.BeginModule(null);");
-
-        GenRegisterInfo(null, sb, list, dtList);
-
-        //Action<ToLuaNode<string>> begin = (node) =>
-        //{
-        //    if (node.value == null)
-        //    {
-        //        return;
-        //    }
-
-        //    sb.AppendFormat("\t\tL.BeginModule(\"{0}\");\r\n", node.value);
-        //    string space = GetSpaceNameFromTree(node);
-
-        //    GenRegisterInfo(space, sb, list, dtList);
-        //};
-
-        //Action<ToLuaNode<string>> end = (node) =>
-        //{
-        //    if (node.value != null)
-        //    {
-        //        sb.AppendLineEx("\t\tL.EndModule();");
-        //    }
-        //};
-
-        tree.DepthFirstTraversal(begin, end, tree.GetRoot());
-        sb.AppendLineEx("\t\tL.EndModule();");
-        sb.AppendLineEx("\t\tyield return null;");
-
-        if (CustomSettings.dynamicList.Count > 0)
-        {
-            sb.AppendLineEx("\t\tL.BeginPreLoad();");
-
-            for (int i = 0; i < CustomSettings.dynamicList.Count; i++)
-            {
-                Type t1 = CustomSettings.dynamicList[i];
-                BindType bt = backupList.Find((p) => { return p.type == t1; });
-                sb.AppendFormat("\t\tL.AddPreLoad(\"{0}\", LuaOpen_{1}, typeof({0}));\r\n", bt.name, bt.wrapName);
-            }
-
-            sb.AppendLineEx("\t\tL.EndPreLoad();");
-            sb.AppendLineEx("\t\tyield return null;");
-        }
-
-        sb.AppendLineEx("\t\tDebug.Log(\"Register lua type cost time:  \" +  (Time.realtimeSinceStartup - t).ToString());");
-        
-        sb.AppendLineEx("\t\tcallback();");
-        sb.AppendLineEx("\t\tyield return null;");
-        sb.AppendLineEx("\t}");
-        //-----生成bind()结束
 
         for (int i = 0; i < dtList.Count; i++)
         {
@@ -873,7 +788,7 @@ public static class ToLuaMenu
         string bundleName = subDir == null ? "lua.unity3d" : "lua" + subDir.Replace('/', '_') + ".unity3d";
         bundleName = bundleName.ToLower();
 
-#if UNITY_5        
+#if UNITY_5 || UNITY_2017 || UNITY_2018        
         for (int i = 0; i < files.Length; i++)
         {
             AssetImporter importer = AssetImporter.GetAtPath(files[i]);            
@@ -1005,18 +920,12 @@ public static class ToLuaMenu
         StringBuilder sb = new StringBuilder();
         sb.AppendLineEx("using System;");
         sb.AppendLineEx("using LuaInterface;");
-        sb.AppendLineEx("using System.Collections;");
         sb.AppendLineEx();
         sb.AppendLineEx("public static class LuaBinder");
         sb.AppendLineEx("{");
         sb.AppendLineEx("\tpublic static void Bind(LuaState L)");
         sb.AppendLineEx("\t{");
         sb.AppendLineEx("\t\tthrow new LuaException(\"Please generate LuaBinder files first!\");");
-        sb.AppendLineEx("\t}");
-        sb.AppendLineEx("\tpublic static IEnumerator BindImp(LuaState L, Action callback)");
-        sb.AppendLineEx("\t{");
-        sb.AppendLineEx("\t\tthrow new LuaException(\"Please generate LuaBinder files first!\");");
-        sb.AppendLineEx("\t\tyield return null;");
         sb.AppendLineEx("\t}");
         sb.AppendLineEx("}");
 
@@ -1164,7 +1073,7 @@ public static class ToLuaMenu
         ClearAllLuaFiles();
         CreateStreamDir(GetOS());
 
-#if !UNITY_5
+#if !UNITY_5 && !UNITY_2017 && !UNITY_2018
         string tempDir = CreateStreamDir("Lua");
 #else
         string tempDir = Application.dataPath + "/temp/Lua";
@@ -1181,7 +1090,7 @@ public static class ToLuaMenu
         List<string> dirs = new List<string>();
         GetAllDirs(tempDir, dirs);
 
-#if UNITY_5        
+#if UNITY_5 || UNITY_2017 || UNITY_2018        
         for (int i = 0; i < dirs.Count; i++)
         {
             string str = dirs[i].Remove(0, tempDir.Length);
@@ -1214,7 +1123,7 @@ public static class ToLuaMenu
         ClearAllLuaFiles();                
         CreateStreamDir(GetOS());
 
-#if !UNITY_5
+#if !UNITY_5 && !UNITY_2017 && !UNITY_2018
         string tempDir = CreateStreamDir("Lua");
 #else
         string tempDir = Application.dataPath + "/temp/Lua";

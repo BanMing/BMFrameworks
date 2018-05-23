@@ -138,11 +138,6 @@ public class Util{
         return result;
     }
 
-    public static float GetNowTimeStamp()
-    {
-        return DateTime.Now.Millisecond;
-    }
-
     static public void Capture(string out_path, int quality = 28)
     {
         int width = Screen.width;
@@ -200,12 +195,5 @@ public class Util{
         }
         */
     }
-
-
-    public static void Vibrate()
-    {
-#if !UNITY_STANDALONE
-            Handheld.Vibrate();
-#endif
-    }
+    
 }

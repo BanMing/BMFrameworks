@@ -30,7 +30,6 @@ public class UnityEngine_TransformWrap
 		L.RegFunction("GetEnumerator", GetEnumerator);
 		L.RegFunction("GetChild", GetChild);
 		L.RegFunction("DOBlendableScaleBy", DOBlendableScaleBy);
-		L.RegFunction("DOBlendablePunchRotation", DOBlendablePunchRotation);
 		L.RegFunction("DOBlendableLocalRotateBy", DOBlendableLocalRotateBy);
 		L.RegFunction("DOBlendableRotateBy", DOBlendableRotateBy);
 		L.RegFunction("DOBlendableLocalMoveBy", DOBlendableLocalMoveBy);
@@ -732,27 +731,6 @@ public class UnityEngine_TransformWrap
 	}
 
 	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
-	static int DOBlendablePunchRotation(IntPtr L)
-	{
-		try
-		{
-			ToLua.CheckArgsCount(L, 5);
-			UnityEngine.Transform obj = (UnityEngine.Transform)ToLua.CheckObject(L, 1, typeof(UnityEngine.Transform));
-			UnityEngine.Vector3 arg0 = ToLua.ToVector3(L, 2);
-			float arg1 = (float)LuaDLL.luaL_checknumber(L, 3);
-			int arg2 = (int)LuaDLL.luaL_checknumber(L, 4);
-			float arg3 = (float)LuaDLL.luaL_checknumber(L, 5);
-			DG.Tweening.Tweener o = obj.DOBlendablePunchRotation(arg0, arg1, arg2, arg3);
-			ToLua.PushObject(L, o);
-			return 1;
-		}
-		catch(Exception e)
-		{
-			return LuaDLL.toluaL_exception(L, e);
-		}
-	}
-
-	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
 	static int DOBlendableLocalRotateBy(IntPtr L)
 	{
 		try
@@ -929,27 +907,25 @@ public class UnityEngine_TransformWrap
 		{
 			int count = LuaDLL.lua_gettop(L);
 
-			if (count == 6 && TypeChecker.CheckTypes(L, 1, typeof(UnityEngine.Transform), typeof(float), typeof(float), typeof(int), typeof(float), typeof(bool)))
+			if (count == 5 && TypeChecker.CheckTypes(L, 1, typeof(UnityEngine.Transform), typeof(float), typeof(float), typeof(int), typeof(float)))
 			{
 				UnityEngine.Transform obj = (UnityEngine.Transform)ToLua.ToObject(L, 1);
 				float arg0 = (float)LuaDLL.lua_tonumber(L, 2);
 				float arg1 = (float)LuaDLL.lua_tonumber(L, 3);
 				int arg2 = (int)LuaDLL.lua_tonumber(L, 4);
 				float arg3 = (float)LuaDLL.lua_tonumber(L, 5);
-				bool arg4 = LuaDLL.lua_toboolean(L, 6);
-				DG.Tweening.Tweener o = obj.DOShakeScale(arg0, arg1, arg2, arg3, arg4);
+				DG.Tweening.Tweener o = obj.DOShakeScale(arg0, arg1, arg2, arg3);
 				ToLua.PushObject(L, o);
 				return 1;
 			}
-			else if (count == 6 && TypeChecker.CheckTypes(L, 1, typeof(UnityEngine.Transform), typeof(float), typeof(UnityEngine.Vector3), typeof(int), typeof(float), typeof(bool)))
+			else if (count == 5 && TypeChecker.CheckTypes(L, 1, typeof(UnityEngine.Transform), typeof(float), typeof(UnityEngine.Vector3), typeof(int), typeof(float)))
 			{
 				UnityEngine.Transform obj = (UnityEngine.Transform)ToLua.ToObject(L, 1);
 				float arg0 = (float)LuaDLL.lua_tonumber(L, 2);
 				UnityEngine.Vector3 arg1 = ToLua.ToVector3(L, 3);
 				int arg2 = (int)LuaDLL.lua_tonumber(L, 4);
 				float arg3 = (float)LuaDLL.lua_tonumber(L, 5);
-				bool arg4 = LuaDLL.lua_toboolean(L, 6);
-				DG.Tweening.Tweener o = obj.DOShakeScale(arg0, arg1, arg2, arg3, arg4);
+				DG.Tweening.Tweener o = obj.DOShakeScale(arg0, arg1, arg2, arg3);
 				ToLua.PushObject(L, o);
 				return 1;
 			}
@@ -971,27 +947,25 @@ public class UnityEngine_TransformWrap
 		{
 			int count = LuaDLL.lua_gettop(L);
 
-			if (count == 6 && TypeChecker.CheckTypes(L, 1, typeof(UnityEngine.Transform), typeof(float), typeof(float), typeof(int), typeof(float), typeof(bool)))
+			if (count == 5 && TypeChecker.CheckTypes(L, 1, typeof(UnityEngine.Transform), typeof(float), typeof(float), typeof(int), typeof(float)))
 			{
 				UnityEngine.Transform obj = (UnityEngine.Transform)ToLua.ToObject(L, 1);
 				float arg0 = (float)LuaDLL.lua_tonumber(L, 2);
 				float arg1 = (float)LuaDLL.lua_tonumber(L, 3);
 				int arg2 = (int)LuaDLL.lua_tonumber(L, 4);
 				float arg3 = (float)LuaDLL.lua_tonumber(L, 5);
-				bool arg4 = LuaDLL.lua_toboolean(L, 6);
-				DG.Tweening.Tweener o = obj.DOShakeRotation(arg0, arg1, arg2, arg3, arg4);
+				DG.Tweening.Tweener o = obj.DOShakeRotation(arg0, arg1, arg2, arg3);
 				ToLua.PushObject(L, o);
 				return 1;
 			}
-			else if (count == 6 && TypeChecker.CheckTypes(L, 1, typeof(UnityEngine.Transform), typeof(float), typeof(UnityEngine.Vector3), typeof(int), typeof(float), typeof(bool)))
+			else if (count == 5 && TypeChecker.CheckTypes(L, 1, typeof(UnityEngine.Transform), typeof(float), typeof(UnityEngine.Vector3), typeof(int), typeof(float)))
 			{
 				UnityEngine.Transform obj = (UnityEngine.Transform)ToLua.ToObject(L, 1);
 				float arg0 = (float)LuaDLL.lua_tonumber(L, 2);
 				UnityEngine.Vector3 arg1 = ToLua.ToVector3(L, 3);
 				int arg2 = (int)LuaDLL.lua_tonumber(L, 4);
 				float arg3 = (float)LuaDLL.lua_tonumber(L, 5);
-				bool arg4 = LuaDLL.lua_toboolean(L, 6);
-				DG.Tweening.Tweener o = obj.DOShakeRotation(arg0, arg1, arg2, arg3, arg4);
+				DG.Tweening.Tweener o = obj.DOShakeRotation(arg0, arg1, arg2, arg3);
 				ToLua.PushObject(L, o);
 				return 1;
 			}
@@ -1013,7 +987,7 @@ public class UnityEngine_TransformWrap
 		{
 			int count = LuaDLL.lua_gettop(L);
 
-			if (count == 7 && TypeChecker.CheckTypes(L, 1, typeof(UnityEngine.Transform), typeof(float), typeof(float), typeof(int), typeof(float), typeof(bool), typeof(bool)))
+			if (count == 6 && TypeChecker.CheckTypes(L, 1, typeof(UnityEngine.Transform), typeof(float), typeof(float), typeof(int), typeof(float), typeof(bool)))
 			{
 				UnityEngine.Transform obj = (UnityEngine.Transform)ToLua.ToObject(L, 1);
 				float arg0 = (float)LuaDLL.lua_tonumber(L, 2);
@@ -1021,12 +995,11 @@ public class UnityEngine_TransformWrap
 				int arg2 = (int)LuaDLL.lua_tonumber(L, 4);
 				float arg3 = (float)LuaDLL.lua_tonumber(L, 5);
 				bool arg4 = LuaDLL.lua_toboolean(L, 6);
-				bool arg5 = LuaDLL.lua_toboolean(L, 7);
-				DG.Tweening.Tweener o = obj.DOShakePosition(arg0, arg1, arg2, arg3, arg4, arg5);
+				DG.Tweening.Tweener o = obj.DOShakePosition(arg0, arg1, arg2, arg3, arg4);
 				ToLua.PushObject(L, o);
 				return 1;
 			}
-			else if (count == 7 && TypeChecker.CheckTypes(L, 1, typeof(UnityEngine.Transform), typeof(float), typeof(UnityEngine.Vector3), typeof(int), typeof(float), typeof(bool), typeof(bool)))
+			else if (count == 6 && TypeChecker.CheckTypes(L, 1, typeof(UnityEngine.Transform), typeof(float), typeof(UnityEngine.Vector3), typeof(int), typeof(float), typeof(bool)))
 			{
 				UnityEngine.Transform obj = (UnityEngine.Transform)ToLua.ToObject(L, 1);
 				float arg0 = (float)LuaDLL.lua_tonumber(L, 2);
@@ -1034,8 +1007,7 @@ public class UnityEngine_TransformWrap
 				int arg2 = (int)LuaDLL.lua_tonumber(L, 4);
 				float arg3 = (float)LuaDLL.lua_tonumber(L, 5);
 				bool arg4 = LuaDLL.lua_toboolean(L, 6);
-				bool arg5 = LuaDLL.lua_toboolean(L, 7);
-				DG.Tweening.Tweener o = obj.DOShakePosition(arg0, arg1, arg2, arg3, arg4, arg5);
+				DG.Tweening.Tweener o = obj.DOShakePosition(arg0, arg1, arg2, arg3, arg4);
 				ToLua.PushObject(L, o);
 				return 1;
 			}
