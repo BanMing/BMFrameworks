@@ -769,7 +769,7 @@ public class MyFileUtil
         foreach (var item in fs)
         {
             string filePath = item.FullName.Replace("\\", "/");
-
+            bool isIgnore=false;
             //过滤掉需要忽略的文件列表
             if(ignoreFileTypeList != null && ignoreFileTypeList.Count != 0)
             {
@@ -779,12 +779,15 @@ public class MyFileUtil
                     {
                         if (filePath.EndsWith(fileType))
                         {
-                            continue;
+                            isIgnore=true;
                         }
                     }
                 }
             }
-
+            if (isIgnore)
+            {
+                continue;
+            }
             if(fileTypeList == null || fileTypeList.Count == 0)
             {
                 fileList.Add(filePath);
