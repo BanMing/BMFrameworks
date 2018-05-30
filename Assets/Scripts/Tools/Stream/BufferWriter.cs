@@ -1,15 +1,4 @@
-/******************************************************************
-** 文件名:	
-** 版  权:	(C)  
-** 创建人:  Liange
-** 日  期:	2015.5.28
-** 描  述: 	从世界2移植过来
 
-**************************** 修改记录 ******************************
-** 修改人: 
-** 日  期: 
-** 描  述: 
-*******************************************************************/
 
 using System;
 using System.IO;
@@ -166,7 +155,7 @@ public class BufferWriter
         this.mWriter.Write(value, index, count);
     }
 
-    //写入字符串，charCount字符个数
+    //写锟斤拷锟街凤拷锟斤拷锟斤拷charCount锟街凤拷锟斤拷锟斤拷
     public void WriteUnicodeString(string str, int charCount)
     {
         byte[] data = new byte[charCount * 2];

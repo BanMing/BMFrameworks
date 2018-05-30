@@ -22,7 +22,7 @@ socket.smtp = {}
 local _M = socket.smtp
 
 -----------------------------------------------------------------------------
--- Program MahJong.Constants
+-- Program constants
 -----------------------------------------------------------------------------
 -- timeout for connection
 _M.TIMEOUT = 60

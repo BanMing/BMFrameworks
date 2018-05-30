@@ -1,10 +1,9 @@
-﻿#define USING_DOTWEENING
-using UnityEngine;
+﻿using UnityEngine;
 using System;
 using System.Collections.Generic;
 using LuaInterface;
-using UnityEngine.UI;
-using UnityEngine.EventSystems;
+using UnityEditor;
+
 using BindType = ToLuaMenu.BindType;
 using System.Reflection;
 
@@ -27,6 +26,7 @@ public static class CustomSettings
         typeof(UnityEngine.RenderSettings),
         typeof(UnityEngine.QualitySettings),
         typeof(UnityEngine.GL),
+        typeof(UnityEngine.Graphics),
     };
 
     //附加导出委托类型(在导出委托时, customTypeList 中牵扯的委托类型都会导出， 无需写在这里)
@@ -37,54 +37,25 @@ public static class CustomSettings
         _DT(typeof(System.Predicate<int>)),
         _DT(typeof(System.Action<int>)),
         _DT(typeof(System.Comparison<int>)),
-        _DT(typeof(DG.Tweening.TweenCallback)),
+        _DT(typeof(System.Func<int, int>)),
     };
 
     //在这里添加你要导出注册到lua的类型列表
     public static BindType[] customTypeList =
     {                
-
-        _GT(typeof(GlobalManager)),
-
-        _GT(typeof(ResInfo)),
-        _GT(typeof(VersionInfo2)),
-        _GT(typeof(VersionManager2)),
-
-        _GT(typeof(UIWindows)),
-        _GT(typeof(UIManager)),
-        _GT(typeof(UIAtlasTool)),
-        _GT(typeof(UIMsgBox)),
-        _GT(typeof(UIFloatingMsgBox)),
-        _GT(typeof(UIWindowFirstLoading)),
-        _GT(typeof(UIWindowPing)),
-        _GT(typeof(UIWindowUpdate)),
-
-
-
-        _GT(typeof(ResourcesManager)),
-
-        _GT(typeof(BufferReader)),
-        _GT(typeof(BufferWriter)),
-        _GT(typeof(MemoryInputStream)),
-        _GT(typeof(MemoryOutputStream)),
-        _GT(typeof(MemoryOutputStreamSingleton)),
-
-        _GT(typeof(GameData)),
-        _GT(typeof(ServerURLManager)),
-        _GT(typeof(LoginServerConfig)),
-        _GT(typeof(SystemConfig)),
-
-        _GT(typeof(HTTPTool)),
-        _GT(typeof(ScriptThread)),
-
-        _GT(typeof(MyUnityTool)),
-        _GT(typeof(MyFileUtil)),
-        _GT(typeof(ZIPTool)),
-
-        _GT(typeof(MD5Tool)),
-        _GT(typeof(ReflectionTool)),
-
-        _GT(typeof(Debugger)).SetNameSpace(null),
+        //------------------------为例子导出--------------------------------
+        //_GT(typeof(TestEventListener)),
+        //_GT(typeof(TestProtol)),
+        //_GT(typeof(TestAccount)),
+        //_GT(typeof(Dictionary<int, TestAccount>)).SetLibName("AccountMap"),
+        //_GT(typeof(KeyValuePair<int, TestAccount>)),
+        //_GT(typeof(Dictionary<int, TestAccount>.KeyCollection)),
+        //_GT(typeof(Dictionary<int, TestAccount>.ValueCollection)),
+        //_GT(typeof(TestExport)),
+        //_GT(typeof(TestExport.Space)),
+        //-------------------------------------------------------------------        
+                        
+        _GT(typeof(Debugger)).SetNameSpace(null),          
 
 #if USING_DOTWEENING
         _GT(typeof(DG.Tweening.DOTween)),
@@ -95,132 +66,98 @@ public static class CustomSettings
         _GT(typeof(DG.Tweening.PathMode)),
         _GT(typeof(DG.Tweening.PathType)),
         _GT(typeof(DG.Tweening.RotateMode)),
-        _GT(typeof(DG.Tweening.AxisConstraint)),
         _GT(typeof(Component)).AddExtendType(typeof(DG.Tweening.ShortcutExtensions)),
         _GT(typeof(Transform)).AddExtendType(typeof(DG.Tweening.ShortcutExtensions)),
-        _GT(typeof(RectTransform)).AddExtendType(typeof(DG.Tweening.ShortcutExtensions46)),
         _GT(typeof(Light)).AddExtendType(typeof(DG.Tweening.ShortcutExtensions)),
         _GT(typeof(Material)).AddExtendType(typeof(DG.Tweening.ShortcutExtensions)),
         _GT(typeof(Rigidbody)).AddExtendType(typeof(DG.Tweening.ShortcutExtensions)),
         _GT(typeof(Camera)).AddExtendType(typeof(DG.Tweening.ShortcutExtensions)),
         _GT(typeof(AudioSource)).AddExtendType(typeof(DG.Tweening.ShortcutExtensions)),
+        //_GT(typeof(LineRenderer)).AddExtendType(typeof(DG.Tweening.ShortcutExtensions)),
+        //_GT(typeof(TrailRenderer)).AddExtendType(typeof(DG.Tweening.ShortcutExtensions)),    
 #else
                                          
         _GT(typeof(Component)),
         _GT(typeof(Transform)),
-         _GT(typeof(RectTransform)),
         _GT(typeof(Material)),
         _GT(typeof(Light)),
         _GT(typeof(Rigidbody)),
         _GT(typeof(Camera)),
         _GT(typeof(AudioSource)),
+        //_GT(typeof(LineRenderer))
+        //_GT(typeof(TrailRenderer))
 #endif
-        _GT(typeof(Rect)),
-        _GT(typeof(UnityEngine.SceneManagement.SceneManager)),
+      
         _GT(typeof(Behaviour)),
-        _GT(typeof(MonoBehaviour)),
+        _GT(typeof(MonoBehaviour)),        
         _GT(typeof(GameObject)),
         _GT(typeof(TrackedReference)),
         _GT(typeof(Application)),
         _GT(typeof(Physics)),
         _GT(typeof(Collider)),
-        _GT(typeof(Time)),
+        _GT(typeof(Time)),        
         _GT(typeof(Texture)),
-        _GT(typeof(Sprite)),
         _GT(typeof(Texture2D)),
-        _GT(typeof(Shader)),
+        _GT(typeof(Shader)),        
         _GT(typeof(Renderer)),
         _GT(typeof(WWW)),
-        _GT(typeof(Screen)),
+        _GT(typeof(Screen)),        
         _GT(typeof(CameraClearFlags)),
-        _GT(typeof(AudioClip)),
+        _GT(typeof(AudioClip)),        
         _GT(typeof(AssetBundle)),
-        _GT(typeof(AsyncOperation)).SetBaseType(typeof(System.Object)),
+        _GT(typeof(ParticleSystem)),
+        _GT(typeof(AsyncOperation)).SetBaseType(typeof(System.Object)),        
         _GT(typeof(LightType)),
         _GT(typeof(SleepTimeout)),
+#if UNITY_5_3_OR_NEWER && !UNITY_5_6_OR_NEWER
+        _GT(typeof(UnityEngine.Experimental.Director.DirectorPlayer)),
+#endif
         _GT(typeof(Animator)),
         _GT(typeof(Input)),
         _GT(typeof(KeyCode)),
         _GT(typeof(SkinnedMeshRenderer)),
-        _GT(typeof(Space)),
-
+        _GT(typeof(Space)),      
+       
 
         _GT(typeof(MeshRenderer)),
-        _GT(typeof(ParticleSystem)),
+#if !UNITY_5_4_OR_NEWER
+        _GT(typeof(ParticleEmitter)),
+        _GT(typeof(ParticleRenderer)),
+        _GT(typeof(ParticleAnimator)), 
+#endif
 
         _GT(typeof(BoxCollider)),
         _GT(typeof(MeshCollider)),
-        _GT(typeof(SphereCollider)),
+        _GT(typeof(SphereCollider)),        
         _GT(typeof(CharacterController)),
         _GT(typeof(CapsuleCollider)),
-
-        _GT(typeof(Animation)),
-        _GT(typeof(AnimationClip)).SetBaseType(typeof(UnityEngine.Object)),
+        
+        _GT(typeof(Animation)),        
+        _GT(typeof(AnimationClip)).SetBaseType(typeof(UnityEngine.Object)),        
         _GT(typeof(AnimationState)),
         _GT(typeof(AnimationBlendMode)),
-        _GT(typeof(QueueMode)),
+        _GT(typeof(QueueMode)),  
         _GT(typeof(PlayMode)),
         _GT(typeof(WrapMode)),
 
         _GT(typeof(QualitySettings)),
-        _GT(typeof(RenderSettings)),
-        _GT(typeof(BlendWeights)),
+        _GT(typeof(RenderSettings)),                                                   
+        _GT(typeof(BlendWeights)),           
         _GT(typeof(RenderTexture)),
-
-        _GT(typeof(RuntimePlatform)),
-        _GT(typeof(SystemInfo)),
-        _GT(typeof(Toggle)),
-        _GT(typeof(Slider)),
-        _GT(typeof(Image)),
-        _GT(typeof(RawImage)),
-        _GT(typeof(Text)),
-        _GT(typeof(Button)),
-		_GT(typeof(Scrollbar)),
-		_GT(typeof(Dropdown)),
-		_GT(typeof(Canvas)),
-		_GT(typeof(ScrollRect)),
-		_GT(typeof(InputField)),
-        _GT(typeof(GridLayoutGroup)),
-        _GT(typeof(Util)),
-        _GT(typeof(NetworkReachability)),
-        _GT(typeof(cn.sharesdk.unity3d.PlatformType)),
-        _GT(typeof(cn.sharesdk.unity3d.ShareContent)),
-        _GT(typeof(cn.sharesdk.unity3d.ResponseState)),
-        _GT(typeof(cn.sharesdk.unity3d.ContentType)),
-        _GT(typeof(System.Collections.Hashtable)),
-        _GT(typeof( MiniJSON)),
-        _GT(typeof(System.Net.IPAddress)),
-        _GT(typeof(TweenAlpha)),
-        _GT(typeof(TweenColor)),
-        _GT(typeof(TweenPosition)),
-        _GT(typeof(TweenFOV)),
-        _GT(typeof(TweenRotation)),
-        _GT(typeof(TweenScale)),
-        _GT(typeof(TweenVolume)),
-        _GT(typeof(TweenOrthoSize)),
-        _GT(typeof(TweenTransform)),
-        _GT(typeof(NGUITools)),
-        _GT(typeof(RealTime)),
-        _GT(typeof(UITweener)),
-        _GT(typeof(ToggleGroup)),
-        _GT(typeof(PointerEventData)),
-        _GT(typeof(System.DateTime)),
-        _GT(typeof(System.DayOfWeek)),
-        _GT(typeof(System.TimeSpan)),
-        _GT(typeof(System.Convert)),
-        _GT(typeof(UnityEngine.Events.UnityEvent)),
-        _GT(typeof(System.Collections.ArrayList)),
-        _GT(typeof(Consts)),
-        _GT(typeof(System.Xml.Linq.XElement)),
-        _GT(typeof(LuaDebugTool)),
-        _GT(typeof(LuaValueInfo)),
-
-   };
+        _GT(typeof(Resources)),     
+        _GT(typeof(LuaProfiler)),
+        _GT(typeof(MyUnityTool)),
+        _GT(typeof(UIWindowFirstLoading)),
+    };
 
     public static List<Type> dynamicList = new List<Type>()
     {
         typeof(MeshRenderer),
-        typeof(ParticleSystem),
+#if !UNITY_5_4_OR_NEWER
+        typeof(ParticleEmitter),
+        typeof(ParticleRenderer),
+        typeof(ParticleAnimator),
+#endif
 
         typeof(BoxCollider),
         typeof(MeshCollider),
@@ -243,6 +180,47 @@ public static class CustomSettings
     {
         
     };
+        
+    //ngui优化，下面的类没有派生类，可以作为sealed class
+    public static List<Type> sealedList = new List<Type>()
+    {
+        /*typeof(Transform),
+        typeof(UIRoot),
+        typeof(UICamera),
+        typeof(UIViewport),
+        typeof(UIPanel),
+        typeof(UILabel),
+        typeof(UIAnchor),
+        typeof(UIAtlas),
+        typeof(UIFont),
+        typeof(UITexture),
+        typeof(UISprite),
+        typeof(UIGrid),
+        typeof(UITable),
+        typeof(UIWrapGrid),
+        typeof(UIInput),
+        typeof(UIScrollView),
+        typeof(UIEventListener),
+        typeof(UIScrollBar),
+        typeof(UICenterOnChild),
+        typeof(UIScrollView),        
+        typeof(UIButton),
+        typeof(UITextList),
+        typeof(UIPlayTween),
+        typeof(UIDragScrollView),
+        typeof(UISpriteAnimation),
+        typeof(UIWrapContent),
+        typeof(TweenWidth),
+        typeof(TweenAlpha),
+        typeof(TweenColor),
+        typeof(TweenRotation),
+        typeof(TweenPosition),
+        typeof(TweenScale),
+        typeof(TweenHeight),
+        typeof(TypewriterEffect),
+        typeof(UIToggle),
+        typeof(Localization),*/
+    };
 
     public static BindType _GT(Type t)
     {
@@ -253,4 +231,28 @@ public static class CustomSettings
     {
         return new DelegateType(t);
     }    
+
+
+    [MenuItem("Lua/Attach Profiler", false, 151)]
+    static void AttachProfiler()
+    {
+        if (!Application.isPlaying)
+        {
+            EditorUtility.DisplayDialog("警告", "请在运行时执行此功能", "确定");
+            return;
+        }
+
+        LuaClient.Instance.AttachProfiler();
+    }
+
+    [MenuItem("Lua/Detach Profiler", false, 152)]
+    static void DetachProfiler()
+    {
+        if (!Application.isPlaying)
+        {            
+            return;
+        }
+
+        LuaClient.Instance.DetachProfiler();
+    }
 }

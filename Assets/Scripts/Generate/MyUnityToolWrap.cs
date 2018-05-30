@@ -27,9 +27,6 @@ public class MyUnityToolWrap
 		L.RegFunction("CreateInstance", CreateInstance);
 		L.RegFunction("Approximately", Approximately);
 		L.RegFunction("Compare", Compare);
-		L.RegFunction("Divide", Divide);
-		L.RegFunction("Mod", Mod);
-		L.RegFunction("Multiply", Multiply);
 		L.RegFunction("IsProcessorArch64", IsProcessorArch64);
 		L.RegFunction("New", _CreateMyUnityTool);
 		L.RegFunction("__tostring", ToLua.op_ToString);
@@ -54,7 +51,7 @@ public class MyUnityToolWrap
 				return LuaDLL.luaL_throw(L, "invalid arguments to ctor method: MyUnityTool.New");
 			}
 		}
-		catch(Exception e)
+		catch (Exception e)
 		{
 			return LuaDLL.toluaL_exception(L, e);
 		}
@@ -66,12 +63,12 @@ public class MyUnityToolWrap
 		try
 		{
 			ToLua.CheckArgsCount(L, 1);
-			UnityEngine.Transform arg0 = (UnityEngine.Transform)ToLua.CheckUnityObject(L, 1, typeof(UnityEngine.Transform));
+			UnityEngine.Transform arg0 = (UnityEngine.Transform)ToLua.CheckObject<UnityEngine.Transform>(L, 1);
 			System.Collections.Generic.List<UnityEngine.Transform> o = MyUnityTool.GetSortTransformChildList(arg0);
-			ToLua.PushObject(L, o);
+			ToLua.PushSealed(L, o);
 			return 1;
 		}
-		catch(Exception e)
+		catch (Exception e)
 		{
 			return LuaDLL.toluaL_exception(L, e);
 		}
@@ -85,10 +82,10 @@ public class MyUnityToolWrap
 			ToLua.CheckArgsCount(L, 1);
 			string arg0 = ToLua.CheckString(L, 1);
 			UnityEngine.GameObject o = MyUnityTool.Find(arg0);
-			ToLua.Push(L, o);
+			ToLua.PushSealed(L, o);
 			return 1;
 		}
-		catch(Exception e)
+		catch (Exception e)
 		{
 			return LuaDLL.toluaL_exception(L, e);
 		}
@@ -101,7 +98,7 @@ public class MyUnityToolWrap
 		{
 			int count = LuaDLL.lua_gettop(L);
 
-			if (count == 2 && TypeChecker.CheckTypes(L, 1, typeof(UnityEngine.Transform), typeof(string)))
+			if (count == 2 && TypeChecker.CheckTypes<UnityEngine.Transform, string>(L, 1))
 			{
 				UnityEngine.Transform arg0 = (UnityEngine.Transform)ToLua.ToObject(L, 1);
 				string arg1 = ToLua.ToString(L, 2);
@@ -109,7 +106,7 @@ public class MyUnityToolWrap
 				ToLua.Push(L, o);
 				return 1;
 			}
-			else if (count == 2 && TypeChecker.CheckTypes(L, 1, typeof(UnityEngine.GameObject), typeof(string)))
+			else if (count == 2 && TypeChecker.CheckTypes<UnityEngine.GameObject, string>(L, 1))
 			{
 				UnityEngine.GameObject arg0 = (UnityEngine.GameObject)ToLua.ToObject(L, 1);
 				string arg1 = ToLua.ToString(L, 2);
@@ -117,7 +114,7 @@ public class MyUnityToolWrap
 				ToLua.Push(L, o);
 				return 1;
 			}
-			else if (count == 2 && TypeChecker.CheckTypes(L, 1, typeof(UnityEngine.Object), typeof(string)))
+			else if (count == 2 && TypeChecker.CheckTypes<UnityEngine.Object, string>(L, 1))
 			{
 				UnityEngine.Object arg0 = (UnityEngine.Object)ToLua.ToObject(L, 1);
 				string arg1 = ToLua.ToString(L, 2);
@@ -130,7 +127,7 @@ public class MyUnityToolWrap
 				return LuaDLL.luaL_throw(L, "invalid arguments to method: MyUnityTool.FindChild");
 			}
 		}
-		catch(Exception e)
+		catch (Exception e)
 		{
 			return LuaDLL.toluaL_exception(L, e);
 		}
@@ -142,13 +139,13 @@ public class MyUnityToolWrap
 		try
 		{
 			ToLua.CheckArgsCount(L, 2);
-			UnityEngine.Transform arg0 = (UnityEngine.Transform)ToLua.CheckUnityObject(L, 1, typeof(UnityEngine.Transform));
+			UnityEngine.Transform arg0 = (UnityEngine.Transform)ToLua.CheckObject<UnityEngine.Transform>(L, 1);
 			string arg1 = ToLua.CheckString(L, 2);
 			UnityEngine.Transform o = MyUnityTool.FindChildByDFS(arg0, arg1);
 			ToLua.Push(L, o);
 			return 1;
 		}
-		catch(Exception e)
+		catch (Exception e)
 		{
 			return LuaDLL.toluaL_exception(L, e);
 		}
@@ -160,13 +157,13 @@ public class MyUnityToolWrap
 		try
 		{
 			ToLua.CheckArgsCount(L, 2);
-			UnityEngine.Transform arg0 = (UnityEngine.Transform)ToLua.CheckUnityObject(L, 1, typeof(UnityEngine.Transform));
+			UnityEngine.Transform arg0 = (UnityEngine.Transform)ToLua.CheckObject<UnityEngine.Transform>(L, 1);
 			string arg1 = ToLua.CheckString(L, 2);
 			UnityEngine.Transform o = MyUnityTool.FindChildByBFS(arg0, arg1);
 			ToLua.Push(L, o);
 			return 1;
 		}
-		catch(Exception e)
+		catch (Exception e)
 		{
 			return LuaDLL.toluaL_exception(L, e);
 		}
@@ -179,14 +176,14 @@ public class MyUnityToolWrap
 		{
 			int count = LuaDLL.lua_gettop(L);
 
-			if (count == 2 && TypeChecker.CheckTypes(L, 1, typeof(UnityEngine.Component), typeof(bool)))
+			if (count == 2 && TypeChecker.CheckTypes<UnityEngine.Component, bool>(L, 1))
 			{
 				UnityEngine.Component arg0 = (UnityEngine.Component)ToLua.ToObject(L, 1);
 				bool arg1 = LuaDLL.lua_toboolean(L, 2);
 				MyUnityTool.SetActive(arg0, arg1);
 				return 0;
 			}
-			else if (count == 2 && TypeChecker.CheckTypes(L, 1, typeof(string), typeof(bool)))
+			else if (count == 2 && TypeChecker.CheckTypes<string, bool>(L, 1))
 			{
 				string arg0 = ToLua.ToString(L, 1);
 				bool arg1 = LuaDLL.lua_toboolean(L, 2);
@@ -198,7 +195,7 @@ public class MyUnityToolWrap
 				return LuaDLL.luaL_throw(L, "invalid arguments to method: MyUnityTool.SetActive");
 			}
 		}
-		catch(Exception e)
+		catch (Exception e)
 		{
 			return LuaDLL.toluaL_exception(L, e);
 		}
@@ -211,7 +208,7 @@ public class MyUnityToolWrap
 		{
 			int count = LuaDLL.lua_gettop(L);
 
-			if (count == 2 && TypeChecker.CheckTypes(L, 1, typeof(UnityEngine.Transform), typeof(bool)))
+			if (count == 2 && TypeChecker.CheckTypes<UnityEngine.Transform, bool>(L, 1))
 			{
 				UnityEngine.Transform arg0 = (UnityEngine.Transform)ToLua.ToObject(L, 1);
 				bool arg1 = LuaDLL.lua_toboolean(L, 2);
@@ -219,7 +216,7 @@ public class MyUnityToolWrap
 				LuaDLL.lua_pushboolean(L, o);
 				return 1;
 			}
-			else if (count == 2 && TypeChecker.CheckTypes(L, 1, typeof(string), typeof(bool)))
+			else if (count == 2 && TypeChecker.CheckTypes<string, bool>(L, 1))
 			{
 				string arg0 = ToLua.ToString(L, 1);
 				bool arg1 = LuaDLL.lua_toboolean(L, 2);
@@ -232,7 +229,7 @@ public class MyUnityToolWrap
 				return LuaDLL.luaL_throw(L, "invalid arguments to method: MyUnityTool.SetActiveRecursion");
 			}
 		}
-		catch(Exception e)
+		catch (Exception e)
 		{
 			return LuaDLL.toluaL_exception(L, e);
 		}
@@ -250,7 +247,7 @@ public class MyUnityToolWrap
 			LuaDLL.lua_pushboolean(L, o);
 			return 1;
 		}
-		catch(Exception e)
+		catch (Exception e)
 		{
 			return LuaDLL.toluaL_exception(L, e);
 		}
@@ -262,13 +259,13 @@ public class MyUnityToolWrap
 		try
 		{
 			ToLua.CheckArgsCount(L, 3);
-			UnityEngine.Transform arg0 = (UnityEngine.Transform)ToLua.CheckUnityObject(L, 1, typeof(UnityEngine.Transform));
+			UnityEngine.Transform arg0 = (UnityEngine.Transform)ToLua.CheckObject<UnityEngine.Transform>(L, 1);
 			string arg1 = ToLua.CheckString(L, 2);
 			bool arg2 = LuaDLL.luaL_checkboolean(L, 3);
 			MyUnityTool.SetActiveChild(arg0, arg1, arg2);
 			return 0;
 		}
-		catch(Exception e)
+		catch (Exception e)
 		{
 			return LuaDLL.toluaL_exception(L, e);
 		}
@@ -285,7 +282,7 @@ public class MyUnityToolWrap
 			MyUnityTool.SetActiveChildren(arg0, arg1);
 			return 0;
 		}
-		catch(Exception e)
+		catch (Exception e)
 		{
 			return LuaDLL.toluaL_exception(L, e);
 		}
@@ -297,11 +294,11 @@ public class MyUnityToolWrap
 		try
 		{
 			ToLua.CheckArgsCount(L, 1);
-			UnityEngine.Component arg0 = (UnityEngine.Component)ToLua.CheckUnityObject(L, 1, typeof(UnityEngine.Component));
+			UnityEngine.Component arg0 = (UnityEngine.Component)ToLua.CheckObject<UnityEngine.Component>(L, 1);
 			MyUnityTool.DestroyGameObject(arg0);
 			return 0;
 		}
-		catch(Exception e)
+		catch (Exception e)
 		{
 			return LuaDLL.toluaL_exception(L, e);
 		}
@@ -313,12 +310,12 @@ public class MyUnityToolWrap
 		try
 		{
 			ToLua.CheckArgsCount(L, 2);
-			UnityEngine.Transform arg0 = (UnityEngine.Transform)ToLua.CheckUnityObject(L, 1, typeof(UnityEngine.Transform));
-			UnityEngine.Transform arg1 = (UnityEngine.Transform)ToLua.CheckUnityObject(L, 2, typeof(UnityEngine.Transform));
+			UnityEngine.Transform arg0 = (UnityEngine.Transform)ToLua.CheckObject<UnityEngine.Transform>(L, 1);
+			UnityEngine.Transform arg1 = (UnityEngine.Transform)ToLua.CheckObject<UnityEngine.Transform>(L, 2);
 			MyUnityTool.SetParentWithLocalInfo(arg0, arg1);
 			return 0;
 		}
-		catch(Exception e)
+		catch (Exception e)
 		{
 			return LuaDLL.toluaL_exception(L, e);
 		}
@@ -331,14 +328,14 @@ public class MyUnityToolWrap
 		{
 			int count = LuaDLL.lua_gettop(L);
 
-			if (count == 2 && TypeChecker.CheckTypes(L, 1, typeof(UnityEngine.RectTransform), typeof(UnityEngine.RectTransform)))
+			if (count == 2 && TypeChecker.CheckTypes<UnityEngine.RectTransform, UnityEngine.RectTransform>(L, 1))
 			{
 				UnityEngine.RectTransform arg0 = (UnityEngine.RectTransform)ToLua.ToObject(L, 1);
 				UnityEngine.RectTransform arg1 = (UnityEngine.RectTransform)ToLua.ToObject(L, 2);
 				MyUnityTool.SetUIParentWithLocalInfo(arg0, arg1);
 				return 0;
 			}
-			else if (count == 2 && TypeChecker.CheckTypes(L, 1, typeof(UnityEngine.Transform), typeof(UnityEngine.RectTransform)))
+			else if (count == 2 && TypeChecker.CheckTypes<UnityEngine.Transform, UnityEngine.RectTransform>(L, 1))
 			{
 				UnityEngine.Transform arg0 = (UnityEngine.Transform)ToLua.ToObject(L, 1);
 				UnityEngine.RectTransform arg1 = (UnityEngine.RectTransform)ToLua.ToObject(L, 2);
@@ -350,7 +347,7 @@ public class MyUnityToolWrap
 				return LuaDLL.luaL_throw(L, "invalid arguments to method: MyUnityTool.SetUIParentWithLocalInfo");
 			}
 		}
-		catch(Exception e)
+		catch (Exception e)
 		{
 			return LuaDLL.toluaL_exception(L, e);
 		}
@@ -362,12 +359,12 @@ public class MyUnityToolWrap
 		try
 		{
 			ToLua.CheckArgsCount(L, 1);
-			UnityEngine.Transform arg0 = (UnityEngine.Transform)ToLua.CheckUnityObject(L, 1, typeof(UnityEngine.Transform));
+			UnityEngine.Transform arg0 = (UnityEngine.Transform)ToLua.CheckObject<UnityEngine.Transform>(L, 1);
 			string o = MyUnityTool.GetFullName(arg0);
 			LuaDLL.lua_pushstring(L, o);
 			return 1;
 		}
-		catch(Exception e)
+		catch (Exception e)
 		{
 			return LuaDLL.toluaL_exception(L, e);
 		}
@@ -379,12 +376,12 @@ public class MyUnityToolWrap
 		try
 		{
 			ToLua.CheckArgsCount(L, 2);
-			UnityEngine.GameObject arg0 = (UnityEngine.GameObject)ToLua.CheckUnityObject(L, 1, typeof(UnityEngine.GameObject));
+			UnityEngine.GameObject arg0 = (UnityEngine.GameObject)ToLua.CheckObject(L, 1, typeof(UnityEngine.GameObject));
 			string arg1 = ToLua.CheckString(L, 2);
 			MyUnityTool.PlayAnimation(arg0, arg1);
 			return 0;
 		}
-		catch(Exception e)
+		catch (Exception e)
 		{
 			return LuaDLL.toluaL_exception(L, e);
 		}
@@ -395,14 +392,29 @@ public class MyUnityToolWrap
 	{
 		try
 		{
-			ToLua.CheckArgsCount(L, 3);
-			UnityEngine.GameObject arg0 = (UnityEngine.GameObject)ToLua.CheckUnityObject(L, 1, typeof(UnityEngine.GameObject));
-			int arg1 = (int)LuaDLL.luaL_checknumber(L, 2);
-			bool arg2 = LuaDLL.luaL_checkboolean(L, 3);
-			MyUnityTool.SetLayer(arg0, arg1, arg2);
-			return 0;
+			int count = LuaDLL.lua_gettop(L);
+
+			if (count == 2)
+			{
+				UnityEngine.GameObject arg0 = (UnityEngine.GameObject)ToLua.CheckObject(L, 1, typeof(UnityEngine.GameObject));
+				int arg1 = (int)LuaDLL.luaL_checknumber(L, 2);
+				MyUnityTool.SetLayer(arg0, arg1);
+				return 0;
+			}
+			else if (count == 3)
+			{
+				UnityEngine.GameObject arg0 = (UnityEngine.GameObject)ToLua.CheckObject(L, 1, typeof(UnityEngine.GameObject));
+				int arg1 = (int)LuaDLL.luaL_checknumber(L, 2);
+				bool arg2 = LuaDLL.luaL_checkboolean(L, 3);
+				MyUnityTool.SetLayer(arg0, arg1, arg2);
+				return 0;
+			}
+			else
+			{
+				return LuaDLL.luaL_throw(L, "invalid arguments to method: MyUnityTool.SetLayer");
+			}
 		}
-		catch(Exception e)
+		catch (Exception e)
 		{
 			return LuaDLL.toluaL_exception(L, e);
 		}
@@ -415,19 +427,19 @@ public class MyUnityToolWrap
 		{
 			int count = LuaDLL.lua_gettop(L);
 
-			if (count == 2 && TypeChecker.CheckTypes(L, 1, typeof(UnityEngine.Transform), typeof(string)))
+			if (count == 2)
 			{
-				UnityEngine.Transform arg0 = (UnityEngine.Transform)ToLua.ToObject(L, 1);
-				string arg1 = ToLua.ToString(L, 2);
+				UnityEngine.Transform arg0 = (UnityEngine.Transform)ToLua.CheckObject<UnityEngine.Transform>(L, 1);
+				string arg1 = ToLua.CheckString(L, 2);
 				UnityEngine.Component o = MyUnityTool.GetComponentByString(arg0, arg1);
 				ToLua.Push(L, o);
 				return 1;
 			}
-			else if (count == 3 && TypeChecker.CheckTypes(L, 1, typeof(UnityEngine.Transform), typeof(string), typeof(string)))
+			else if (count == 3)
 			{
-				UnityEngine.Transform arg0 = (UnityEngine.Transform)ToLua.ToObject(L, 1);
-				string arg1 = ToLua.ToString(L, 2);
-				string arg2 = ToLua.ToString(L, 3);
+				UnityEngine.Transform arg0 = (UnityEngine.Transform)ToLua.CheckObject<UnityEngine.Transform>(L, 1);
+				string arg1 = ToLua.CheckString(L, 2);
+				string arg2 = ToLua.CheckString(L, 3);
 				UnityEngine.Component o = MyUnityTool.GetComponentByString(arg0, arg1, arg2);
 				ToLua.Push(L, o);
 				return 1;
@@ -437,7 +449,7 @@ public class MyUnityToolWrap
 				return LuaDLL.luaL_throw(L, "invalid arguments to method: MyUnityTool.GetComponentByString");
 			}
 		}
-		catch(Exception e)
+		catch (Exception e)
 		{
 			return LuaDLL.toluaL_exception(L, e);
 		}
@@ -454,7 +466,7 @@ public class MyUnityToolWrap
 			ToLua.Push(L, o);
 			return 1;
 		}
-		catch(Exception e)
+		catch (Exception e)
 		{
 			return LuaDLL.toluaL_exception(L, e);
 		}
@@ -465,15 +477,31 @@ public class MyUnityToolWrap
 	{
 		try
 		{
-			ToLua.CheckArgsCount(L, 3);
-			float arg0 = (float)LuaDLL.luaL_checknumber(L, 1);
-			float arg1 = (float)LuaDLL.luaL_checknumber(L, 2);
-			float arg2 = (float)LuaDLL.luaL_checknumber(L, 3);
-			bool o = MyUnityTool.Approximately(arg0, arg1, arg2);
-			LuaDLL.lua_pushboolean(L, o);
-			return 1;
+			int count = LuaDLL.lua_gettop(L);
+
+			if (count == 2)
+			{
+				float arg0 = (float)LuaDLL.luaL_checknumber(L, 1);
+				float arg1 = (float)LuaDLL.luaL_checknumber(L, 2);
+				bool o = MyUnityTool.Approximately(arg0, arg1);
+				LuaDLL.lua_pushboolean(L, o);
+				return 1;
+			}
+			else if (count == 3)
+			{
+				float arg0 = (float)LuaDLL.luaL_checknumber(L, 1);
+				float arg1 = (float)LuaDLL.luaL_checknumber(L, 2);
+				float arg2 = (float)LuaDLL.luaL_checknumber(L, 3);
+				bool o = MyUnityTool.Approximately(arg0, arg1, arg2);
+				LuaDLL.lua_pushboolean(L, o);
+				return 1;
+			}
+			else
+			{
+				return LuaDLL.luaL_throw(L, "invalid arguments to method: MyUnityTool.Approximately");
+			}
 		}
-		catch(Exception e)
+		catch (Exception e)
 		{
 			return LuaDLL.toluaL_exception(L, e);
 		}
@@ -491,61 +519,7 @@ public class MyUnityToolWrap
 			LuaDLL.lua_pushinteger(L, o);
 			return 1;
 		}
-		catch(Exception e)
-		{
-			return LuaDLL.toluaL_exception(L, e);
-		}
-	}
-
-	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
-	static int Divide(IntPtr L)
-	{
-		try
-		{
-			ToLua.CheckArgsCount(L, 2);
-			long arg0 = LuaDLL.tolua_checkint64(L, 1);
-			long arg1 = LuaDLL.tolua_checkint64(L, 2);
-			float o = MyUnityTool.Divide(arg0, arg1);
-			LuaDLL.lua_pushnumber(L, o);
-			return 1;
-		}
-		catch(Exception e)
-		{
-			return LuaDLL.toluaL_exception(L, e);
-		}
-	}
-
-	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
-	static int Mod(IntPtr L)
-	{
-		try
-		{
-			ToLua.CheckArgsCount(L, 2);
-			long arg0 = LuaDLL.tolua_checkint64(L, 1);
-			long arg1 = LuaDLL.tolua_checkint64(L, 2);
-			float o = MyUnityTool.Mod(arg0, arg1);
-			LuaDLL.lua_pushnumber(L, o);
-			return 1;
-		}
-		catch(Exception e)
-		{
-			return LuaDLL.toluaL_exception(L, e);
-		}
-	}
-
-	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
-	static int Multiply(IntPtr L)
-	{
-		try
-		{
-			ToLua.CheckArgsCount(L, 2);
-			long arg0 = LuaDLL.tolua_checkint64(L, 1);
-			float arg1 = (float)LuaDLL.luaL_checknumber(L, 2);
-			float o = MyUnityTool.Multiply(arg0, arg1);
-			LuaDLL.lua_pushnumber(L, o);
-			return 1;
-		}
-		catch(Exception e)
+		catch (Exception e)
 		{
 			return LuaDLL.toluaL_exception(L, e);
 		}
@@ -561,7 +535,7 @@ public class MyUnityToolWrap
 			LuaDLL.lua_pushboolean(L, o);
 			return 1;
 		}
-		catch(Exception e)
+		catch (Exception e)
 		{
 			return LuaDLL.toluaL_exception(L, e);
 		}

@@ -47,7 +47,7 @@ public class UnityEngine_RenderSettingsWrap
 			LuaDLL.lua_pushboolean(L, o);
 			return 1;
 		}
-		catch(Exception e)
+		catch (Exception e)
 		{
 			return LuaDLL.toluaL_exception(L, e);
 		}
@@ -61,7 +61,7 @@ public class UnityEngine_RenderSettingsWrap
 			ToLua.PushValue(L, UnityEngine.RenderSettings.ambientProbe);
 			return 1;
 		}
-		catch(Exception e)
+		catch (Exception e)
 		{
 			return LuaDLL.toluaL_exception(L, e);
 		}
@@ -72,10 +72,10 @@ public class UnityEngine_RenderSettingsWrap
 	{
 		try
 		{
-			ToLua.Push(L, UnityEngine.RenderSettings.customReflection);
+			ToLua.PushSealed(L, UnityEngine.RenderSettings.customReflection);
 			return 1;
 		}
-		catch(Exception e)
+		catch (Exception e)
 		{
 			return LuaDLL.toluaL_exception(L, e);
 		}
@@ -89,7 +89,7 @@ public class UnityEngine_RenderSettingsWrap
 			LuaDLL.lua_pushboolean(L, UnityEngine.RenderSettings.fog);
 			return 1;
 		}
-		catch(Exception e)
+		catch (Exception e)
 		{
 			return LuaDLL.toluaL_exception(L, e);
 		}
@@ -103,7 +103,7 @@ public class UnityEngine_RenderSettingsWrap
 			LuaDLL.lua_pushnumber(L, UnityEngine.RenderSettings.fogStartDistance);
 			return 1;
 		}
-		catch(Exception e)
+		catch (Exception e)
 		{
 			return LuaDLL.toluaL_exception(L, e);
 		}
@@ -117,7 +117,7 @@ public class UnityEngine_RenderSettingsWrap
 			LuaDLL.lua_pushnumber(L, UnityEngine.RenderSettings.fogEndDistance);
 			return 1;
 		}
-		catch(Exception e)
+		catch (Exception e)
 		{
 			return LuaDLL.toluaL_exception(L, e);
 		}
@@ -131,7 +131,7 @@ public class UnityEngine_RenderSettingsWrap
 			ToLua.Push(L, UnityEngine.RenderSettings.fogMode);
 			return 1;
 		}
-		catch(Exception e)
+		catch (Exception e)
 		{
 			return LuaDLL.toluaL_exception(L, e);
 		}
@@ -145,7 +145,7 @@ public class UnityEngine_RenderSettingsWrap
 			ToLua.Push(L, UnityEngine.RenderSettings.fogColor);
 			return 1;
 		}
-		catch(Exception e)
+		catch (Exception e)
 		{
 			return LuaDLL.toluaL_exception(L, e);
 		}
@@ -159,7 +159,7 @@ public class UnityEngine_RenderSettingsWrap
 			LuaDLL.lua_pushnumber(L, UnityEngine.RenderSettings.fogDensity);
 			return 1;
 		}
-		catch(Exception e)
+		catch (Exception e)
 		{
 			return LuaDLL.toluaL_exception(L, e);
 		}
@@ -173,7 +173,7 @@ public class UnityEngine_RenderSettingsWrap
 			ToLua.Push(L, UnityEngine.RenderSettings.ambientMode);
 			return 1;
 		}
-		catch(Exception e)
+		catch (Exception e)
 		{
 			return LuaDLL.toluaL_exception(L, e);
 		}
@@ -187,7 +187,7 @@ public class UnityEngine_RenderSettingsWrap
 			ToLua.Push(L, UnityEngine.RenderSettings.ambientSkyColor);
 			return 1;
 		}
-		catch(Exception e)
+		catch (Exception e)
 		{
 			return LuaDLL.toluaL_exception(L, e);
 		}
@@ -201,7 +201,7 @@ public class UnityEngine_RenderSettingsWrap
 			ToLua.Push(L, UnityEngine.RenderSettings.ambientEquatorColor);
 			return 1;
 		}
-		catch(Exception e)
+		catch (Exception e)
 		{
 			return LuaDLL.toluaL_exception(L, e);
 		}
@@ -215,7 +215,7 @@ public class UnityEngine_RenderSettingsWrap
 			ToLua.Push(L, UnityEngine.RenderSettings.ambientGroundColor);
 			return 1;
 		}
-		catch(Exception e)
+		catch (Exception e)
 		{
 			return LuaDLL.toluaL_exception(L, e);
 		}
@@ -229,7 +229,7 @@ public class UnityEngine_RenderSettingsWrap
 			LuaDLL.lua_pushnumber(L, UnityEngine.RenderSettings.ambientIntensity);
 			return 1;
 		}
-		catch(Exception e)
+		catch (Exception e)
 		{
 			return LuaDLL.toluaL_exception(L, e);
 		}
@@ -243,7 +243,7 @@ public class UnityEngine_RenderSettingsWrap
 			ToLua.Push(L, UnityEngine.RenderSettings.ambientLight);
 			return 1;
 		}
-		catch(Exception e)
+		catch (Exception e)
 		{
 			return LuaDLL.toluaL_exception(L, e);
 		}
@@ -257,7 +257,7 @@ public class UnityEngine_RenderSettingsWrap
 			ToLua.Push(L, UnityEngine.RenderSettings.subtractiveShadowColor);
 			return 1;
 		}
-		catch(Exception e)
+		catch (Exception e)
 		{
 			return LuaDLL.toluaL_exception(L, e);
 		}
@@ -271,7 +271,7 @@ public class UnityEngine_RenderSettingsWrap
 			ToLua.Push(L, UnityEngine.RenderSettings.skybox);
 			return 1;
 		}
-		catch(Exception e)
+		catch (Exception e)
 		{
 			return LuaDLL.toluaL_exception(L, e);
 		}
@@ -282,10 +282,10 @@ public class UnityEngine_RenderSettingsWrap
 	{
 		try
 		{
-			ToLua.Push(L, UnityEngine.RenderSettings.sun);
+			ToLua.PushSealed(L, UnityEngine.RenderSettings.sun);
 			return 1;
 		}
-		catch(Exception e)
+		catch (Exception e)
 		{
 			return LuaDLL.toluaL_exception(L, e);
 		}
@@ -299,7 +299,7 @@ public class UnityEngine_RenderSettingsWrap
 			LuaDLL.lua_pushnumber(L, UnityEngine.RenderSettings.reflectionIntensity);
 			return 1;
 		}
-		catch(Exception e)
+		catch (Exception e)
 		{
 			return LuaDLL.toluaL_exception(L, e);
 		}
@@ -313,7 +313,7 @@ public class UnityEngine_RenderSettingsWrap
 			LuaDLL.lua_pushinteger(L, UnityEngine.RenderSettings.reflectionBounces);
 			return 1;
 		}
-		catch(Exception e)
+		catch (Exception e)
 		{
 			return LuaDLL.toluaL_exception(L, e);
 		}
@@ -327,7 +327,7 @@ public class UnityEngine_RenderSettingsWrap
 			ToLua.Push(L, UnityEngine.RenderSettings.defaultReflectionMode);
 			return 1;
 		}
-		catch(Exception e)
+		catch (Exception e)
 		{
 			return LuaDLL.toluaL_exception(L, e);
 		}
@@ -341,7 +341,7 @@ public class UnityEngine_RenderSettingsWrap
 			LuaDLL.lua_pushinteger(L, UnityEngine.RenderSettings.defaultReflectionResolution);
 			return 1;
 		}
-		catch(Exception e)
+		catch (Exception e)
 		{
 			return LuaDLL.toluaL_exception(L, e);
 		}
@@ -355,7 +355,7 @@ public class UnityEngine_RenderSettingsWrap
 			LuaDLL.lua_pushnumber(L, UnityEngine.RenderSettings.haloStrength);
 			return 1;
 		}
-		catch(Exception e)
+		catch (Exception e)
 		{
 			return LuaDLL.toluaL_exception(L, e);
 		}
@@ -369,7 +369,7 @@ public class UnityEngine_RenderSettingsWrap
 			LuaDLL.lua_pushnumber(L, UnityEngine.RenderSettings.flareStrength);
 			return 1;
 		}
-		catch(Exception e)
+		catch (Exception e)
 		{
 			return LuaDLL.toluaL_exception(L, e);
 		}
@@ -383,7 +383,7 @@ public class UnityEngine_RenderSettingsWrap
 			LuaDLL.lua_pushnumber(L, UnityEngine.RenderSettings.flareFadeSpeed);
 			return 1;
 		}
-		catch(Exception e)
+		catch (Exception e)
 		{
 			return LuaDLL.toluaL_exception(L, e);
 		}
@@ -394,11 +394,11 @@ public class UnityEngine_RenderSettingsWrap
 	{
 		try
 		{
-			UnityEngine.Rendering.SphericalHarmonicsL2 arg0 = (UnityEngine.Rendering.SphericalHarmonicsL2)ToLua.CheckObject(L, 2, typeof(UnityEngine.Rendering.SphericalHarmonicsL2));
+			UnityEngine.Rendering.SphericalHarmonicsL2 arg0 = StackTraits<UnityEngine.Rendering.SphericalHarmonicsL2>.Check(L, 2);
 			UnityEngine.RenderSettings.ambientProbe = arg0;
 			return 0;
 		}
-		catch(Exception e)
+		catch (Exception e)
 		{
 			return LuaDLL.toluaL_exception(L, e);
 		}
@@ -409,11 +409,11 @@ public class UnityEngine_RenderSettingsWrap
 	{
 		try
 		{
-			UnityEngine.Cubemap arg0 = (UnityEngine.Cubemap)ToLua.CheckUnityObject(L, 2, typeof(UnityEngine.Cubemap));
+			UnityEngine.Cubemap arg0 = (UnityEngine.Cubemap)ToLua.CheckObject(L, 2, typeof(UnityEngine.Cubemap));
 			UnityEngine.RenderSettings.customReflection = arg0;
 			return 0;
 		}
-		catch(Exception e)
+		catch (Exception e)
 		{
 			return LuaDLL.toluaL_exception(L, e);
 		}
@@ -428,7 +428,7 @@ public class UnityEngine_RenderSettingsWrap
 			UnityEngine.RenderSettings.fog = arg0;
 			return 0;
 		}
-		catch(Exception e)
+		catch (Exception e)
 		{
 			return LuaDLL.toluaL_exception(L, e);
 		}
@@ -443,7 +443,7 @@ public class UnityEngine_RenderSettingsWrap
 			UnityEngine.RenderSettings.fogStartDistance = arg0;
 			return 0;
 		}
-		catch(Exception e)
+		catch (Exception e)
 		{
 			return LuaDLL.toluaL_exception(L, e);
 		}
@@ -458,7 +458,7 @@ public class UnityEngine_RenderSettingsWrap
 			UnityEngine.RenderSettings.fogEndDistance = arg0;
 			return 0;
 		}
-		catch(Exception e)
+		catch (Exception e)
 		{
 			return LuaDLL.toluaL_exception(L, e);
 		}
@@ -473,7 +473,7 @@ public class UnityEngine_RenderSettingsWrap
 			UnityEngine.RenderSettings.fogMode = arg0;
 			return 0;
 		}
-		catch(Exception e)
+		catch (Exception e)
 		{
 			return LuaDLL.toluaL_exception(L, e);
 		}
@@ -488,7 +488,7 @@ public class UnityEngine_RenderSettingsWrap
 			UnityEngine.RenderSettings.fogColor = arg0;
 			return 0;
 		}
-		catch(Exception e)
+		catch (Exception e)
 		{
 			return LuaDLL.toluaL_exception(L, e);
 		}
@@ -503,7 +503,7 @@ public class UnityEngine_RenderSettingsWrap
 			UnityEngine.RenderSettings.fogDensity = arg0;
 			return 0;
 		}
-		catch(Exception e)
+		catch (Exception e)
 		{
 			return LuaDLL.toluaL_exception(L, e);
 		}
@@ -518,7 +518,7 @@ public class UnityEngine_RenderSettingsWrap
 			UnityEngine.RenderSettings.ambientMode = arg0;
 			return 0;
 		}
-		catch(Exception e)
+		catch (Exception e)
 		{
 			return LuaDLL.toluaL_exception(L, e);
 		}
@@ -533,7 +533,7 @@ public class UnityEngine_RenderSettingsWrap
 			UnityEngine.RenderSettings.ambientSkyColor = arg0;
 			return 0;
 		}
-		catch(Exception e)
+		catch (Exception e)
 		{
 			return LuaDLL.toluaL_exception(L, e);
 		}
@@ -548,7 +548,7 @@ public class UnityEngine_RenderSettingsWrap
 			UnityEngine.RenderSettings.ambientEquatorColor = arg0;
 			return 0;
 		}
-		catch(Exception e)
+		catch (Exception e)
 		{
 			return LuaDLL.toluaL_exception(L, e);
 		}
@@ -563,7 +563,7 @@ public class UnityEngine_RenderSettingsWrap
 			UnityEngine.RenderSettings.ambientGroundColor = arg0;
 			return 0;
 		}
-		catch(Exception e)
+		catch (Exception e)
 		{
 			return LuaDLL.toluaL_exception(L, e);
 		}
@@ -578,7 +578,7 @@ public class UnityEngine_RenderSettingsWrap
 			UnityEngine.RenderSettings.ambientIntensity = arg0;
 			return 0;
 		}
-		catch(Exception e)
+		catch (Exception e)
 		{
 			return LuaDLL.toluaL_exception(L, e);
 		}
@@ -593,7 +593,7 @@ public class UnityEngine_RenderSettingsWrap
 			UnityEngine.RenderSettings.ambientLight = arg0;
 			return 0;
 		}
-		catch(Exception e)
+		catch (Exception e)
 		{
 			return LuaDLL.toluaL_exception(L, e);
 		}
@@ -608,7 +608,7 @@ public class UnityEngine_RenderSettingsWrap
 			UnityEngine.RenderSettings.subtractiveShadowColor = arg0;
 			return 0;
 		}
-		catch(Exception e)
+		catch (Exception e)
 		{
 			return LuaDLL.toluaL_exception(L, e);
 		}
@@ -619,11 +619,11 @@ public class UnityEngine_RenderSettingsWrap
 	{
 		try
 		{
-			UnityEngine.Material arg0 = (UnityEngine.Material)ToLua.CheckUnityObject(L, 2, typeof(UnityEngine.Material));
+			UnityEngine.Material arg0 = (UnityEngine.Material)ToLua.CheckObject<UnityEngine.Material>(L, 2);
 			UnityEngine.RenderSettings.skybox = arg0;
 			return 0;
 		}
-		catch(Exception e)
+		catch (Exception e)
 		{
 			return LuaDLL.toluaL_exception(L, e);
 		}
@@ -634,11 +634,11 @@ public class UnityEngine_RenderSettingsWrap
 	{
 		try
 		{
-			UnityEngine.Light arg0 = (UnityEngine.Light)ToLua.CheckUnityObject(L, 2, typeof(UnityEngine.Light));
+			UnityEngine.Light arg0 = (UnityEngine.Light)ToLua.CheckObject(L, 2, typeof(UnityEngine.Light));
 			UnityEngine.RenderSettings.sun = arg0;
 			return 0;
 		}
-		catch(Exception e)
+		catch (Exception e)
 		{
 			return LuaDLL.toluaL_exception(L, e);
 		}
@@ -653,7 +653,7 @@ public class UnityEngine_RenderSettingsWrap
 			UnityEngine.RenderSettings.reflectionIntensity = arg0;
 			return 0;
 		}
-		catch(Exception e)
+		catch (Exception e)
 		{
 			return LuaDLL.toluaL_exception(L, e);
 		}
@@ -668,7 +668,7 @@ public class UnityEngine_RenderSettingsWrap
 			UnityEngine.RenderSettings.reflectionBounces = arg0;
 			return 0;
 		}
-		catch(Exception e)
+		catch (Exception e)
 		{
 			return LuaDLL.toluaL_exception(L, e);
 		}
@@ -683,7 +683,7 @@ public class UnityEngine_RenderSettingsWrap
 			UnityEngine.RenderSettings.defaultReflectionMode = arg0;
 			return 0;
 		}
-		catch(Exception e)
+		catch (Exception e)
 		{
 			return LuaDLL.toluaL_exception(L, e);
 		}
@@ -698,7 +698,7 @@ public class UnityEngine_RenderSettingsWrap
 			UnityEngine.RenderSettings.defaultReflectionResolution = arg0;
 			return 0;
 		}
-		catch(Exception e)
+		catch (Exception e)
 		{
 			return LuaDLL.toluaL_exception(L, e);
 		}
@@ -713,7 +713,7 @@ public class UnityEngine_RenderSettingsWrap
 			UnityEngine.RenderSettings.haloStrength = arg0;
 			return 0;
 		}
-		catch(Exception e)
+		catch (Exception e)
 		{
 			return LuaDLL.toluaL_exception(L, e);
 		}
@@ -728,7 +728,7 @@ public class UnityEngine_RenderSettingsWrap
 			UnityEngine.RenderSettings.flareStrength = arg0;
 			return 0;
 		}
-		catch(Exception e)
+		catch (Exception e)
 		{
 			return LuaDLL.toluaL_exception(L, e);
 		}
@@ -743,7 +743,7 @@ public class UnityEngine_RenderSettingsWrap
 			UnityEngine.RenderSettings.flareFadeSpeed = arg0;
 			return 0;
 		}
-		catch(Exception e)
+		catch (Exception e)
 		{
 			return LuaDLL.toluaL_exception(L, e);
 		}

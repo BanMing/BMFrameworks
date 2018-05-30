@@ -1,15 +1,4 @@
-﻿/******************************************************************
-** 文件名:	
-** 版  权:  (C)  
-** 创建人:  Liange
-** 日  期:  2016/09/08
-** 描  述: 	
-
-**************************** 修改记录 ******************************
-** 修改人: 
-** 日  期: 
-** 描  述: 
-*******************************************************************/
+﻿
 
 using UnityEngine;
 using System;
@@ -20,10 +9,10 @@ using LuaInterface;
 
 public class LuaManager : LuaClient
 {
-	void Start ()
+    void Start()
     {
-        Debug.Log("LuaManager.Start");
-	}
+        Debug.Log("LuaManager.Start(MonoBehavior)");
+    }
 
     static public System.Action m_InitFinishCB = null; //初始化结束
 
@@ -31,6 +20,12 @@ public class LuaManager : LuaClient
     {
         return new MyLuaResLoader();
         //return new LuaResLoader();
+    }
+
+    protected override void OpenLibs()
+    {
+        base.OpenLibs();
+        OpenCJson();
     }
 
     protected override void OnLoadFinished()
@@ -50,23 +45,30 @@ public class LuaManager : LuaClient
 
     protected override void StartMain()
     {
+        // luaState.DoFile("Main.lua", (objects) =>
+        // {
+
+
+        //     levelLoaded = luaState.GetFunction("OnLevelWasLoaded");
+        //     //DispatchSocketMsgAction = luaState.GetFunction("MsgManager.DispatchMsg");
+
+        //     Debug.Log("LuaManager.StartMain:准备执行Lua主函数");
+        //     CallMain();
+        //     Debug.Log("LuaManager.StartMain:执行Lua主函数结束");
+
+        //     if (m_InitFinishCB != null)
+        //     {
+        //         m_InitFinishCB();
+        //     }
+
+        //     Debug.Log("LuaManager.StartMain");
+        // });
         luaState.DoFile("Main.lua");
-
-        InitUI();
-
-        levelLoaded = luaState.GetFunction("OnLevelWasLoaded");
-        DispatchSocketMsgAction = luaState.GetFunction("MsgManager.DispatchMsg");
-
-        Debug.Log("LuaManager.StartMain:准备执行Lua主函数");
         CallMain();
-        Debug.Log("LuaManager.StartMain:执行Lua主函数结束");
-
-        if (m_InitFinishCB != null)
-        {
-            m_InitFinishCB();
-        }
-
-        Debug.Log("LuaManager.StartMain");
+        // if (m_InitFinishCB != null)
+        // {
+        //     m_InitFinishCB();
+        // }
     }
 
     static private LuaInterface.LuaFunction DispatchSocketMsgAction = null;
@@ -86,21 +88,25 @@ public class LuaManager : LuaClient
     }
     */
 
-    // static public void DispatchSocketMsg(NetManager netManager, TCP_Buffer buffer)
+    public void SetDispatchMsgFunction(string functionName)
+    {
+        DispatchSocketMsgAction = luaState.GetFunction(functionName);
+    }
+
+    // static public void DispatchSocketMsg(NetManager netManager, Pluto pluto)
     // {
     //     if (DispatchSocketMsgAction != null)
     //     {
-    //         DispatchSocketMsgAction.Call(netManager, buffer);
+    //         DispatchSocketMsgAction.Call(netManager, pluto);
     //     }
     // }
 
-    #region Lua交互
 
     public void LoadLuaScriptFile(string fileName)
     {
         luaState.DoFile(fileName);
     }
-    
+
     public void LoadLuaScriptText(string scriptText, string scriptableName = "LuaState.cs")
     {
         luaState.DoString(scriptText, scriptableName);
@@ -109,7 +115,7 @@ public class LuaManager : LuaClient
     public void CallLuaFunction(string functionName)
     {
         LuaFunction func = luaState.GetFunction(functionName);
-        if(func != null)
+        if (func != null)
         {
             func.Call();
             func.Dispose();
@@ -122,58 +128,26 @@ public class LuaManager : LuaClient
         }
     }
 
-    public object[] CallLuaFunction(string functionName, params object[] args)
-    {
-        LuaFunction func = luaState.GetFunction(functionName);
-        if(func != null)
-        {
-            object[] results = func.Call(args);
-            func.Dispose();
-            func = null;
-            return results;
-        }
-        else
-        {
-            string str = string.Format("LuaManager.CallLuaFunction:调用Lua函数{0}失败", functionName);
-            Debug.LogError(str);
-        }
+    // public object[] CallLuaFunction(string functionName, params object[] args)
+    // {
+    //     LuaFunction func = luaState.GetFunction(functionName);
+    //     if (func != null)
+    //     {
+    //         object[] results = func.Call(args);
+    //         func.Dispose();
+    //         func = null;
+    //         return results;
+    //     }
+    //     else
+    //     {
+    //         string str = string.Format("LuaManager.CallLuaFunction:调用Lua函数{0}失败", functionName);
+    //         Debug.LogError(str);
+    //     }
 
-        return null;
-    }
+    //     return null;
+    // }
 
-    #endregion
-
-    #region UI
-
-    public const string CreateWindowFunctionName = "UIMgr.CreateWindowEvent";
-    public const string DestroyWindowFunctionName = "UIMgr.DestroyWindowEvent";
-    public const string ShowWindowFunctionName = "UIMgr.ShowWindowEvent";
-    public const string HideWindowFunctionName = "UIMgr.HideWindowEvent";
-
-    void InitUI()
-    {
-        UIManager.Instance.m_ShowWindow = luaState.GetFunction(ShowWindowFunctionName);
-        UIManager.Instance.m_HideWindow = luaState.GetFunction(HideWindowFunctionName);
-    }
-
-    void ReleaseUI()
-    {
-        if(UIManager.Instance.m_ShowWindow != null)
-        {
-            UIManager.Instance.m_ShowWindow.Dispose();
-            UIManager.Instance.m_ShowWindow = null;
-        }
-
-        if (UIManager.Instance.m_HideWindow != null)
-        {
-            UIManager.Instance.m_HideWindow.Dispose();
-            UIManager.Instance.m_HideWindow = null;
-        }
-    }
-
-    #endregion
 }
-
 public class MyLuaResLoader : LuaResLoader
 {
     static MyLuaResLoader()
@@ -206,14 +180,15 @@ public class MyLuaResLoader : LuaResLoader
 
     public override byte[] ReadFile(string fileName)
     {
-        if(SystemConfig.Instance.IsUseLuaBytecode)
+        Debug.Log("LuaManager ReadFile fileName:"+fileName);
+        if (SystemConfig.Instance.IsUseLuaBytecode)
         {
             if (fileName.EndsWith(".lua"))
             {
                 fileName = fileName.Replace(".lua", LuaByteCodeFileSuffix);
             }
 
-            if(fileName.EndsWith(LuaByteCodeFileSuffix) == false)
+            if (fileName.EndsWith(LuaByteCodeFileSuffix) == false)
             {
                 fileName = fileName + LuaByteCodeFileSuffix;
             }
@@ -241,6 +216,47 @@ public class MyLuaResLoader : LuaResLoader
         }
     }
 
+    public void ReadFileAsync(string fileName, Action<byte[]> callback)
+    {
+        if (SystemConfig.Instance.IsUseLuaBytecode)
+        {
+            if (fileName.EndsWith(".lua"))
+            {
+                fileName = fileName.Replace(".lua", LuaByteCodeFileSuffix);
+            }
+
+            if (fileName.EndsWith(LuaByteCodeFileSuffix) == false)
+            {
+                fileName = fileName + LuaByteCodeFileSuffix;
+            }
+        }
+        else
+        {
+            if (fileName.EndsWith(LuaByteCodeFileSuffix))
+            {
+                fileName = fileName.Replace(LuaByteCodeFileSuffix, ".lua");
+            }
+
+            if (fileName.EndsWith(".lua") == false)
+            {
+                fileName = fileName + ".lua";
+            }
+        }
+
+        if (ResourcesManager.IsLuaUseZip)
+        {
+            var bytes = GetLuaFileDataFromZip(fileName);
+            callback(bytes);
+        }
+        else
+        {
+            GetLuaFileDataFromStreamingAssetsPathAsync(fileName, (bytes) =>
+            {
+                callback(bytes);
+            });
+        }
+    }
+
     private byte[] GetLuaFileDataFromStreamingAssetsPath(string fileName)
     {
         for (int i = 0; i < m_ListLuaSearchDir.Length; ++i)
@@ -262,6 +278,11 @@ public class MyLuaResLoader : LuaResLoader
             {
                 if (File.Exists(filePath))
                 {
+                    
+                    // if (SystemConfig.Instance.IsEncryptLuaCode)
+                    // {
+                    //     return ResourcesManager.DecryptLuaCode(File.ReadAllBytes(filePath));
+                    // }
                     return File.ReadAllBytes(filePath);
                 }
             }
@@ -272,13 +293,52 @@ public class MyLuaResLoader : LuaResLoader
         return null;
     }
 
+    private void GetLuaFileDataFromStreamingAssetsPathAsync(string fileName, Action<byte[]> callback)
+    {
+        ScriptThread.Instance.StartCoroutine(GetLuaFileDataFromStreamingAssetsPathAsyncImp(fileName, callback));
+    }
+    private IEnumerator GetLuaFileDataFromStreamingAssetsPathAsyncImp(string fileName, Action<byte[]> callback)
+    {
+        for (int i = 0; i < m_ListLuaSearchDir.Length; ++i)
+        {
+            string filePath = Application.streamingAssetsPath + "/" + m_ListLuaSearchDir[i] + fileName;
+            if (filePath.Contains("://"))
+            {
+                WWW www = new WWW(filePath);
+                while (!www.isDone)
+                {
+                    //等待加载完成
+                    yield return null;
+                }
+                if (string.IsNullOrEmpty(www.error))
+                {
+                    callback(www.bytes);
+                    yield break;
+                }
+            }
+            else
+            {
+                if (File.Exists(filePath))
+                {
+                    callback(File.ReadAllBytes(filePath));
+                    yield break;
+                }
+            }
+        }
+
+        string str = string.Format("GetLuaFileDataFromStreamingAssetsPath:读取文件{0}文件失败", fileName);
+        Debug.LogError(str);
+        callback(null);
+        yield return null;
+    }
+
     private byte[] GetLuaFileDataFromZip(string fileName)
     {
-        for(int i = 0; i < m_ListLuaSearchDir.Length; ++i)
+        for (int i = 0; i < m_ListLuaSearchDir.Length; ++i)
         {
             string path = m_ListLuaSearchDir[i] + fileName;
             byte[] data = ResourcesManager.Instance.GetLuaScriptDataFromZip(path);
-            if(data != null)
+            if (data != null)
             {
                 return data;
             }

@@ -1,15 +1,4 @@
-﻿/******************************************************************
-** 文件名:	
-** 版  权:  (C)  
-** 创建人:  Liange
-** 日  期:  2015.2.12
-** 描  述: 	
-
-**************************** 修改记录 ******************************
-** 修改人: 
-** 日  期: 
-** 描  述: 
-*******************************************************************/
+﻿
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
@@ -48,7 +37,6 @@ public class MyUnityTool
         {
             return go;
         }
-
         string childName = "";
         while (true)
         {
@@ -507,20 +495,6 @@ public class MyUnityTool
         else
             return 0;
     }
-    public static float Divide(long n1 ,long n2)
-	{
-		return (float)(n1*1.0 / n2);
-	}
-
-	public static float Mod(long n1 ,long n2)
-	{
-		return (float)(n1 % n2);
-	}
-
-    public static float Multiply(long n1, float f2)
-    {
-        return (float)(n1 * f2);
-    }
 
     //--------------------------------------------------------------------------//
 
@@ -540,4 +514,19 @@ public class MyUnityTool
     {
         return System.IntPtr.Size != 4;
     }
+
+    // #region 识别二维码
+    // static public string DecodeQR(Texture2D texture)
+    // {
+    //     var reader = new BarcodeReader();
+    //     var bitmap = texture.GetPixels32();
+    //     var result = reader.Decode(bitmap, texture.width, texture.height);
+
+    //     if (result != null)
+    //     {
+    //         return result.Text;
+    //     }
+    //     return null;
+    // }
+    // #endregion
 }

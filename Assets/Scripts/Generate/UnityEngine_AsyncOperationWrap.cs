@@ -35,7 +35,7 @@ public class UnityEngine_AsyncOperationWrap
 				return LuaDLL.luaL_throw(L, "invalid arguments to ctor method: UnityEngine.AsyncOperation.New");
 			}
 		}
-		catch(Exception e)
+		catch (Exception e)
 		{
 			return LuaDLL.toluaL_exception(L, e);
 		}
@@ -56,7 +56,7 @@ public class UnityEngine_AsyncOperationWrap
 		}
 		catch(Exception e)
 		{
-			return LuaDLL.toluaL_exception(L, e, o == null ? "attempt to index isDone on a nil value" : e.Message);
+			return LuaDLL.toluaL_exception(L, e, o, "attempt to index isDone on a nil value");
 		}
 	}
 
@@ -75,7 +75,7 @@ public class UnityEngine_AsyncOperationWrap
 		}
 		catch(Exception e)
 		{
-			return LuaDLL.toluaL_exception(L, e, o == null ? "attempt to index progress on a nil value" : e.Message);
+			return LuaDLL.toluaL_exception(L, e, o, "attempt to index progress on a nil value");
 		}
 	}
 
@@ -94,7 +94,7 @@ public class UnityEngine_AsyncOperationWrap
 		}
 		catch(Exception e)
 		{
-			return LuaDLL.toluaL_exception(L, e, o == null ? "attempt to index priority on a nil value" : e.Message);
+			return LuaDLL.toluaL_exception(L, e, o, "attempt to index priority on a nil value");
 		}
 	}
 
@@ -113,14 +113,14 @@ public class UnityEngine_AsyncOperationWrap
 		}
 		catch(Exception e)
 		{
-			return LuaDLL.toluaL_exception(L, e, o == null ? "attempt to index allowSceneActivation on a nil value" : e.Message);
+			return LuaDLL.toluaL_exception(L, e, o, "attempt to index allowSceneActivation on a nil value");
 		}
 	}
 
 	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
 	static int get_completed(IntPtr L)
 	{
-		ToLua.Push(L, new EventObject("UnityEngine.AsyncOperation.completed"));
+		ToLua.Push(L, new EventObject(typeof(System.Action<UnityEngine.AsyncOperation>)));
 		return 1;
 	}
 
@@ -139,7 +139,7 @@ public class UnityEngine_AsyncOperationWrap
 		}
 		catch(Exception e)
 		{
-			return LuaDLL.toluaL_exception(L, e, o == null ? "attempt to index priority on a nil value" : e.Message);
+			return LuaDLL.toluaL_exception(L, e, o, "attempt to index priority on a nil value");
 		}
 	}
 
@@ -158,7 +158,7 @@ public class UnityEngine_AsyncOperationWrap
 		}
 		catch(Exception e)
 		{
-			return LuaDLL.toluaL_exception(L, e, o == null ? "attempt to index allowSceneActivation on a nil value" : e.Message);
+			return LuaDLL.toluaL_exception(L, e, o, "attempt to index allowSceneActivation on a nil value");
 		}
 	}
 
@@ -181,34 +181,18 @@ public class UnityEngine_AsyncOperationWrap
 
 			if (arg0.op == EventOp.Add)
 			{
-				System.Action<UnityEngine.AsyncOperation> ev = (System.Action<UnityEngine.AsyncOperation>)DelegateFactory.CreateDelegate(typeof(System.Action<UnityEngine.AsyncOperation>), arg0.func);
+				System.Action<UnityEngine.AsyncOperation> ev = (System.Action<UnityEngine.AsyncOperation>)arg0.func;
 				obj.completed += ev;
 			}
 			else if (arg0.op == EventOp.Sub)
 			{
-				System.Action<UnityEngine.AsyncOperation> ev = (System.Action<UnityEngine.AsyncOperation>)LuaMisc.GetEventHandler(obj, typeof(UnityEngine.AsyncOperation), "completed");
-				Delegate[] ds = ev.GetInvocationList();
-				LuaState state = LuaState.Get(L);
-
-				for (int i = 0; i < ds.Length; i++)
-				{
-					ev = (System.Action<UnityEngine.AsyncOperation>)ds[i];
-					LuaDelegate ld = ev.Target as LuaDelegate;
-
-					if (ld != null && ld.func == arg0.func)
-					{
-						obj.completed -= ev;
-						state.DelayDispose(ld.func);
-						break;
-					}
-				}
-
-				arg0.func.Dispose();
+				System.Action<UnityEngine.AsyncOperation> ev = (System.Action<UnityEngine.AsyncOperation>)arg0.func;
+				obj.completed -= ev;
 			}
 
 			return 0;
 		}
-		catch(Exception e)
+		catch (Exception e)
 		{
 			return LuaDLL.toluaL_exception(L, e);
 		}

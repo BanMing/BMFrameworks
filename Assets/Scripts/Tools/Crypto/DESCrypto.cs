@@ -54,6 +54,30 @@ public static class DESCrypto
         return decrypted;
     }
 
+    public static void DecryptAsync(Byte[] ToDecrypt, byte[] Key, Action<Byte[]> callback)
+    {
+        Loom.RunAsync(() =>
+        {
+            DESCryptoServiceProvider des = new DESCryptoServiceProvider() { Key = Key, IV = Key };
+            Byte[] decrypted;
+            using (MemoryStream ms = new MemoryStream())
+            {
+                using (CryptoStream cs = new CryptoStream(ms, des.CreateDecryptor(), CryptoStreamMode.Write))
+                {
+                    cs.Write(ToDecrypt, 0, ToDecrypt.Length);
+                    cs.FlushFinalBlock();
+                    decrypted = ms.ToArray();
+                    Loom.QueueOnMainThread(() =>{
+                        if (callback != null)
+                        {
+                            callback(decrypted);
+                        }
+                    });
+                }
+            }
+        });
+    }
+
     public static String GenerateKeyString()
     {
         var desCrypto = DESCryptoServiceProvider.Create();

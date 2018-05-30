@@ -1,5 +1,5 @@
 ﻿/*
-Copyright (c) 2015-2016 topameng(topameng@qq.com)
+Copyright (c) 2015-2017 topameng(topameng@qq.com)
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -25,6 +25,9 @@ using LuaInterface;
 using System.Collections;
 using System.IO;
 using System;
+#if UNITY_5_4_OR_NEWER
+using UnityEngine.SceneManagement;
+#endif
 
 public class LuaClient : MonoBehaviour
 {
@@ -43,12 +46,7 @@ public class LuaClient : MonoBehaviour
 
     protected virtual LuaFileUtils InitLoader()
     {
-        if (LuaFileUtils.Instance != null)
-        {
-            return LuaFileUtils.Instance;
-        }
-
-        return new LuaFileUtils();
+        return LuaFileUtils.Instance;       
     }
 
     protected virtual void LoadLuaFiles()
@@ -70,11 +68,10 @@ public class LuaClient : MonoBehaviour
             OpenLuaSocket();            
         }        
 
-        if (LuaConst.openZbsDebugger)
+        if (LuaConst.openLuaDebugger)
         {
             OpenZbsDebugger();
         }
-        OpenCJson();
     }
 
     public void OpenZbsDebugger(string ip = "localhost")
@@ -95,7 +92,7 @@ public class LuaClient : MonoBehaviour
             luaState.AddSearchPath(LuaConst.zbsDir);
         }
 
-        luaState.LuaDoString(string.Format("DebugServerIp = '{0}'", ip));
+        luaState.LuaDoString(string.Format("DebugServerIp = '{0}'", ip), "@LuaClient.cs");
     }
 
     [MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
@@ -155,7 +152,8 @@ public class LuaClient : MonoBehaviour
     protected virtual void Bind()
     {        
         LuaBinder.Bind(luaState);
-        LuaCoroutine.Register(luaState, this);
+        DelegateFactory.Init();   
+        LuaCoroutine.Register(luaState, this);        
     }
 
     protected void Init()
@@ -164,24 +162,28 @@ public class LuaClient : MonoBehaviour
         luaState = new LuaState();
         OpenLibs();
         luaState.LuaSetTop(0);
-        Bind();
-        LoadLuaFiles();    
+        Bind();        
+        LoadLuaFiles();        
     }
 
     protected void Awake()
     {
         Instance = this;
         Init();
+
+#if UNITY_5_4_OR_NEWER
+        SceneManager.sceneLoaded += OnSceneLoaded;
+#endif        
     }
 
     protected virtual void OnLoadFinished()
     {
         luaState.Start();
         StartLooper();
-        StartMain();
+        StartMain();        
     }
 
-    protected void OnLevelWasLoaded(int level)
+    void OnLevelLoaded(int level)
     {
         if (levelLoaded != null)
         {
@@ -190,12 +192,34 @@ public class LuaClient : MonoBehaviour
             levelLoaded.PCall();
             levelLoaded.EndPCall();
         }
+
+        if (luaState != null)
+        {            
+            luaState.RefreshDelegateMap();
+        }
     }
 
-    protected void Destroy()
+#if UNITY_5_4_OR_NEWER
+    void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        OnLevelLoaded(scene.buildIndex);
+    }
+#else
+    protected void OnLevelWasLoaded(int level)
+    {
+        OnLevelLoaded(level);
+    }
+#endif
+
+    public virtual void Destroy()
     {
         if (luaState != null)
         {
+#if UNITY_5_4_OR_NEWER
+            SceneManager.sceneLoaded -= OnSceneLoaded;
+#endif    
+            luaState.Call("OnApplicationQuit", false);
+            DetachProfiler();
             LuaState state = luaState;
             luaState = null;
 
@@ -211,7 +235,7 @@ public class LuaClient : MonoBehaviour
                 loop = null;
             }
 
-            state.Dispose();            
+            state.Dispose();
             Instance = null;
         }
     }
@@ -234,5 +258,25 @@ public class LuaClient : MonoBehaviour
     public LuaLooper GetLooper()
     {
         return loop;
+    }
+
+    LuaTable profiler = null;
+
+    public void AttachProfiler()
+    {
+        if (profiler == null)
+        {
+            profiler = luaState.Require<LuaTable>("UnityEngine.Profiler");
+            profiler.Call("start", profiler);
+        }
+    }
+    public void DetachProfiler()
+    {
+        if (profiler != null)
+        {
+            profiler.Call("stop", profiler);
+            profiler.Dispose();
+            LuaProfiler.Clear();
+        }
     }
 }
