@@ -8,7 +8,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 036cbf8342963b844b1f49fa437ce914, type: 3}
-  m_Name: CommonSpritePacker
+  m_Script: {fileID: 11500000, guid: 77ee5b002a11fda47be0d61daebce04c, type: 3}
+  m_Name: SpritesPathData
   m_EditorClassIdentifier: 
-  SpriteList: []
+  spriteInfos: []
