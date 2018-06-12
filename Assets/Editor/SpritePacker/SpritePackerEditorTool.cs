@@ -68,6 +68,11 @@ public class SpritePackerEditorTool : EditorWindow
             if (GUILayout.Button("Pack All Sprites"))
             {
                 window.spritesPathData.RemoveNullOrEmpty();
+                for (int i = 0; i < window.spritesPathData.spriteInfos.Count; i++)
+                {
+                    var data = window.spritesPathData.spriteInfos[i];
+                    CreateSpritePacker(ref data);
+                }
             }
         }
         GUILayout.EndHorizontal();
@@ -109,7 +114,8 @@ public class SpritePackerEditorTool : EditorWindow
             packer = SpritePacker.CreateInstance<SpritePacker>();
             UnityEditor.AssetDatabase.CreateAsset(packer, path);
         }
-
+        //no eidtable
+        packer.hideFlags=HideFlags.NotEditable;
         if (packer.spriteList == null)
         {
             packer.spriteList = new List<Sprite>();

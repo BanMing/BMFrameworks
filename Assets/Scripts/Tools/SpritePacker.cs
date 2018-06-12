@@ -9,11 +9,15 @@ public class SpritePacker : ScriptableObject
     private Dictionary<string, Sprite> spriteDic;
     void OnEnable()
     {
+
         if (spriteDic == null)
         {
             spriteDic = new Dictionary<string, Sprite>();
         }
-
+        if (spriteList == null)
+        {
+            return;
+        }
         for (int i = 0; i < spriteList.Count; i++)
         {
             spriteDic.Add(spriteList[i].name, spriteList[i]);

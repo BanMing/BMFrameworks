@@ -28,6 +28,7 @@ public class MyUnityToolWrap
 		L.RegFunction("Approximately", Approximately);
 		L.RegFunction("Compare", Compare);
 		L.RegFunction("IsProcessorArch64", IsProcessorArch64);
+		L.RegFunction("FindScriptInChild", FindScriptInChild);
 		L.RegFunction("New", _CreateMyUnityTool);
 		L.RegFunction("__tostring", ToLua.op_ToString);
 		L.EndClass();
@@ -533,6 +534,25 @@ public class MyUnityToolWrap
 			ToLua.CheckArgsCount(L, 0);
 			bool o = MyUnityTool.IsProcessorArch64();
 			LuaDLL.lua_pushboolean(L, o);
+			return 1;
+		}
+		catch (Exception e)
+		{
+			return LuaDLL.toluaL_exception(L, e);
+		}
+	}
+
+	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	static int FindScriptInChild(IntPtr L)
+	{
+		try
+		{
+			ToLua.CheckArgsCount(L, 3);
+			UnityEngine.GameObject arg0 = (UnityEngine.GameObject)ToLua.CheckObject(L, 1, typeof(UnityEngine.GameObject));
+			System.Type arg1 = ToLua.CheckMonoType(L, 2);
+			string arg2 = ToLua.CheckString(L, 3);
+			UnityEngine.Component o = MyUnityTool.FindScriptInChild(arg0, arg1, arg2);
+			ToLua.Push(L, o);
 			return 1;
 		}
 		catch (Exception e)

@@ -2,11 +2,12 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using System;
 
 /// <summary>
 /// 工具集
 /// </summary>
-public class MyUnityTool 
+public class MyUnityTool
 {
     static private int SortByName(Transform a, Transform b) { return string.Compare(a.name, b.name); }
 
@@ -75,7 +76,7 @@ public class MyUnityTool
     static public Transform FindChild(UnityEngine.Object parent, string childName)
     {
         GameObject go = (GameObject)parent;
-        if(go == null)
+        if (go == null)
         {
             string str = string.Format("MyUnityTool.FindChild:在节点{0}下查找子节点{1}", parent.name, childName);
             Debug.LogError(str);
@@ -112,7 +113,7 @@ public class MyUnityTool
                 return tran;
             }
         }
-        
+
         return null;
     }
 
@@ -178,7 +179,7 @@ public class MyUnityTool
             if (tran.childCount > 0)
             {
                 tranQueue.Enqueue(tran); //
-            }            
+            }
         }
 
 
@@ -322,7 +323,7 @@ public class MyUnityTool
         GameObject go = Find(name);
         if (go != null)
         {
-            for (int i = 0; i < go.transform.childCount; ++i )
+            for (int i = 0; i < go.transform.childCount; ++i)
             {
                 go.transform.GetChild(i).gameObject.SetActive(active);
             }
@@ -486,7 +487,7 @@ public class MyUnityTool
         return Mathf.Abs(a - b) <= admissibleValue;
     }
 
-    public static int Compare(long n1,long n2)
+    public static int Compare(long n1, long n2)
     {
         if (n1 > n2)
             return 1;
@@ -515,18 +516,76 @@ public class MyUnityTool
         return System.IntPtr.Size != 4;
     }
 
-    // #region 识别二维码
-    // static public string DecodeQR(Texture2D texture)
-    // {
-    //     var reader = new BarcodeReader();
-    //     var bitmap = texture.GetPixels32();
-    //     var result = reader.Decode(bitmap, texture.width, texture.height);
+    /// <summary>
+    /// 用于反射不能手动输入类型的
+    /// </summary>
+    /// <param name="_go"></param>
+    /// <param name="type"></param>
+    /// <param name="elementName"></param>
+    /// <returns></returns>
+    public static Component FindScriptInChild(GameObject _go, Type type, string elementName)
+    {
+        if (_go == null) return null;
 
-    //     if (result != null)
-    //     {
-    //         return result.Text;
-    //     }
-    //     return null;
-    // }
-    // #endregion
+        try
+        {
+
+            Component[] tempcom = _go.GetComponentsInChildren(type, true);
+            foreach (Component element in tempcom)
+            {
+                if (element.gameObject.name == elementName)
+                {
+                    return element;
+                }
+            }
+        }
+        catch (System.Exception ex)
+        {
+            Debug.LogError("go:" + _go.name + "type:" + type + "eName:" + elementName);
+        }
+        //UnityEngine.MyDebug.Log(tempcom.Length + " tempcom.Length  elementName:" + elementName + " _go.active :" + _go.activeSelf);
+
+        return null;
+    }
+    /// <summary>
+    /// 获取第一个相同名称的组件
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="_go"></param>
+    /// <param name="elementName"></param>
+    /// <returns></returns>
+    public static T FindScriptInChilds<T>(GameObject _go, string elementName) where T : Component
+    {
+        if (_go == null) return null;
+        T[] arr = _go.GetComponentsInChildren<T>(true);
+        foreach (T element in arr)
+        {
+            if (element.gameObject.name == elementName)
+            {
+                return element;
+            }
+        }
+        return null;
+    }
+
+    /// <summary>
+    /// 根据组件名称 包含查找（模糊查找）反回对象列表
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="_go"></param>
+    /// <param name="elementName"></param>
+    /// <returns></returns>
+    public static List<T> FindScriptsInChild<T>(GameObject _go, string elementName) where T : Component
+    {
+        if (_go == null) return null;
+        List<T> tlist = new List<T>();
+        foreach (T element in _go.GetComponentsInChildren<T>(true))
+        {
+            if (element.gameObject.name.IndexOf(elementName) != -1)
+            {
+                tlist.Add(element);
+            }
+        }
+        return tlist;
+    }
 }

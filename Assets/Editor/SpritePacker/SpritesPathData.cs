@@ -31,7 +31,7 @@ public class SpritesPathData : ScriptableObject
         for (int i = 0; i < spriteInfos.Count; i++)
         {
             var data = spriteInfos[i];
-            if (!string.IsNullOrEmpty(data.path) && !string.IsNullOrEmpty(data.tag))
+            if (!string.IsNullOrEmpty(data.path))
             {
                 res.Add(data);
             }

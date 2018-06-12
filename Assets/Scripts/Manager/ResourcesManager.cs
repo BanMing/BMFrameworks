@@ -1606,7 +1606,7 @@ public class ResourcesManager : SingletonMonoBehaviour<ResourcesManager>
     }
 
     //同步加载UI
-    public UnityEngine.Object GetUIInstanceSync(string abName, string assetName)
+    public UnityEngine.GameObject GetUIInstanceSync(string abName, string assetName)
     {
         UnityEngine.Object prefab = GetUIPrefabSync(abName, assetName);
         if(prefab == null)
@@ -1617,7 +1617,7 @@ public class ResourcesManager : SingletonMonoBehaviour<ResourcesManager>
         }
         UnityEngine.Object obj = UnityEngine.Object.Instantiate(prefab);
         m_DictInstanceIDABName.Add(obj.GetInstanceID(), abName);
-        return obj;
+        return (GameObject)obj;
     }
 
     public void ReleaseUIPrefab(string abName)

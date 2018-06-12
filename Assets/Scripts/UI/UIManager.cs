@@ -38,7 +38,7 @@ public class UIManager
     {
         get
         {
-            if(m_UITopRoot == null)
+            if (m_UITopRoot == null)
             {
                 InitRootNode();
             }
@@ -57,7 +57,7 @@ public class UIManager
 
             return rootCanvas;
         }
-    }   
+    }
 
     private void InitRootNode()
     {
@@ -77,9 +77,9 @@ public class UIManager
         }
         else
         {
-            foreach(Canvas can in canvas)
+            foreach (Canvas can in canvas)
             {
-                if(can.name == "UIRoot")
+                if (can.name == "Canvas")
                 {
                     tran = (RectTransform)can.transform;
                     rootCanvas = can;
@@ -88,14 +88,14 @@ public class UIManager
             }
         }
 
-        m_UIRootRectTransform = (RectTransform)MyUnityTool.FindChild(tran, "UILayer5");
-        m_UITopRoot = (RectTransform)MyUnityTool.FindChild(tran, "UILayer10");
+        m_UIRootRectTransform = (RectTransform)MyUnityTool.FindChild(tran, "NoramlLayer");
+        m_UITopRoot = (RectTransform)MyUnityTool.FindChild(tran, "TopLayer");
     }
 
 
     private Transform FindChild(Transform parent, string childName)
     {
-        if(string.IsNullOrEmpty(childName))
+        if (string.IsNullOrEmpty(childName))
         {
             string str = string.Format("UIManager.FindChild:查找节点{0}的子节点错误,子节点名为空", parent.name);
             Debug.LogError(str);
