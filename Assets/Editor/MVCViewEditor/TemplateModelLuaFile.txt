@@ -1,0 +1,7 @@
+
+local #NAME#Model = class("#NAME#Model", BaseModel)
+
+function #NAME#Model:initialize()
+end
+
+#SNAME#Model = #NAME#Model()

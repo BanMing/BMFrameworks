@@ -1,0 +1,12 @@
+
+local #NAME#Controller = class("#NAME#Controller", BaseController)
+
+function #NAME#Controller:Opne()
+    BaseController.Open(self)
+end
+
+function #NAME#Controller:Close()
+    BaseController.Close(self)
+end
+
+#SNAME#Controller = #NAME#Controller()

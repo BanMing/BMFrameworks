@@ -3,7 +3,7 @@ local LoginView = class("LoginView", BaseView)
 function LoginView:initialize()
     BaseView.initialize(self)
     self.UICom = {
-        {Name = "LoginBtn", Type = Button},
+        {Name = "LoginBtn", Type = Button}
     }
 end
 function LoginView:CreateInit()

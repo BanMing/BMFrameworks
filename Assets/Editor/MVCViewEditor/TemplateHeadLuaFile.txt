@@ -1,0 +1,7 @@
+require ("#PATH#/#NAME#/#NAME#Model")
+require ("#PATH#/#NAME#/#NAME#Controller")
+require ("#PATH#/#NAME#/#NAME#View")
+
+#SNAME#View.viewName="#NAME#"
+#SNAME#View.uiLayer="UILAYER"
+#SNAME#Controller.view=#SNAME#View

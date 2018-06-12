@@ -1,0 +1,30 @@
+
+
+local #NAME#View = class("#NAME#View", BaseView)
+
+function #NAME#View:initialize()
+    BaseView.initialize(self)
+    self.UICom = {
+        {Name = "CloseBtn", Type = Button},
+    }
+end
+function #NAME#View:CreateInit()
+    BaseView.CreateInit(self)
+end
+
+function #NAME#View:ShowInit()
+    BaseView.ShowInit(self)
+end
+
+function #NAME#View:Show()
+    BaseView.Show(self)
+end
+
+function #NAME#View:CloseInit()
+    BaseView.CloseInit(self)
+end
+
+function #NAME#View:Close()
+    BaseView.Close(self)
+end
+#SNAME#View = #NAME#View()
