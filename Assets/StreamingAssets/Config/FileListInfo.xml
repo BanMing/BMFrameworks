@@ -39,6 +39,6 @@
 <v>Common/Sprites/ShopItem/588[1].png</v>
 <k>ShopItemSpritePacker.asset</k>
 <v>Common/Sprites/ShopItem/ShopItemSpritePacker.asset</v>
-<k>CommonViews.prefab</k>
-<v>Common/Views/CommonViews.prefab</v>
+<k>LoginView.prefab</k>
+<v>Common/Views/LoginView.prefab</v>
 </root>

@@ -12,5 +12,6 @@ function BaseController:Open()
     self.view:Show()
 end
 
-function BaseController:Close(...)
+function BaseController:Close()
+    self.view:Close()
 end

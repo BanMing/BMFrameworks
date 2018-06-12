@@ -3,12 +3,11 @@ local LoginView = class("LoginView", BaseView)
 function LoginView:initialize()
     BaseView.initialize(self)
     self.UICom = {
-        {Name = "LoginBtn", Type = Transform},
+        {Name = "LoginBtn", Type = Button},
     }
 end
 function LoginView:CreateInit()
     BaseView.CreateInit(self)
-    print("******************")
     self.LoginBtn.onClick:AddListener(
         function()
             print("@@@@@@@@")

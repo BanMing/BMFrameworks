@@ -2,8 +2,6 @@
 function Main()
     math.randomseed(os.time())
     print("logic start")
-    print("logic start11")
-    print("logic start8888888888888888888")
     coroutine.start(ImprotFiles)
 end
 
