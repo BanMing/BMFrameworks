@@ -1,0 +1,14 @@
+<root>
+  <record>
+    <id>0</id>
+    <IsUseAssetBundle>False</IsUseAssetBundle>
+    <IsLuaUseZip>False</IsLuaUseZip>
+    <IsEncryptLuaCode>False</IsEncryptLuaCode>
+    <IsUseLuaBytecode>False</IsUseLuaBytecode>
+    <IsAutoUpdate>False</IsAutoUpdate>
+    <IsEncryptConfigFile>False</IsEncryptConfigFile>
+    <IsShowLog>False</IsShowLog>
+    <IsLog>False</IsLog>
+    <IsCanLoginByNormalUser>False</IsCanLoginByNormalUser>
+  </record>
+</root>
