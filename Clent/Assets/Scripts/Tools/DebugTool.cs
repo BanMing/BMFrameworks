@@ -16,10 +16,7 @@ public class DebugTool : MonoBehaviour
         get { return SystemConfig.Instance.IsLog; }
     }
     List<string> logText;
-    /// <summary>
-    /// Start is called on the frame when a script is enabled just before
-    /// any of the Update methods is called the first time.
-    /// </summary>
+
     void Start()
     {
         logText = new List<string>();
@@ -30,12 +27,12 @@ public class DebugTool : MonoBehaviour
         string str = "";
         if (logType == LogType.Error)
         {
-            str += "【LOG Error】:";
+            str += "\n【LOG Error】:";
         }
         str += condition;
         if (logType == LogType.Error)
         {
-            str += "【Stack Trace】:" + stackTrace;
+            str += "\n【Stack Trace】:" + stackTrace;
         }
         logText.Add(str);
     }
@@ -80,14 +77,16 @@ public class DebugTool : MonoBehaviour
     {
         //测试用地址
         string upLoadLogUrl = "http://192.168.4.85:8001/uploadLog";
-
+        ScriptThread.Instance.StartCoroutine(UpLoad(upLoadLogUrl,(backStr)=>{
+            Log(backStr);
+        }));
     }
     static IEnumerator UpLoad(string upLoadLogUrl, Action<string> CallBack)
     {
         byte[] screenshotBytes;
         MyUnityTool.ScreenShotByReadPixels((data) => { screenshotBytes = data; });
         HTTPTool.UpLoadFiles(upLoadLogUrl, new List<string>() { "log", "logs" }, new List<byte[]>() { },
-        new List<string>() { "image.jpg", "log.txt" }, new List<string>() { "uid" }, ne)
-
+        new List<string>() { "image.jpg", "log.txt" }, new List<string>() { "uid" }, new List<string>() { "0" }, CallBack);
+        yield return null;
     }
 }
