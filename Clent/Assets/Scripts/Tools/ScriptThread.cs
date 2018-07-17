@@ -17,7 +17,7 @@ public class ScriptThread : MonoBehaviour
         }
     }
 
-    public static ScriptThread CreateInstance()
+    private static ScriptThread CreateInstance()
     {
         if (ScriptThread.mInstance == null)
         {
