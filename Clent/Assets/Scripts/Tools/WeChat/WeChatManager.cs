@@ -7,6 +7,9 @@ using UnityEngine.Networking;
 
 public class WeChatManager : MonoBehaviour
 {
+    public Action WxLogInHandler;
+    public Action<bool> WxShareHandler;
+    public Action<bool> WxPayHandler;
     private bool isGetUserInfoNow;
     private static GameObject mInstanceGameObject;
     private static WeChatManager mInstance;
@@ -105,7 +108,7 @@ public class WeChatManager : MonoBehaviour
     }
 
 
-#if UNITY_ANDROID
+    #if UNITY_ANDROID
     private AndroidJavaObject activity;
     private AndroidJavaObject wxSender;
     private AndroidJavaObject Activity
@@ -133,39 +136,83 @@ public class WeChatManager : MonoBehaviour
             return wxSender;
         }
     }
-    private static void RegisterWeChatApp(string appId){
-    
-    private static void 
+    private static void RegisterWeChatApp(string appId)
+    {
+        WXSender.Call("RegisterApp", WeChatConstants.WeChatAppId);
     }
-#elif UNITY_IOS
+    private static void LoginWeChat()
+    {
+        WXSender.Call("LoginWeChat");
+    }
+    private static void ShareContent(bool isFriend, string title, string url, string contentStr, string iconPath)
+    {
+        if (isFriend)
+        {
+            WXSender.Call("ShareContentToFriend", url, title, contentStr, iconPath);
+        }
+        else
+        {
+            WXSender.Call("ShareContentToMoments", url, title, contentStr, iconPath);
+        }
+    }
+    private static void SharePic(bool isFriend, string imgPath)
+    {
+        if (isFriend)
+        {
+            WXSender.Call("ShareLocalPicToFriend", imgPath);
+        }
+        else
+        {
+            WXSender.Call("ShareLocalPicToMoments", imgPath);
+        }
+    }
+    private static void WxPay(string partnerId, string prepayId, string package, string nonceStr, string timeStamp, string sign)
+    {
+        WXSender.Call("WeChatPay", partnerId, prepayId, package, nonceStr, timeStamp, sign);
+    }
+
+    #elif UNITY_IOS
     [DllImport("__Internal")]
     private static extern bool RegisterWeChatApp(string appId);
     [DllImport("__Internal")]
     private static extern void LoginWeChat();
     [DllImport("__Internal")]
-    private static extern void ShareContent(bool isFriend,string title,string url,string contentStr,string iconPath);
+    private static extern void ShareContent(bool isFriend, string title, string url, string contentStr, string iconPath);
     [DllImport("__Internal")]
-    private static extern void WxPay();
+    private static extern void WxPay(string partnerId, string prepayId, string package, string nonceStr, string timeStamp, string sign);
     [DllImport("__Internal")]
-    private static extern void SharePic(bool isFriend,string imgPath);
+    private static extern void SharePic(bool isFriend, string imgPath);
 #endif
 
 
 
     /////////////call back/////////////////
-    public void LogInCallBack()
+    public void LogInCallBack(string data)
     {
-
+        if (data.Equals("error"))
+        {
+            //登录失败
+        }
+        else
+        {
+            GetAccessToken(data);
+        }
     }
-    public void ShareCallBack()
+    public void ShareCallBack(string data)
     {
-
+        if (WxShareHandler != null)
+        {
+            WxShareHandler(data.Equals("error"));
+        }
     }
-    public void WxPayCallBack()
+    public void WxPayCallBack(string data)
     {
-
+        if (WxPayHandler != null)
+        {
+            WxPayHandler(data.Equals("error"));
+        }
     }
-    public void GetAccessToken(string code)
+    private void GetAccessToken(string code)
     {
         if (!isGetUserInfoNow)
         {
